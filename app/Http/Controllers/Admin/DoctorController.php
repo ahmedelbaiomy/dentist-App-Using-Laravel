@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\DB;
-use App\Models\Doctor;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Doctor;
+use App\Models\Schedule;
 use App\Models\Appointment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 
 class DoctorController extends Controller
@@ -76,5 +77,36 @@ class DoctorController extends Controller
 
         return view('admin.doctor', compact('doctors'));
     }
-
+    public function schedules()
+    {
+        return view('admin.schedules');
+    }
+    public function jsonDoctorsForSelect(){
+        $result=[];
+        $rows = DB::table('users')
+            ->leftJoin('doctors', 'users.id', '=', 'doctors.user_id')
+            ->select('users.id', 'users.name', 'users.email', 'users.state', 'doctors.id AS d_id', 'doctors.birthday', 'doctors.address', 'doctors.phone', 'doctors.birthday','doctors.target')
+            ->where('users.user_type', '=', 'doctor')
+            ->groupBy('users.id')
+            ->get();
+        if(count($rows)>0){
+            foreach($rows as $doctor){
+                $result[]=['id'=>$doctor->id,'name'=>$doctor->email];
+            }
+        }
+        return response()->json($result);
+    }
+    public function getSchedules($doctor_id,$day){
+        if($doctor_id>0 && $day!=''){
+            $schedules = Schedule::where([['day',$day],['doctor_id',$doctor_id]])->get();
+            dd($schedules);
+        }
+        /* if ($request->isMethod('post')) {
+            if ($request->has(['day']) && $request->has(['doctor_id'])) {
+                $schedules = Schedule::where([['day',$request->day],['doctor_id',$request->doctor_id]])->get();
+                dd($schedules);
+            }
+        } */
+        return response()->json(['success'=>true]);
+    }
 }

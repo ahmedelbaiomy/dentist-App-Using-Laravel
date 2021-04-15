@@ -68,4 +68,7 @@
 
 @include('javascript')
 
+{{-- page script --}}
+@yield('page-script')
+{{-- page script --}}
 </html>
