@@ -115,14 +115,12 @@ function _loadSchedules(day) {
     $.ajax({
         type: "GET",
         url: "/admin/get/schedules/"+doctor_id+'/'+day,
-        dataType: "json",
-        success: function(data) {
-            //$("#ID_LIST_PASSWORDS").html(data);
+        dataType: "html",
+        success: function(html) {
+            $("#CONTENT-" + day).html(html);
         },
         error: function(err) {
-            /* $("#ID_LIST_PASSWORDS").html(
-                '<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.'
-            ); */
+            $("#CONTENT-" + day).html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
         },
     }).done(function(data) {
 

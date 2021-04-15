@@ -79,7 +79,7 @@ class DoctorController extends Controller
     }
     public function schedules()
     {
-        return view('admin.schedules');
+        return view('admin.schedule.index');
     }
     public function jsonDoctorsForSelect(){
         $result=[];
@@ -97,16 +97,10 @@ class DoctorController extends Controller
         return response()->json($result);
     }
     public function getSchedules($doctor_id,$day){
+        $schedules = null;
         if($doctor_id>0 && $day!=''){
             $schedules = Schedule::where([['day',$day],['doctor_id',$doctor_id]])->get();
-            dd($schedules);
         }
-        /* if ($request->isMethod('post')) {
-            if ($request->has(['day']) && $request->has(['doctor_id'])) {
-                $schedules = Schedule::where([['day',$request->day],['doctor_id',$request->doctor_id]])->get();
-                dd($schedules);
-            }
-        } */
-        return response()->json(['success'=>true]);
+        return view('admin.schedule.list', compact('schedules'));
     }
 }
