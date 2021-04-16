@@ -1,5 +1,5 @@
 <!--begin::Modal Content-->
-<div class="modal fade text-left" id="{{ $id }}" tabindex="-1" role="dialog" aria-labelledby="{{$formName}}_MODAL_TITLE"
+<div class="modal fade text-left" id="{{ $id }}" role="dialog" aria-labelledby="{{$formName}}_MODAL_TITLE"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

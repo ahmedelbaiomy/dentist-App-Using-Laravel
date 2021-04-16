@@ -3,9 +3,11 @@
 @section('title', 'Doctor Schedule Timings')
 
 @section('vendor-style')
-  <!-- vendor css files -->
-  <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
-  <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
+<!-- vendor css files -->
+<!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+  <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 @endsection
 
 @section('page-style')
@@ -21,19 +23,6 @@
             <div class="card-body">
                 <h4 class="card-title">Doctor Schedule Timings</h4>
 
-
-                <div class="row">
-    <div class="col-md-6 form-group">
-        <label for="fp-time">Start time</label>
-        <input type="text" id="start-time" class="form-control flatpickr-time text-left" placeholder="HH:MM" />
-    </div>
-    <div class="col-md-6 form-group">
-        <label for="fp-time">End time</label>
-        <input type="text" id="start-time" class="form-control flatpickr-time text-left" placeholder="HH:MM" />
-    </div>
-</div>
-
-
                 <div class="form-group">
                     <label for="select-doctos">Choose doctor</label>
                     <select class="form-control" id="select-doctos">
@@ -48,42 +37,45 @@
                             <div class="faq-navigation d-flex justify-content-between flex-column mb-2 mb-md-0">
                                 <!-- pill tabs navigation -->
                                 <ul class="nav nav-pills nav-left flex-column" role="tablist">
+                                    <input type="hidden" id="CURRENT_DAY">
                                     <!-- monday -->
                                     <li class="nav-item">
-                                        <a onclick="_loadSchedules('MONDAY')" class="nav-link active" id="monday" data-toggle="pill" href="#CONTENT-MONDAY"
-                                            aria-expanded="true" role="tab">
+                                        <a onclick="_loadSchedules('MONDAY')" class="nav-link active" id="monday"
+                                            data-toggle="pill" href="#CONTENT-MONDAY" aria-expanded="true" role="tab">
                                             <span class="font-weight-bold">MONDAY</span>
                                         </a>
                                     </li>
 
                                     <!-- TUESDAY -->
                                     <li class="nav-item">
-                                        <a onclick="_loadSchedules('TUESDAY')" class="nav-link" id="TUESDAY" data-toggle="pill" href="#CONTENT-TUESDAY"
-                                            aria-expanded="false" role="tab">
+                                        <a onclick="_loadSchedules('TUESDAY')" class="nav-link" id="TUESDAY"
+                                            data-toggle="pill" href="#CONTENT-TUESDAY" aria-expanded="false" role="tab">
                                             <span class="font-weight-bold">TUESDAY</span>
                                         </a>
                                     </li>
 
                                     <!-- cancellation and return -->
                                     <li class="nav-item">
-                                        <a onclick="_loadSchedules('WEDNESDAY')" class="nav-link" id="WEDNESDAY" data-toggle="pill"
-                                            href="#CONTENT-WEDNESDAY" aria-expanded="false" role="tab">
+                                        <a onclick="_loadSchedules('WEDNESDAY')" class="nav-link" id="WEDNESDAY"
+                                            data-toggle="pill" href="#CONTENT-WEDNESDAY" aria-expanded="false"
+                                            role="tab">
                                             <span class="font-weight-bold">WEDNESDAY</span>
                                         </a>
                                     </li>
 
                                     <!-- my order -->
                                     <li class="nav-item">
-                                        <a onclick="_loadSchedules('THURSDAY')" class="nav-link" id="THURSDAY" data-toggle="pill" href="#CONTENT-THURSDAY"
-                                            aria-expanded="false" role="tab">
+                                        <a onclick="_loadSchedules('THURSDAY')" class="nav-link" id="THURSDAY"
+                                            data-toggle="pill" href="#CONTENT-THURSDAY" aria-expanded="false"
+                                            role="tab">
                                             <span class="font-weight-bold">THURSDAY</span>
                                         </a>
                                     </li>
 
                                     <!-- product and services-->
                                     <li class="nav-item">
-                                        <a onclick="_loadSchedules('FRIDAY')" class="nav-link" id="FRIDAY" data-toggle="pill"
-                                            href="#CONTENT-FRIDAY" aria-expanded="false" role="tab">
+                                        <a onclick="_loadSchedules('FRIDAY')" class="nav-link" id="FRIDAY"
+                                            data-toggle="pill" href="#CONTENT-FRIDAY" aria-expanded="false" role="tab">
                                             <span class="font-weight-bold">FRIDAY</span>
                                         </a>
                                     </li>
@@ -96,28 +88,28 @@
                             <!-- pill tabs tab content -->
                             <div class="tab-content">
                                 <!-- monday panel -->
-                                <div role="tabpanel" class="tab-pane active" id="CONTENT-MONDAY" aria-labelledby="monday"
-                                    aria-expanded="true">
-                                    
+                                <div role="tabpanel" class="tab-pane active" id="CONTENT-MONDAY"
+                                    aria-labelledby="monday" aria-expanded="true">
+
                                 </div>
 
                                 <!-- TUESDAY panel -->
                                 <div class="tab-pane" id="CONTENT-TUESDAY" role="tabpanel" aria-labelledby="TUESDAY"
                                     aria-expanded="false">
-                                    
+
                                 </div>
 
                                 <!-- cancellation return  -->
-                                <div class="tab-pane" id="CONTENT-WEDNESDAY" role="tabpanel"
-                                    aria-labelledby="WEDNESDAY" aria-expanded="false">
-                                    
+                                <div class="tab-pane" id="CONTENT-WEDNESDAY" role="tabpanel" aria-labelledby="WEDNESDAY"
+                                    aria-expanded="false">
+
 
                                 </div>
 
                                 <!-- my order -->
                                 <div class="tab-pane" id="CONTENT-THURSDAY" role="tabpanel" aria-labelledby="my-order"
                                     aria-expanded="false">
-                                    
+
                                 </div>
 
                                 <!-- product services -->
@@ -143,34 +135,38 @@
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+<!-- <script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <!-- Page js files -->
 <script>
 $.ajaxSetup({
-  headers: {
-    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-  },
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
 function _loadSchedules(day) {
-    var loaderHtml ='<center><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></center>';
+    $("#CURRENT_DAY").val(day);
+    var loaderHtml =
+        '<center><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></center>';
     $("#CONTENT-" + day).html(loaderHtml);
     var doctor_id = $("#select-doctos").val();
     $.ajax({
         type: "GET",
-        url: "/admin/get/schedules/"+doctor_id+'/'+day,
+        url: "/admin/get/schedules/" + doctor_id + '/' + day,
         dataType: "html",
         success: function(html) {
             $("#CONTENT-" + day).html(html);
         },
         error: function(err) {
-            $("#CONTENT-" + day).html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
+            $("#CONTENT-" + day).html(
+                '<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
         },
     }).done(function(data) {
-        
+
     });
 }
 
@@ -201,62 +197,101 @@ function _getJsonDoctors(select_id, selected_value = 0) {
 }
 
 
-function _formSchedule(doctor_id,day) {
-  var modal_id = "modal_form_schedule";
-  var modal_content_id = "modal_form_schedule_content";
-  var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
-  $("#" + modal_id).modal("show");
-  $("#" + modal_content_id).html(spinner);
-  $("#SCHEDULE_MODAL_TITLE").html('<i class="feather icon-edit"></i> Add slot');
-  $.ajax({
-    url: "/admin/form/slot/"+doctor_id+"/"+day,
-    type: "GET",
-    dataType: "html",
-    success: function(html, status) {
-      $("#" + modal_content_id).html(html);
-    },
-  });
+function _formSchedule(doctor_id, day) {
+    var modal_id = "modal_form_schedule";
+    var modal_content_id = "modal_form_schedule_content";
+    var spinner =
+        '<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    $("#" + modal_id).modal("show");
+    $("#" + modal_content_id).html(spinner);
+    $("#SCHEDULE_MODAL_TITLE").html('<i class="feather icon-edit"></i> Add slot');
+    $.ajax({
+        url: "/admin/form/slot/" + doctor_id + "/" + day,
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#" + modal_content_id).html(html);
+        },
+    });
 };
 
 $("#FORM_SCHEDULE").validate({
-  rules: {},
-  messages: {},
-  submitHandler: function(form) {
-    $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
-    var formData = $(form).serializeArray(); // convert form to array
-    $.ajax({
-      type: "POST",
-      url: "/admin/form/slot",
-      data: formData,
-      dataType: "JSON",
-      success: function(result) {
-        if (result.success) {
-          _showResponseMessage("success", result.msg);
-          $("#modal_form_schedule").modal("hide");
-        } else {
-          _showResponseMessage("error", result.msg);
-        }
-      },
-      error: function(error) {
-        _showResponseMessage(
-          "error",
-          "Veuillez vérifier les champs du formulaire..."
-        );
-      },
-      complete: function(resultat, statut) {
-        $("#SPAN_SAVE").removeClass("spinner-border spinner-border-sm");
-        //_loadSchedules(day);
-      },
-    });
-    return false;
-  },
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
+        var formData = $(form).serializeArray(); // convert form to array
+        $.ajax({
+            type: "POST",
+            url: "/admin/form/slot",
+            data: formData,
+            dataType: "JSON",
+            success: function(result) {
+                if (result.success) {
+                    _showResponseMessage("success", result.msg);
+                    $("#modal_form_schedule").modal("hide");
+                } else {
+                    _showResponseMessage("error", result.msg);
+                }
+            },
+            error: function(error) {
+                _showResponseMessage(
+                    "error",
+                    "Veuillez vérifier les champs du formulaire..."
+                );
+            },
+            complete: function(resultat, statut) {
+                $("#SPAN_SAVE").removeClass("spinner-border spinner-border-sm");
+                var day=$("#CURRENT_DAY").val();
+                _loadSchedules(day);
+            },
+        });
+        return false;
+    },
 });
-var timePickr = $('.flatpickr-time');
-// Time
-if (timePickr.length) {
-    timePickr.flatpickr({
-      enableTime: true,
-      noCalendar: true
+
+function _deleteSlot(id) {
+    var successMsg = "Your slot time has been deleted.";
+    var errorMsg = "Your slot time has not been deleted.";
+    var swalConfirmTitle ="Are you sure you want to delete?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/delete/slot/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    var day=$("#CURRENT_DAY").val();
+                    _loadSchedules(day);
+                },
+            });
+        }
     });
 }
 </script>

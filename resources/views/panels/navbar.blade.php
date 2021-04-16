@@ -7,11 +7,12 @@
                             data-feather="menu"></i></a></li>
             </ul>
             <ul class="nav navbar-nav">
-                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
-                            data-feather="moon"></i></a></li>
+            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{ route('admin.doctor') }}" data-toggle="tooltip" data-placement="top" title="doctors"><i class="ficon" data-feather="user-plus"></i></a></li>
+            <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('admin.schedules') }}" data-toggle="tooltip" data-placement="top" title="Doctor Schedule Timings"><i class="ficon" data-feather="clock"></i></a></li>
             </ul>
         </div>
         <ul class="nav navbar-nav align-items-center ml-auto">
+            <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a></li>
             <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link"
                     id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">

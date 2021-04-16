@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     Route::get('admin/get/schedules/{doctor_id}/{day}', [App\Http\Controllers\Admin\DoctorController::class, 'getSchedules']);
     Route::get('admin/form/slot/{doctor_id}/{day}', [App\Http\Controllers\Admin\DoctorController::class, 'formSlot']);
     Route::post('admin/form/slot', [App\Http\Controllers\Admin\DoctorController::class, 'storeFormSlot']);
+    Route::delete('admin/delete/slot/{id}', [App\Http\Controllers\Admin\DoctorController::class, 'deleteSchedule']);
 
 
     Route::get('admin/patient', [App\Http\Controllers\Admin\PatientController::class, 'index'])->name('admin.patient');

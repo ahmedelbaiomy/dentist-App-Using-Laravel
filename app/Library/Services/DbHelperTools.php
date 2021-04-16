@@ -47,11 +47,22 @@ class DbHelperTools
             $rSlots = Schedule::where([['doctor_id',$doctor_id],['day',$day]])->pluck('slot')->toArray();
             if(count($rSlots)>0){
                 foreach($rSlots as $slot){
-                    $dt = Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$slot);
+                    $dt = Carbon::createFromFormat('Y-m-d H:i:s',$slot);
                     $times[]=$dt->format('H:i:s');
                 }
             }
         }
         return $times;
+    }
+    public function massDeletes($ids,$type,$force_delete){
+        $deletedRows = 0;
+        if($type=='schedule'){
+          if($force_delete==1){
+            $deletedRows = Schedule::whereIn('id', $ids)->forceDelete();
+          }else{
+            $deletedRows = Schedule::whereIn('id', $ids)->delete();
+          }
+        }
+        return $deletedRows;
     }      
 }

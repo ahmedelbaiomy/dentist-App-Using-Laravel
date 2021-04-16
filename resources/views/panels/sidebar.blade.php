@@ -4,7 +4,6 @@
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item mr-auto"><a class="navbar-brand" href=""><span class="brand-logo">
                 <img style="max-width:100px;" src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo"></span>
-                <!-- <img style="max-width:180px;" width="180px" src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo"></span> -->
                     </a></li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
@@ -12,22 +11,34 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="index.html"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Home">Home</span></a>
-                </li>
-                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="layout"></i><span class="menu-title text-truncate" data-i18n="Page Layouts">Page Layouts</span><span class="badge badge-light-danger badge-pill ml-auto mr-1">2</span></a>
+            @if(Auth::user())
+                @if(Auth::user()->user_type == "admin")
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.services') }}"><i data-feather="settings"></i><span class="menu-title text-truncate" data-i18n="Services">Services</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.users') }}"><i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Users">Users</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user-plus"></i><span class="menu-title text-truncate" data-i18n="Doctors">Doctors</span></a>
                     <ul class="menu-content">
-                        <li><a class="d-flex align-items-center" href="layout-collapsed-menu.html"><i data-feather="circle"></i><span class="menu-item" data-i18n="Collapsed Menu">Collapsed Menu</span></a>
+                        <li><a class="d-flex align-items-center" href="{{ route('admin.doctor') }}"><i data-feather="user-plus"></i><span class="menu-item" data-i18n="Doctors">Doctors</span></a>
                         </li>
-                        <li class="active"><a class="d-flex align-items-center" href="layout-boxed.html"><i data-feather="circle"></i><span class="menu-item" data-i18n="Layout Boxed">Layout Boxed</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="layout-without-menu.html"><i data-feather="circle"></i><span class="menu-item" data-i18n="Without Menu">Without Menu</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="layout-empty.html"><i data-feather="circle"></i><span class="menu-item" data-i18n="Layout Empty">Layout Empty</span></a>
-                        </li>
-                        <li><a class="d-flex align-items-center" href="layout-blank.html"><i data-feather="circle"></i><span class="menu-item" data-i18n="Layout Blank">Layout Blank</span></a>
+                        <li class="active"><a class="d-flex align-items-center" href="{{ route('admin.schedules') }}"><i data-feather="clock"></i><span class="menu-item" data-i18n="Schedule Timings">Schedule Timings</span></a>
                         </li>
                     </ul>
                 </li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.patient') }}"><i data-feather="user-x"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.appointment') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.officetime') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Office Time">Office Time</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('admin.clinic') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Clinic">Clinic</span></a></li>
+                    
+                @elseif(Auth::user()->user_type == "doctor")
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('doctor.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('doctor.appointment') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
+                @elseif(Auth::user()->user_type == "reception")
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('reception.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('reception.appointment') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
+                <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('reception.patient') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
+                @endif
+            @endif
+
             </ul>
         </div>
     </div>

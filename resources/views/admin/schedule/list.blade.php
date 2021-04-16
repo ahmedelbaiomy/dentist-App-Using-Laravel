@@ -7,7 +7,7 @@
 $dt = Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$schedule->slot);
 $slot = $dt->format('H:i');
 @endphp
-<button type="button" onclick="_deleteSlot({{ $schedule->id }})" class="btn btn-outline-primary">{{ $slot }}
+<button type="button" onclick="_deleteSlot({{ $schedule->id }})" class="btn btn-outline-primary mb-1">{{ $slot }}
     {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}</button>
 @endforeach
 @else

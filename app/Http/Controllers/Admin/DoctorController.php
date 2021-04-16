@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Schedule;
@@ -100,7 +101,7 @@ class DoctorController extends Controller
     public function getSchedules($doctor_id,$day){
         $schedules = null;
         if($doctor_id>0 && $day!=''){
-            $schedules = Schedule::where([['day',$day],['doctor_id',$doctor_id]])->get();
+            $schedules = Schedule::where([['day',$day],['doctor_id',$doctor_id]])->orderBy('slot')->get();
         }
         return view('admin.schedule.list', ['schedules'=>$schedules,'doctor_id' => $doctor_id,'day'=>$day]);
     }
@@ -112,7 +113,7 @@ class DoctorController extends Controller
         //SELECT `id`,`start_hour`,`end_hour`,WEEKDAY(start_hour) FROM `af_schedules` WHERE WEEKDAY(start_hour) = 4
         //$number_day_of_week = 4;
         //$users = DB::table('af_schedules')->select('id','start_hour')->whereRaw(DB::raw('WEEKDAY(start_hour) = '.$number_day_of_week))->get();
-        //lundi - TUESDAY 1
+        //lundi - MONDAY 1
         //mardi - TUESDAY 2
         //mercredi - WEDNESDAY 3
         //jeudi - THURSDAY 4
@@ -131,7 +132,7 @@ class DoctorController extends Controller
             $ended_at = Carbon::createFromFormat('Y-m-d H:i',$dNow->format('Y-m-d').' '.$request->ended_at);
             $DbHelperTools=new DbHelperTools();
             $dates = $DbHelperTools->generateDateRange($started_at->format('Y-m-d H:i'),$ended_at->format('Y-m-d H:i'),$request->slot_duration);
-            dd($dates);
+            
             if(count($dates)>0){
                 $doctor_existing_time_slots = $DbHelperTools->getTimeSlotsByDoctorDay($doctor_id,$day);
                 foreach($dates as $date=>$times){
@@ -159,4 +160,18 @@ class DoctorController extends Controller
                 'msg' => $msg 
         ] );
     }
+    public function deleteSchedule($id){
+        /**
+         * forceDelete
+         */
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id){
+            $deletedRows = $DbHelperTools->massDeletes([$id],'schedule',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }
+        return response()->json(['success'=>$success]);
+      }
 }

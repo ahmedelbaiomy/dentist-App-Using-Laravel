@@ -1,17 +1,17 @@
 {{ csrf_field() }}
-<input type="text" name="day" value="{{ $day }}">
-<input type="text" name="doctor_id" value="{{ $doctor_id}}">
+<input type="hidden" name="day" value="{{ $day }}">
+<input type="hidden" name="doctor_id" value="{{ $doctor_id}}">
 
 <div class="row">
     <div class="col-md-6 form-group">
         <label for="fp-time">Start time</label>
         <input type="text" id="started_at" name="started_at" class="form-control flatpickr-time text-left"
-            placeholder="HH:MM" />
+            placeholder="HH:MM" required/>
     </div>
     <div class="col-md-6 form-group">
         <label for="fp-time">End time</label>
         <input type="text" id="ended_at" name="ended_at" class="form-control flatpickr-time text-left"
-            placeholder="HH:MM" />
+            placeholder="HH:MM" required/>
     </div>
 </div>
 <div class="row">
@@ -30,12 +30,12 @@
 </div>
 
 <script>
-var timePickr = $('.flatpickr-time');
-// Time
-if (timePickr.length) {
-    timePickr.flatpickr({
+$( document ).ready(function() {
+    $('.flatpickr-time').flatpickr({
         enableTime: true,
-        noCalendar: true
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
     });
-}
+});
 </script>
