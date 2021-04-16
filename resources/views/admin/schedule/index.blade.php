@@ -1,107 +1,154 @@
-@extends('layouts.app')
+@extends('layouts/layoutMaster')
+
+@section('title', 'Doctor Schedule Timings')
+
+@section('vendor-style')
+  <!-- vendor css files -->
+  <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+  <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
+@endsection
+
+@section('page-style')
+{{-- Page Css files --}}
+<!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/plugins/forms/pickers/form-flat-pickr.css') }}"> -->
+@endsection
 
 @section('content')
 
-<div class="page-header">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Doctor Schedule Timings</li>
-    </ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Doctor Schedule Timings</h4>
+
+
+                <div class="row">
+    <div class="col-md-6 form-group">
+        <label for="fp-time">Start time</label>
+        <input type="text" id="start-time" class="form-control flatpickr-time text-left" placeholder="HH:MM" />
+    </div>
+    <div class="col-md-6 form-group">
+        <label for="fp-time">End time</label>
+        <input type="text" id="start-time" class="form-control flatpickr-time text-left" placeholder="HH:MM" />
+    </div>
 </div>
-<div class="content-wrapper">
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-2">
-            <h5 class='text-success'>Doctor Schedule Timings</h5>
-        </div>
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="card-body">
 
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="select-doctos" class="form-label">Choose doctor</label>
-                            <select class="form-select" id="select-doctos">
-                            </select>
+
+                <div class="form-group">
+                    <label for="select-doctos">Choose doctor</label>
+                    <select class="form-control" id="select-doctos">
+                    </select>
+                </div>
+
+                <!-- frequently asked questions tabs pills -->
+                <section id="faq-tabs">
+                    <!-- vertical tab pill -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-12">
+                            <div class="faq-navigation d-flex justify-content-between flex-column mb-2 mb-md-0">
+                                <!-- pill tabs navigation -->
+                                <ul class="nav nav-pills nav-left flex-column" role="tablist">
+                                    <!-- monday -->
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('MONDAY')" class="nav-link active" id="monday" data-toggle="pill" href="#CONTENT-MONDAY"
+                                            aria-expanded="true" role="tab">
+                                            <span class="font-weight-bold">MONDAY</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- TUESDAY -->
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('TUESDAY')" class="nav-link" id="TUESDAY" data-toggle="pill" href="#CONTENT-TUESDAY"
+                                            aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">TUESDAY</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- cancellation and return -->
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('WEDNESDAY')" class="nav-link" id="WEDNESDAY" data-toggle="pill"
+                                            href="#CONTENT-WEDNESDAY" aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">WEDNESDAY</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- my order -->
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('THURSDAY')" class="nav-link" id="THURSDAY" data-toggle="pill" href="#CONTENT-THURSDAY"
+                                            aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">THURSDAY</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- product and services-->
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('FRIDAY')" class="nav-link" id="FRIDAY" data-toggle="pill"
+                                            href="#CONTENT-FRIDAY" aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">FRIDAY</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex align-items-start">
-                        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                            aria-orientation="vertical">
-                            <button class="nav-link active" id="v-pills-monday-tab" data-bs-toggle="pill"
-                                onclick="_loadSchedules('MONDAY')" data-bs-target="#v-pills-monday" type="button"
-                                role="tab" aria-controls="v-pills-monday" aria-selected="true">MONDAY</button>
-                            <button class="nav-link" id="v-pills-tuesday-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-tuesday" type="button" role="tab"
-                                aria-controls="v-pills-tuesday" aria-selected="false">TUESDAY</button>
-                            <button class="nav-link" id="v-pills-wednesday-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-wednesday" type="button" role="tab"
-                                aria-controls="v-pills-wednesday" aria-selected="false">WEDNESDAY</button>
-                            <button class="nav-link" id="v-pills-thursday-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-thursday" type="button" role="tab"
-                                aria-controls="v-pills-thursday" aria-selected="false">THURSDAY</button>
-                            <button class="nav-link" id="v-pills-thursday-tab" data-bs-toggle="pill"
-                                data-bs-target="#v-pills-friday" type="button" role="tab" aria-controls="v-pills-friday"
-                                aria-selected="false">FRIDAY</button>
-                        </div>
-                        <div class="tab-content" id="v-pills-tabContent-schedules">
-                            <div class="tab-pane fade show active" id="v-pills-monday" role="tabpanel"
-                                aria-labelledby="v-pills-monday-tab">
-                                <div class="card">
-                                    <div class="card-body" id="CONTENT-MONDAY">
+                        <div class="col-lg-9 col-md-8 col-sm-12">
+                            <!-- pill tabs tab content -->
+                            <div class="tab-content">
+                                <!-- monday panel -->
+                                <div role="tabpanel" class="tab-pane active" id="CONTENT-MONDAY" aria-labelledby="monday"
+                                    aria-expanded="true">
+                                    
+                                </div>
 
-                                    </div>
+                                <!-- TUESDAY panel -->
+                                <div class="tab-pane" id="CONTENT-TUESDAY" role="tabpanel" aria-labelledby="TUESDAY"
+                                    aria-expanded="false">
+                                    
+                                </div>
+
+                                <!-- cancellation return  -->
+                                <div class="tab-pane" id="CONTENT-WEDNESDAY" role="tabpanel"
+                                    aria-labelledby="WEDNESDAY" aria-expanded="false">
+                                    
+
+                                </div>
+
+                                <!-- my order -->
+                                <div class="tab-pane" id="CONTENT-THURSDAY" role="tabpanel" aria-labelledby="my-order"
+                                    aria-expanded="false">
+                                    
+                                </div>
+
+                                <!-- product services -->
+                                <div class="tab-pane" id="CONTENT-FRIDAY" role="tabpanel"
+                                    aria-labelledby="product-services" aria-expanded="false">
+                                    <!-- icon and header -->
+
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-tuesday" role="tabpanel"
-                                aria-labelledby="v-pills-tuesday-tab">c2</div>
-                            <div class="tab-pane fade" id="v-pills-wednesday" role="tabpanel"
-                                aria-labelledby="v-pills-wednesday-tab">c3</div>
-                            <div class="tab-pane fade" id="v-pills-thursday" role="tabpanel"
-                                aria-labelledby="v-pills-thursday-tab">...</div>
-                            <div class="tab-pane fade" id="v-pills-friday" role="tabpanel"
-                                aria-labelledby="v-pills-friday-tab">c friday</div>
                         </div>
                     </div>
-
-                </div>
+                </section>
+                <!-- / frequently asked questions tabs pills -->
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="set_slot_modal">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="basicModalLabel">Set Target</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div><!-- .modal-body -->
-            <div class="modal-footer">
-                <button href="#" class="btn btn-primary" id="target_set_btn"><span
-                        class="icon-settings1"></span>&nbsp;Save</button>
-                <button href="#" data-dismiss="modal" class="btn btn-danger"><span
-                        class="icon-close"></span>&nbsp;Cancel</button>
-            </div>
-        </div><!-- .modal-content -->
-    </div><!-- .modal-dialog -->
-</div><!-- .modal -->
+<x-modal-form id="modal_form_schedule" formName="SCHEDULE" content="modal_form_schedule_content" />
 @endsection
 
+@section('vendor-script')
+<!-- Vendor js files -->
+<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+@endsection
 @section('page-script')
+<script src="{{ asset('new-assets/js/main.js') }}"></script>
 <!-- Page js files -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
-</script>
-<link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}" />
 <script>
-
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -109,7 +156,7 @@ $.ajaxSetup({
 });
 
 function _loadSchedules(day) {
-    var loaderHtml = '<center><i class="fa fa-spinner fa-spin"></i> loading ...</center>';
+    var loaderHtml ='<center><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></center>';
     $("#CONTENT-" + day).html(loaderHtml);
     var doctor_id = $("#select-doctos").val();
     $.ajax({
@@ -123,7 +170,7 @@ function _loadSchedules(day) {
             $("#CONTENT-" + day).html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
         },
     }).done(function(data) {
-
+        
     });
 }
 
@@ -149,6 +196,67 @@ function _getJsonDoctors(select_id, selected_value = 0) {
         if (selected_value != 0 && selected_value != '') {
             $('#' + select_id + ' option[value="' + selected_value + '"]').attr('selected', 'selected');
         }
+        $("#monday").click();
+    });
+}
+
+
+function _formSchedule(doctor_id,day) {
+  var modal_id = "modal_form_schedule";
+  var modal_content_id = "modal_form_schedule_content";
+  var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+  $("#" + modal_id).modal("show");
+  $("#" + modal_content_id).html(spinner);
+  $("#SCHEDULE_MODAL_TITLE").html('<i class="feather icon-edit"></i> Add slot');
+  $.ajax({
+    url: "/admin/form/slot/"+doctor_id+"/"+day,
+    type: "GET",
+    dataType: "html",
+    success: function(html, status) {
+      $("#" + modal_content_id).html(html);
+    },
+  });
+};
+
+$("#FORM_SCHEDULE").validate({
+  rules: {},
+  messages: {},
+  submitHandler: function(form) {
+    $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
+    var formData = $(form).serializeArray(); // convert form to array
+    $.ajax({
+      type: "POST",
+      url: "/admin/form/slot",
+      data: formData,
+      dataType: "JSON",
+      success: function(result) {
+        if (result.success) {
+          _showResponseMessage("success", result.msg);
+          $("#modal_form_schedule").modal("hide");
+        } else {
+          _showResponseMessage("error", result.msg);
+        }
+      },
+      error: function(error) {
+        _showResponseMessage(
+          "error",
+          "Veuillez vérifier les champs du formulaire..."
+        );
+      },
+      complete: function(resultat, statut) {
+        $("#SPAN_SAVE").removeClass("spinner-border spinner-border-sm");
+        //_loadSchedules(day);
+      },
+    });
+    return false;
+  },
+});
+var timePickr = $('.flatpickr-time');
+// Time
+if (timePickr.length) {
+    timePickr.flatpickr({
+      enableTime: true,
+      noCalendar: true
     });
 }
 </script>

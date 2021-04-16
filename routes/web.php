@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/newdesign', function () {
+    return view('admin.schedule.newdesign');
+});
+
 Route::get('/home', function () {
     Auth::logout();
     return redirect('/login');
@@ -53,6 +57,9 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     Route::get('admin/schedules', [App\Http\Controllers\Admin\DoctorController::class, 'schedules'])->name('admin.schedules');
     Route::get('admin/json/doctors', [App\Http\Controllers\Admin\DoctorController::class, 'jsonDoctorsForSelect']);
     Route::get('admin/get/schedules/{doctor_id}/{day}', [App\Http\Controllers\Admin\DoctorController::class, 'getSchedules']);
+    Route::get('admin/form/slot/{doctor_id}/{day}', [App\Http\Controllers\Admin\DoctorController::class, 'formSlot']);
+    Route::post('admin/form/slot', [App\Http\Controllers\Admin\DoctorController::class, 'storeFormSlot']);
+
 
     Route::get('admin/patient', [App\Http\Controllers\Admin\PatientController::class, 'index'])->name('admin.patient');
     Route::get('admin/patient/{patient_id}', [App\Http\Controllers\Admin\PatientController::class, 'patient_profile']);

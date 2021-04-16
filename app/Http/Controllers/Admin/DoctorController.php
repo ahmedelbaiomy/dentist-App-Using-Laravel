@@ -101,6 +101,28 @@ class DoctorController extends Controller
         if($doctor_id>0 && $day!=''){
             $schedules = Schedule::where([['day',$day],['doctor_id',$doctor_id]])->get();
         }
-        return view('admin.schedule.list', compact('schedules'));
+        return view('admin.schedule.list', ['schedules'=>$schedules,'doctor_id' => $doctor_id,'day'=>$day]);
+    }
+    public function formSlot($doctor_id,$day){
+        return view('admin.schedule.form.form',['doctor_id' => $doctor_id,'day'=>$day]);
+    }
+    public function storeFormSlot(Request $request) {
+		$success = false;
+        $msg = 'Ooops !';
+        $id = 0;
+        if ($request->isMethod('post')) {
+            dd($request->all());
+        }  
+        if($id>0){
+            $success = true;
+            $msg = 'La note a été enregistrée avec succès';
+        } 
+        if($id>0)
+            $success = true;
+                
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
     }
 }
