@@ -48,6 +48,11 @@
                     <i class="icon-target nav-icon"></i> Clinic
                 </a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link {{ (request()->is('admin/schedules')) ? 'active-page':'' }}" href="{{ route('admin.schedules') }}">
+                    <i class="icon-target nav-icon"></i> Schedule Timings
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

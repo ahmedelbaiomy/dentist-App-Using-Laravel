@@ -71,7 +71,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
-                                            <button type="button" onclick="_formAppointment({{$appointment->id}})" class="btn btn-info">
+                                            <button type="button"  data-toggle="modal" data-target="#edit_appointment_modal"  data-id="{{ json_encode($appointment) }}" class="btn btn-info">
                                                 <i class="icon-edit1"></i>
                                             </button>
                                             <button onclick="delete_func('delete_frm_{{ $appointment->id }}')"  type="button" class="btn btn-danger">
@@ -97,6 +97,206 @@
 
 
 
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="add_appointment_modal">
+    <div class="modal-dialog modal-lg" role="document">
+        
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h5 class="modal-title" id="basicModalLabel">Add Appointment {{$current_time}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+           
+            <div class="modal-body">
+                <input type="hidden" id="a_starttime" name="a_starttime" >
+                <input type="hidden" id="a_endtime" name="a_endtime" >
+                <div class="row gy-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Patient*</label>
+                            <div class="form-control-wrap">
+                                <select class="selectpicker form-control form-control-lg" data-search="on" id="a_patient" name="a_patient">
+                                    @foreach($patients as $patient)
+                                        <option value="{{ $patient->id }}">{{ $patient->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Doctor</label>
+                            <div class="form-control-wrap">
+                                <select class="selectpicker form-control form-control-lg" data-search="on" id="a_doctor" name="a_doctor">
+                                    @foreach($doctors as $doctor)
+                                        <option value="{{ $doctor->user_id }}">{{ $doctor->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="default-05">Duration(Minutes*)</label>
+                            <div class="form-control-wrap">                                
+                                <input type="number" min="1" max="480" id="a_duration" name="a_duration" class="form-control form-control-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-append date" data-date="2013-02-21T15:25:00Z" id = "start_time_div">
+                        <label class="form-label" for="birth-day">Start Time*</label>
+                            <input class="form-control form-control-lg form_datetime" id="a_start_time" name="a_start_time" size="16" type="text" value="" readonly>                           
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <label class="form-label" for="birth-day">Choose date *</label>
+                            <input class="form-control form-control-lg" id="start_time" name="start_time" onchange="_loadSlots()" size="16" type="text" value="">
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-12">
+                        <p>Choose time slot :</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert alert-info" id="DIV_TIME_SLOT" role="alert"></div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label" for="cf-default-textarea">Comment</label>
+                            <div class="form-control-wrap">
+                                <textarea class="form-control form-control-sm" cols="30" rows="5" id="a_comments" name="a_comments" placeholder="Write your comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <div class="form-control-wrap">
+                                <select class="form-control" id="a_status" name="a_status" data-placeholder="Select Multiple services">
+                                    <option value="1">Booked</option>
+                                    <option value="2">Confirmed</option>
+                                    <option value="3">Canceled</option>
+                                    <option value="4">Attended</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .modal-body -->
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary" id="appointment_save_btn"><span class="icon-save"></span>&nbsp;Save</button>                                        
+                <button href="#" data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button>                                            
+            </div>
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="edit_appointment_modal">
+    <div class="modal-dialog modal-lg" role="document">
+        
+        <div class="modal-content">
+            <div  class="modal-header">
+                <h5 class="modal-title" id="basicModalLabel">Edit Appointment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="e_starttime" name="e_starttime" >
+                <input type="hidden" id="e_endtime" name="e_endtime" >
+                <input type="hidden" id="e_temp_duration" name="e_temp_duration" >
+                <div class="row gy-4">
+                    <input type="hidden" id="e_appointment_id" name="e_appointment_id">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Patient*</label>
+                            <div class="form-control-wrap">
+                                <select class="selectpicker form-control form-control-lg" data-search="on" id="e_patient" name="e_patient">
+                                    @foreach($patients as $patient)
+                                        <option value="{{ $patient->id }}">{{ $patient->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Doctor</label>
+                            <div class="form-control-wrap">
+                                <select class="selectpicker form-control form-control-lg" data-search="on" id="e_doctor" name="e_doctor">
+                                    @foreach($doctors as $doctor)
+                                        <option value="{{ $doctor->user_id }}">{{ $doctor->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="default-05">Duration(Minutes)</label>
+                            <div class="form-control-wrap">                                
+                                <input type="number" min="1" max="480" id="e_duration" name="e_duration" class="form-control form-control-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-append date" data-date="2013-02-21T15:25:00Z" id = "edit_start_time_div">
+                        <label class="form-label" for="birth-day">Start Time*</label>
+                            <input class="form-control form-control-lg" id="e_start_time" name="e_start_time" size="16" type="text" value="" readonly>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label" for="cf-default-textarea">Comment</label>
+                            <div class="form-control-wrap">
+                                <textarea class="form-control form-control-sm" cols="30" rows="5" id="e_comments" name="e_comments" placeholder="Write your comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <div class="form-control-wrap">
+                                <select class="form-control" id="e_status" name="e_status">
+                                    <option value="1">Booked</option>
+                                    <option value="2">Confirmed</option>
+                                    <option value="3">Canceled</option>
+                                    <option value="4">Attended</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .modal-body -->
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary" id="appointment_update_btn"><span class="icon-save"></span>&nbsp;Update</button>                                        
+                <button href="#" data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button>                                            
+            </div>
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
+
+
 
 <input type="hidden" id="INPUT_HIDDEN_EDIT_APPONTMENT" value="Edit Appointment">
 <input type="hidden" id="INPUT_HIDDEN_NEW_APPONTMENT" value="Add Appointment">
@@ -108,28 +308,38 @@
         <h5 class="modal-title" id="APPONTMENT_MODAL_TITLE">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
-
-
-      <div class="modal-body">
-        <form id="FORM_APPOINTMENT">
-            <div id='modal_form_appointment_body'>
-            </div>
-        </form>
-      </div>
-      
-
-      </div>
+      <form id="FORM_APPOINTMENT">
+      <div class="modal-body" id='modal_form_appointment_body'></div>
+      </form>
       <div class="modal-footer">
-        <button onclick="" class="btn btn-primary"><span class="icon-save"></span>&nbsp;Update</button>                                        
+        <button class="btn btn-primary"><span class="icon-save"></span>&nbsp;Update</button>                                        
         <button data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button> 
       </div>
     </div>
   </div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
 <script>
+
+
+function _formAppointment(id) {
+  var modal_id = "modal_form_appointment";
+  var modal_content_id = "modal_form_appointment_body";
+  var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+  $("#" + modal_id).modal("show");
+  $("#" + modal_content_id).html(spinner);
+  var modalTitle =id > 0? $("#INPUT_HIDDEN_EDIT_APPONTMENT").val(): $("#INPUT_HIDDEN_NEW_APPONTMENT").val();
+  $("#APPONTMENT_MODAL_TITLE").html('<i class="feather icon-edit"></i> ' + modalTitle);
+  $.ajax({
+    url: "/reception/form/appointment/" + id,
+    type: "GET",
+    dataType: "html",
+    success: function(html, status) {
+      $("#" + modal_content_id).html(html);
+    },
+  });
+};
+
 $(document).ready(function(){
     var table = $('.datatable').DataTable();
     get_time_range_for_doctor();
@@ -470,66 +680,41 @@ $(document).ready(function(){
         }
     });
 
+    /* $("#start_time").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "{{$current_time}}",
+        minuteStep: 10
+    }); */
+
 });
+_loadSlots();
+function _loadSlots() {
+    //$("#CURRENT_DAY").val(day);
+    var loaderHtml ='<i class="fa fa-spinner spin"></i>';
+    $("#DIV_TIME_SLOT").html(loaderHtml);
+    var doctor_id = $("#a_doctor").val();
+    var start_date = $("#start_time").val();
 
-function _formAppointment(id) {
-  var modal_id = "modal_form_appointment";
-  var modal_content_id = "modal_form_appointment_body";
-  var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
-  $("#" + modal_id).modal("show");
-  $("#" + modal_content_id).html(spinner);
-  var modalTitle =id > 0? $("#INPUT_HIDDEN_EDIT_APPONTMENT").val(): $("#INPUT_HIDDEN_NEW_APPONTMENT").val();
-  $("#APPONTMENT_MODAL_TITLE").html('<i class="feather icon-edit"></i> ' + modalTitle);
-  $.ajax({
-    url: "/reception/form/appointment/" + id,
-    type: "GET",
-    dataType: "html",
-    success: function(html, status) {
-      $("#" + modal_content_id).html(html);
-    },
-  });
-};
-
-
-
-$("#FORM_APPOINTMENT").submit(function(event) {
-        event.preventDefault();
-        var formData = $(this).serializeArray();
-        //console.log(formData);
-        //return false;
+    if(doctor_id>0 && start_date!=''){
         $.ajax({
-            type: "POST",
-            dataType: 'json',
-            data: formData,
-            url: '/reception/form/appointment',
-            success: function(response) {
-                if(response.success){
-                $("#modal_form_appointment").modal('hide');
-                swal({
-                            title: "Success!",
-                            text: response.msg,
-                            icon: "success",
-                        });
-                window.location.href = '{{route("reception.appointment")}}';
-                }else{
-                    swal({
-                            title: "Error!",
-                            text: response.msg,
-                            icon: "error",
-                    });
-                }
+            type: "GET",
+            url: "/reception/get/time/slots/" + doctor_id+'/'+start_date,
+            dataType: "html",
+            success: function(html) {
+                $("#DIV_TIME_SLOT").html(html);
             },
-            error: function() {
-                
-            }
-        }).done(function(data) {
-            
-        });
-        return false;
-    });
+            error: function(err) {
+                $("#DIV_TIME_SLOT").html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
+            },
+        }).done(function(data) {});
+    }   
+}
 
-
-
+$('#a_doctor').on('change', function() {
+    _loadSlots();
+});
 
 </script>
 

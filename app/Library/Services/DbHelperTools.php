@@ -2,6 +2,7 @@
 namespace App\Library\Services;
 use Carbon\Carbon;
 use App\Models\Schedule;
+use App\Models\Appointment;
 use Illuminate\Support\Facades\DB;
   
 class DbHelperTools
@@ -17,6 +18,25 @@ class DbHelperTools
             $row->day = (isset($data['day']))?$data['day']:null;
             $row->slot = (isset($data['slot']))?$data['slot']:null;
             $row->doctor_id = (isset($data['doctor_id']))?$data['doctor_id']:null;
+            $row->save ();
+            $id = $row->id;
+        }
+        return $id;
+    }
+    public function manageAppointment($data){
+        $id=0;
+        if (count($data)>0){
+            $row = new Appointment();
+            $id=(isset($data['id']))?$data['id']:0;
+            if ($id > 0) {
+                $row = Appointment::find ( $id );
+            }
+            $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
+            $row->doctor_id = (isset($data['doctor_id']))?$data['doctor_id']:null;
+            $row->start_time = (isset($data['start_time']))?$data['start_time']:null;
+            $row->duration = (isset($data['duration']))?$data['duration']:null;
+            $row->comments = (isset($data['comments']))?$data['comments']:null;
+            $row->status = (isset($data['status']))?$data['status']:null;
             $row->save ();
             $id = $row->id;
         }
