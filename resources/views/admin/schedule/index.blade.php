@@ -79,6 +79,22 @@
                                             <span class="font-weight-bold">FRIDAY</span>
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('SATURDAY')" class="nav-link" id="SATURDAY"
+                                            data-toggle="pill" href="#CONTENT-SATURDAY" aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">SATURDAY</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a onclick="_loadSchedules('SUNDAY')" class="nav-link" id="SUNDAY"
+                                            data-toggle="pill" href="#CONTENT-SUNDAY" aria-expanded="false" role="tab">
+                                            <span class="font-weight-bold">SUNDAY</span>
+                                        </a>
+                                    </li>
+
+
                                 </ul>
 
                             </div>
@@ -118,6 +134,20 @@
                                     <!-- icon and header -->
 
                                 </div>
+
+                                <div class="tab-pane" id="CONTENT-SATURDAY" role="tabpanel"
+                                    aria-labelledby="product-services" aria-expanded="false">
+                                    <!-- icon and header -->
+
+                                </div>
+                                <div class="tab-pane" id="CONTENT-SUNDAY" role="tabpanel"
+                                    aria-labelledby="product-services" aria-expanded="false">
+                                    <!-- icon and header -->
+
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
