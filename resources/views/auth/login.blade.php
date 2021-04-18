@@ -1,61 +1,93 @@
-@extends('layouts.default')
+@extends('layouts/fullLayoutMaster')
+
+@section('title', 'Login Page')
+
+@section('page-style')
+{{-- Page Css files --}}
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/pages/page-auth.css') }}">
+@endsection
 
 @section('content')
-<div class="text-center">
-    <a href="#" class="login-logo text-center">
-        <img class="logo-dark logo-img logo-img-lg" src="{{ asset('/images/logo-dark.png') }}" style="width: 250px;" alt="logo-dark">
-    </a>
-</div>
-<form method="POST" action="{{ route('login') }}">
-    @csrf
-    <div class="row justify-content-md-center">
-        <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
-            <div class="login-screen" style="margin: 20px auto;">
-                <div class="login-box">
-                    <a href="#" class="login-logo">
-                        Sign In
-                    </a>
-                    <div class="form-group">
-                        <label class="form-label" for="default-01">{{ __('Username') }}</label>
-                        <input id="username" type="text" class="form-control form-control-lg @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Enter your username" required autocomplete="username" autofocus>
-                        @error('username')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="password">{{ __('Password') }}</label>
-                        <!-- <a href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
-                            <span class="passcode-icon icon-show icon-eye"></span>
-                            <span class="passcode-icon icon-hide icon-eye-off"></span>
-                        </a> -->
-                        <input id="password" type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" placeholder="Enter your passcode" required autocomplete="current-password">
+<div class="auth-wrapper auth-v1 px-2">
+  <div class="auth-inner py-2">
+    <!-- Login v1 -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <a href="javascript:void(0);" class="brand-logo">
+         <img src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo dentinizer">
+        </a>
 
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+        <!-- <h4 class="card-title mb-1">Welcome to Vuexy! 👋</h4>
+        <p class="card-text mb-2">Please sign-in to your account and start the adventure</p> -->
 
-                            <label class="form-check-label pt-1" for="remember">
-                                {{ __('Remember Me') }}
-                            </label>
-                        </div>
-                    </div>
-                    <div class="actions">
-                        
-                        <button type="submit" class="btn btn-info btn-block">{{ __('Login') }}</button>
-                    </div>
-                    <hr>
-                </div>
+        <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
+          @csrf
+          <div class="form-group">
+            <label for="login-username" class="form-label">{{ __('Username') }}</label>
+            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="john@example.com" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
+            @error('username')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+
+          <div class="form-group">
+            <div class="d-flex justify-content-between">
+              <label for="login-password">{{ __('Password') }}</label>
+              @if (Route::has('password.request'))
+              <a href="{{ route('password.request') }}">
+                <small>Forgot Password?</small>
+              </a>
+              @endif
             </div>
-        </div>
-    </div>
-</form>
+            <div class="input-group input-group-merge form-password-toggle">
+              <input type="password" class="form-control form-control-merge" id="login-password" name="password" tabindex="2" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="login-password" />
+              <div class="input-group-append">
+                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" id="remember-me" name="remember-me" tabindex="3" {{ old('remember-me') ? 'checked' : '' }} />
+              <label class="custom-control-label" for="remember-me"> Remember Me </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" tabindex="4">Sign in</button>
+        </form>
 
+        <p class="text-center mt-2">
+          <span>New on our platform?</span>
+          @if (Route::has('register'))
+          <a href="{{ route('register') }}">
+            <span>Create an account</span>
+          </a>
+          @endif
+        </p>
+
+        <!-- <div class="divider my-2">
+          <div class="divider-text">or</div>
+        </div>
+
+        <div class="auth-footer-btn d-flex justify-content-center">
+          <a href="javascript:void(0)" class="btn btn-facebook">
+            <i data-feather="facebook"></i>
+          </a>
+          <a href="javascript:void(0)" class="btn btn-twitter white">
+            <i data-feather="twitter"></i>
+          </a>
+          <a href="javascript:void(0)" class="btn btn-google">
+            <i data-feather="mail"></i>
+          </a>
+          <a href="javascript:void(0)" class="btn btn-github">
+            <i data-feather="github"></i>
+          </a>
+        </div> -->
+
+      </div>
+    </div>
+    <!-- /Login v1 -->
+  </div>
+</div>
 @endsection

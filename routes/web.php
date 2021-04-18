@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/newdesign', function () {
+/* Route::get('/newdesign', function () {
     return view('admin.schedule.newdesign');
-});
+}); */
 
 Route::get('/home', function () {
     Auth::logout();

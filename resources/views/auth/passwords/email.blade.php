@@ -1,42 +1,47 @@
-@extends('layouts.default')
+@extends('layouts/fullLayoutMaster')
+
+@section('title', 'Forgot Password')
+
+@section('page-style')
+{{-- Page Css files --}}
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/pages/page-auth.css') }}">
+@endsection
 
 @section('content')
-<div class="text-center">
-    <a href="#" class="login-logo text-center">
-        <img class="logo-dark logo-img logo-img-lg" src="{{ asset('/images/logo-dark.png') }}" style="width: 250px;" alt="logo-dark">
-    </a>
-</div>
-<form method="POST" action="{{ route('password.email') }}">
-    @csrf
-    <div class="row justify-content-md-center">
-        <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-            <div class="login-screen" style="margin: 20px auto;">
-                <div class="login-box">
-                    <a href="#" class="login-logo mb-2">
-                        {{ __('Reset Password') }}
-                    </a>
-                    <div class="form-group row">
-                        <label for="email" class="col-md-12 col-form-label">{{ __('E-Mail Address') }}</label>
-                        <div class="col-md-12">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+<div class="auth-wrapper auth-v1 px-2">
+  <div class="auth-inner py-2">
+    <!-- Forgot Password v1 -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <a href="javascript:void(0);" class="brand-logo">
+          <img src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo dentinizer">
+        </a>
 
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-group row mb-0">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                {{ __('Send Password Reset Link') }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h4 class="card-title mb-1">Forgot Password? 🔒</h4>
+        <p class="card-text mb-2">Enter your email and we'll send you instructions to reset your password</p>
+
+        <form class="auth-forgot-password-form mt-2" method="POST" action="{{ route('password.email') }}">
+          @csrf
+          <div class="form-group">
+            <label for="forgot-password-email" class="form-label">{{ __('E-Mail Address') }}</label>
+            <input type="text" class="form-control @error('email') is-invalid @enderror" id="forgot-password-email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="forgot-password-email" tabindex="1" autofocus />
+             @error('email')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" tabindex="2">{{ __('Send Password Reset Link') }}</button>
+        </form>
+
+        <p class="text-center mt-2">
+          @if (Route::has('login'))
+          <a href="{{ route('login') }}"> <i data-feather="chevron-left"></i> Back to login </a>
+          @endif
+        </p>
+      </div>
     </div>
-</form>
+    <!-- /Forgot Password v1 -->
+  </div>
+</div>
 @endsection
