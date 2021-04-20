@@ -1,24 +1,25 @@
-@extends('layouts.app')
+@extends('layouts/layoutMaster')
+
+@section('title', 'Patient info')
+
+@section('vendor-style')
+<!-- vendor css files -->
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+@endsection
+
+@section('page-style')
+{{-- Page Css files --}}
+
+@endsection
+
 @section('content')
 
-    <script>
-        function delete_func(val) 
-        {
-            document.getElementById(val).submit();
-        }
-    </script>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Patient info</h4>
 
-    <div class="page-header">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Patient Lists</li>
-        </ol>
-    </div>
-
-    <div class="content-wrapper">  
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="card-body">
                         <ul class="nav nav-tabs">
                             
                             <li class="nav-item">
@@ -521,14 +522,16 @@
                             </div>
 
                         </div>
-                    </div>
-                </div>
+
+
             </div>
         </div>
     </div>
+</div>
 
-    <!-- @@ Add Modal @e -->
-        <div class="modal fade bd-example-modal-lg" id="notemodal" tabindex="-1" role="dialog" aria-hidden="true">
+
+<!-- @@ Add Modal @e -->
+<div class="modal fade bd-example-modal-lg" id="notemodal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                 
@@ -594,7 +597,7 @@
     <!-- .modal -->
 
     <!-- @@ View Modal @e -->
-        <div class="modal fade bd-example-modal-lg" id="view_notemodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="view_notemodal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                 
@@ -748,250 +751,269 @@
         </div>
     </div>
 
-    <script>
+@endsection
 
-        function openmodal(id) {
-            clear();
-            $("#notemodal").modal("show");
-            $("#notemodal #modalTitle").text(id);
-            $("#notemodal #teeth_id").val(id);
+@section('vendor-script')
+<script src="{{ asset('assets/js/libs/jstree.js?ver=2.3.0') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+@endsection
+@section('page-script')
+<script src="{{ asset('new-assets/js/main.js') }}"></script>
+
+<script>
+
+function openmodal(id) {
+    clear();
+    $("#notemodal").modal("show");
+    $("#notemodal #modalTitle").text(id);
+    $("#notemodal #teeth_id").val(id);
+}
+
+$("#notemodal  #context-menu-tree").jstree({
+    "core": {
+    "data" : {!! $datas !!},
+    "themes": {
+        "responsive": false
+    },
+    "check_callback": true
+    },
+    "plugins": ["contextmenu"],
+    "contextmenu": {
+        "items": function ($node) {
+            
         }
+    }
+});
 
-        $("#notemodal  #context-menu-tree").jstree({
-            "core": {
-            "data" : {!! $datas !!},
-            "themes": {
-                "responsive": false
+
+$("#notemodal  #context-menu-tree").bind("changed.jstree", function (e, data) {
+    $("#notemodal  #sel_category").val(data.node.id);
+//alert("Checked: " + data.node.id);
+// alert("Parent: " + data.node.parent);    
+});
+
+
+
+$("#notemodal #note_save_btn").click(function(e){
+    e.preventDefault();
+    var teeth_id = $("#notemodal #teeth_id").val();
+    var notes    = $("#notemodal #note").val();
+    var category = $("#notemodal #sel_category").val();
+
+    if(notes != "" && category != "0") {
+        $.ajax({
+            url  : '{{route("doctor.patient.profilestore")}}',
+            type :"POST",
+            data :{
+                patient_id: {{ $patient_id }},
+                category: category,
+                teeth_id: teeth_id,
+                notes: notes,
+                type: $("#notemodal #type").val(),
+                _token: "{{ csrf_token() }}",
             },
-            "check_callback": true
-            },
-            "plugins": ["contextmenu"],
-            "contextmenu": {
-                "items": function ($node) {
-                    
+            success:function(response){
+                $("#notemodal").modal("hide");
+                var tr = '<tr><td><input type="hidden" name="teeth_id[]" value="14"><span>'+response['state']['teeth_id']+'</span></td><td><input type="hidden" name="service[]" value="BBB"><span>'+response['state']['service']+'</span></td><td><span>'+response['state']['note']+'</span></td><td><input type="hidden" name="amount[]" value="'+response['state']['amount']+'"><span>'+response['state']['amount']+'</span></td><td><span>'+response['state']['type']+'</span></td></tr>';
+                $('#mytable tbody').append(tr);
+
+                var tr1 = '<tr><td><input type="hidden" name="teeth_id[]" value="14"><span>'+response['state']['teeth_id']+'</span></td><td><input type="hidden" name="service[]" value="BBB"><span>'+response['state']['service']+'</span></td><td><span>'+response['state']['note']+'</span></td><td><input type="hidden" name="amount[]" value="'+response['state']['amount']+'"><span>'+response['state']['amount']+'</span></td><td><span>'+response['state']['type']+'</span></td>'
+                +'<td class="text-center">@if('+response["state"]["type"] +' != "completed")<div class="btn-group btn-group-sm"><button type="button" data-toggle="modal" data-target="#view_notemodal"  data-id="'+JSON.stringify(response['state'])+'"  class="btn btn-info"><i class="icon-edit1"></i></button></div>@endif</td><td>@if('+response["state"]["invoiced"]+' == 0)<input type="checkbox" name="servic_ids[]" value="'+response["state"]["id"]+'" >@else<p>invoiced</p>@endif</td></tr>';
+                $('#mytable1 tbody').append(tr1);
+                
+                if (response['state']['id'] >= 1) {
+                    swal({
+                        title: "Success!",
+                        text: 'New note created successfully.',
+                        icon: "success",
+                    });
+                }else if (response['state']['id'] < 1) {
+                    swal({
+                        title: "Waring!",
+                        text: "Failed",
+                        icon: "error",
+                    });
                 }
-            }
+                clear();
+                //location.reload();
+            },
         });
+    }else {
+        swal({
+            title: "Waring!",
+            text: "Please select category and type note.",
+            icon: "error",
+        });
+    }
+});
+
+function clear() {
+    $("#notemodal #modalTitle").text("");
+    $("#notemodal #teeth_id").val("");
+    $("#notemodal #note").val("");
+}
+
+$('#view_notemodal').on('show.bs.modal', function(e) {
+
+    var tmp = $('#view_notemodal #context-menu-tree').jstree(true);
+    if(tmp) { tmp.destroy(); }
+
+    var service_data = $(e.relatedTarget).data('id');
+
+    $("#view_notemodal #profile_id").val(service_data['id']);
+    $("#view_notemodal #modalTitle").text(service_data['teeth_id']);
+    $("#view_notemodal #teeth_id").val(service_data['teeth_id']);
+    $("#view_notemodal #sel_category").val(service_data['category_id']);
+    $("#view_notemodal #note").val(service_data['note']);
+
+    $("#view_notemodal #e_type").val(service_data['type']);
+    $('#select2-e_type-container').text(service_data['type']);
+
+    var e_c_datas = {!! $datas !!};
+
+    var state_child  = {
+        opened    : true,  // is the node open
+        disabled  : false,  // is the node disabled
+        selected  : true  // is the node selected
+    };
+
+    var state_parent  = {
+        opened    : true,  // is the node open
+        disabled  : false,  // is the node disabled
+        selected  : false  // is the node selected
+    };
+
+    for (var i = 0; i < e_c_datas.length; i++) {
+        
+        if (e_c_datas[i].id == service_data['category_id']) {
+            e_c_datas[i].state = state_child;
+        } else {
+            e_c_datas[i].state = state_parent;
+        }
+    };
 
 
-        $("#notemodal  #context-menu-tree").bind("changed.jstree", function (e, data) {
-            $("#notemodal  #sel_category").val(data.node.id);
+    $("#view_notemodal #context-menu-tree").jstree({
+        "core": {
+        "data" : e_c_datas,
+        "themes": {
+            "responsive": false
+        },
+        "check_callback": true
+        },
+        "plugins": ["contextmenu"],
+        "contextmenu": {
+            "items": function ($node) {
+                
+            }
+        }
+    });
+
+    $("#view_notemodal  #context-menu-tree").bind("changed.jstree", function (e, data) {
+        $("#view_notemodal  #sel_category").val(data.node.id);
         //alert("Checked: " + data.node.id);
         // alert("Parent: " + data.node.parent);    
-        });
+    });
 
+});
 
+$("#view_notemodal #note_save_btn").click(function(e){
+    e.preventDefault();
+    var teeth_id = $("#view_notemodal #teeth_id").val();
+    var notes = $("#view_notemodal #note").val();
+    var category = $("#view_notemodal #sel_category").val();
 
-        $("#notemodal #note_save_btn").click(function(e){
-            e.preventDefault();
-            var teeth_id = $("#notemodal #teeth_id").val();
-            var notes    = $("#notemodal #note").val();
-            var category = $("#notemodal #sel_category").val();
-
-            if(notes != "" && category != "0") {
-                $.ajax({
-                    url  : '{{route("doctor.patient.profilestore")}}',
-                    type :"POST",
-                    data :{
-                        patient_id: {{ $patient_id }},
-                        category: category,
-                        teeth_id: teeth_id,
-                        notes: notes,
-                        type: $("#notemodal #type").val(),
-                        _token: "{{ csrf_token() }}",
-                    },
-                    success:function(response){
-                        $("#notemodal").modal("hide");
-                        var tr = '<tr><td><input type="hidden" name="teeth_id[]" value="14"><span>'+response['state']['teeth_id']+'</span></td><td><input type="hidden" name="service[]" value="BBB"><span>'+response['state']['service']+'</span></td><td><span>'+response['state']['note']+'</span></td><td><input type="hidden" name="amount[]" value="'+response['state']['amount']+'"><span>'+response['state']['amount']+'</span></td><td><span>'+response['state']['type']+'</span></td></tr>';
-                        $('#mytable tbody').append(tr);
-
-                        var tr1 = '<tr><td><input type="hidden" name="teeth_id[]" value="14"><span>'+response['state']['teeth_id']+'</span></td><td><input type="hidden" name="service[]" value="BBB"><span>'+response['state']['service']+'</span></td><td><span>'+response['state']['note']+'</span></td><td><input type="hidden" name="amount[]" value="'+response['state']['amount']+'"><span>'+response['state']['amount']+'</span></td><td><span>'+response['state']['type']+'</span></td>'
-                        +'<td class="text-center">@if('+response["state"]["type"] +' != "completed")<div class="btn-group btn-group-sm"><button type="button" data-toggle="modal" data-target="#view_notemodal"  data-id="'+JSON.stringify(response['state'])+'"  class="btn btn-info"><i class="icon-edit1"></i></button></div>@endif</td><td>@if('+response["state"]["invoiced"]+' == 0)<input type="checkbox" name="servic_ids[]" value="'+response["state"]["id"]+'" >@else<p>invoiced</p>@endif</td></tr>';
-                        $('#mytable1 tbody').append(tr1);
-                        
-                        if (response['state']['id'] >= 1) {
-                            swal({
-                                title: "Success!",
-                                text: 'New note created successfully.',
-                                icon: "success",
-                            });
-                        }else if (response['state']['id'] < 1) {
-                            swal({
-                                title: "Waring!",
-                                text: "Failed",
-                                icon: "error",
-                            });
-                        }
-                        clear();
-                        //location.reload();
-                    },
-                });
-            }else {
-                swal({
-                    title: "Waring!",
-                    text: "Please select category and type note.",
-                    icon: "error",
-                });
-            }
-        });
-
-        function clear() {
-            $("#notemodal #modalTitle").text("");
-            $("#notemodal #teeth_id").val("");
-            $("#notemodal #note").val("");
-        }
-        
-        $('#view_notemodal').on('show.bs.modal', function(e) {
-
-            var tmp = $('#view_notemodal #context-menu-tree').jstree(true);
-            if(tmp) { tmp.destroy(); }
-
-            var service_data = $(e.relatedTarget).data('id');
-    
-            $("#view_notemodal #profile_id").val(service_data['id']);
-            $("#view_notemodal #modalTitle").text(service_data['teeth_id']);
-            $("#view_notemodal #teeth_id").val(service_data['teeth_id']);
-            $("#view_notemodal #sel_category").val(service_data['category_id']);
-            $("#view_notemodal #note").val(service_data['note']);
-
-            $("#view_notemodal #e_type").val(service_data['type']);
-            $('#select2-e_type-container').text(service_data['type']);
-
-            var e_c_datas = {!! $datas !!};
-
-            var state_child  = {
-                opened    : true,  // is the node open
-                disabled  : false,  // is the node disabled
-                selected  : true  // is the node selected
-            };
-
-            var state_parent  = {
-                opened    : true,  // is the node open
-                disabled  : false,  // is the node disabled
-                selected  : false  // is the node selected
-            };
-
-            for (var i = 0; i < e_c_datas.length; i++) {
+    if( notes != "" && category != "0") {
+        $.ajax({
+            url: '{{ route("doctor.patient.profilestore" )}}',
+            type:"POST",
+            data:{
+                id        :$("#view_notemodal #profile_id").val(),
+                patient_id: {{ $patient_id }},
+                category  : category,
+                teeth_id  : teeth_id,
+                notes     : notes,
+                _token    : "{{ csrf_token() }}",
+                type      : $("#view_notemodal #e_type").val(),
+            },
+            success:function(response){
+                $("#view_notemodal #notemodal").modal("hide");
+                if(response['state']['id'] >= 1) {
+                    swal({
+                        title: "Success!",
+                        text: 'New note created successfully000.',
+                        icon: "success",
+                    });
+                }else if (response['state']['id'] < 1) {
+                    swal({
+                        title: "Waring!",
+                        text: "Failed",
+                        icon: "error",
+                    });
+                }
                 
-                if (e_c_datas[i].id == service_data['category_id']) {
-                    e_c_datas[i].state = state_child;
-                } else {
-                    e_c_datas[i].state = state_parent;
+                clear();
+                //location.reload();
+            },
+        });
+    } else {
+        swal({
+            title: "Waring!",
+            text: "Please select category and type note.",
+            icon: "error",
+        });
+    }
+});
+
+$("#storage_save_btn").click(function(e)
+{
+    var title       = $("#a_title").val();
+    var description = $("#a_description").val();
+    var formData    = new FormData(document.getElementById("patientfile"));
+    $.ajax({
+            url: '{{ route("file.doctoreupload.post" )}}',
+            data: formData,
+            type:"POST",
+            data:{
+                patient_id : {{ $patient_id }},
+                title      : title,
+                description: description,
+                processData: false,
+                contentType: false,
+                _token: "{{ csrf_token() }}",
+            },
+            success:function(response){
+                $("#notemodal").modal("hide");
+                if (response['state']['id'] >= 1) 
+                {
+                    swal({
+                        title: "Success!",
+                        text: 'New File Addes successfully.',
+                        icon: "success",
+                    });
+                }else if (response['state']['id'] < 1) {
+                    swal({
+                        title: "Waring!",
+                        text: "Failed",
+                        icon: "error",
+                    });
                 }
-            };
-
-
-            $("#view_notemodal #context-menu-tree").jstree({
-                "core": {
-                "data" : e_c_datas,
-                "themes": {
-                    "responsive": false
-                },
-                "check_callback": true
-                },
-                "plugins": ["contextmenu"],
-                "contextmenu": {
-                    "items": function ($node) {
-                        
-                    }
-                }
-            });
-
-            $("#view_notemodal  #context-menu-tree").bind("changed.jstree", function (e, data) {
-                $("#view_notemodal  #sel_category").val(data.node.id);
-                //alert("Checked: " + data.node.id);
-                // alert("Parent: " + data.node.parent);    
-            });
-
+                clear();
+                //location.reload();
+            },
         });
+});
 
-        $("#view_notemodal #note_save_btn").click(function(e){
-            e.preventDefault();
-            var teeth_id = $("#view_notemodal #teeth_id").val();
-            var notes = $("#view_notemodal #note").val();
-            var category = $("#view_notemodal #sel_category").val();
+function delete_func(val) 
+{
+    document.getElementById(val).submit();
+}
 
-            if( notes != "" && category != "0") {
-                $.ajax({
-                    url: '{{ route("doctor.patient.profilestore" )}}',
-                    type:"POST",
-                    data:{
-                        id        :$("#view_notemodal #profile_id").val(),
-                        patient_id: {{ $patient_id }},
-                        category  : category,
-                        teeth_id  : teeth_id,
-                        notes     : notes,
-                        _token    : "{{ csrf_token() }}",
-                        type      : $("#view_notemodal #e_type").val(),
-                    },
-                    success:function(response){
-                        $("#view_notemodal #notemodal").modal("hide");
-                        if(response['state']['id'] >= 1) {
-                            swal({
-                                title: "Success!",
-                                text: 'New note created successfully000.',
-                                icon: "success",
-                            });
-                        }else if (response['state']['id'] < 1) {
-                            swal({
-                                title: "Waring!",
-                                text: "Failed",
-                                icon: "error",
-                            });
-                        }
-                        
-                        clear();
-                        //location.reload();
-                    },
-                });
-            } else {
-                swal({
-                    title: "Waring!",
-                    text: "Please select category and type note.",
-                    icon: "error",
-                });
-            }
-        });
-
-        $("#storage_save_btn").click(function(e)
-        {
-            var title       = $("#a_title").val();
-            var description = $("#a_description").val();
-            var formData    = new FormData(document.getElementById("patientfile"));
-            $.ajax({
-                    url: '{{ route("file.doctoreupload.post" )}}',
-                    data: formData,
-                    type:"POST",
-                    data:{
-                        patient_id : {{ $patient_id }},
-                        title      : title,
-                        description: description,
-                        processData: false,
-                        contentType: false,
-                        _token: "{{ csrf_token() }}",
-                    },
-                    success:function(response){
-                        $("#notemodal").modal("hide");
-                        if (response['state']['id'] >= 1) 
-                        {
-                            swal({
-                                title: "Success!",
-                                text: 'New File Addes successfully.',
-                                icon: "success",
-                            });
-                        }else if (response['state']['id'] < 1) {
-                            swal({
-                                title: "Waring!",
-                                text: "Failed",
-                                icon: "error",
-                            });
-                        }
-                        clear();
-                        //location.reload();
-                    },
-                });
-        });
-
-    </script>
-
+</script>
 @endsection
