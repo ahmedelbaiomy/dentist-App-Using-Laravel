@@ -125,6 +125,7 @@ class HomeController extends Controller
     public function getDoctorTimeSlots($doctor_id,$start_date){
         //Carbon::createFromFormat('Y-m-d H:i:s',$start_date)->dayOfWeek;
         //$number_day_of_week = $users = DB::table('doctor_schedules')->select('id','start_hour')->whereRaw(DB::raw('WEEKDAY(start_hour) = '.$number_day_of_week))->get();
+        $today=Carbon::now();  
         $bookedSlots = [];
         $rsBookedSlots=Appointment::where('doctor_id',$doctor_id)->where('start_time','LIKE','%'.$start_date.'%')->pluck('start_time')->toArray();
         if(count($rsBookedSlots)>0){
@@ -139,6 +140,21 @@ class HomeController extends Controller
         $slots = null;
         if($doctor_id>0 && $day!=''){
             $slots = Schedule::where([['doctor_id',$doctor_id],['day',$day]])->orderBy('slot')->get();
+            $today = Carbon::now();
+            if(count($slots)>0 && $today->format('Y-m-d')==$start_date){
+                $newFilteredslots=[];
+                foreach($slots as $s){
+                    $dtslot=Carbon::createFromFormat('Y-m-d H:i:s',$s->slot);
+                    $newDateToday=Carbon::createFromFormat('Y-m-d H:i:s',$dtslot->format('Y-m-d').' '.$today->format('H:i:s'));
+                    //echo $dtslot->format('Y-m-d H:i:s').'---->'.$newDateToday->format('Y-m-d H:i:s').'<br>';
+                    
+                    if($dtslot->greaterThanOrEqualTo($newDateToday)){
+                        $newFilteredslots[]=$s;
+                    }
+                }
+                //dd($newFilteredslots);
+                $slots =$newFilteredslots;
+            }
         }
         return view('reception.doctor-time-slots', ['slots'=>$slots,'doctor_id' => $doctor_id,'bookedSlots'=>$bookedSlots]);
     }

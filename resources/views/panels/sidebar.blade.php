@@ -32,11 +32,11 @@
                     
                 @elseif(Auth::user()->user_type == "doctor")
                 <li class=" nav-item {{ Route::currentRouteName() === 'doctor.home' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('doctor.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>
-                <li class=" nav-item {{ Route::currentRouteName() === 'doctor.appointment' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('doctor.appointment') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
+                <li class=" nav-item {{ Route::currentRouteName() === 'doctor.appointment' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('doctor.appointment') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
                 @elseif(Auth::user()->user_type == "reception")
                 <li class=" nav-item {{ Route::currentRouteName() === 'reception.home' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>
-                <li class=" nav-item {{ Route::currentRouteName() === 'reception.appointment' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.appointment') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
-                <li class=" nav-item {{ Route::currentRouteName() === 'reception.patient' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.patient') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
+                <li class=" nav-item {{ Route::currentRouteName() === 'reception.appointment' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.appointment') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
+                <li class=" nav-item {{ Route::currentRouteName() === 'reception.patient' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.patient') }}"><i data-feather="user-x"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
                 @endif
             @endif
 

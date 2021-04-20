@@ -5,7 +5,9 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" /> -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
 @endsection
 
 @section('page-style')
@@ -31,6 +33,8 @@
                         <button onclick="_formAppointment(0)" class="btn btn-icon btn-primary"><i data-feather="plus"></i></button>
                     </div>
                 </div>
+
+                
 
                 <div class="table-responsive">
                     <table class="datatable table">
@@ -117,6 +121,12 @@
                 </button>
             </div>
             <div class="modal-body modal-body-lg">
+<!--             <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="birth-day">Date of Birth</label>
+                            <input type="text" id="a_birthday" name="a_birthday" data-date-format="yyyy-mm-dd" class="form-control form-control-lg datepicker" placeholder="Enter your birthday">
+                        </div>
+                    </div> -->
             <form id="FORM_APPOINTMENT">
                     <div id='modal_form_appointment_body'>
                     </div>
@@ -140,7 +150,10 @@
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous"></script> -->
+<script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
@@ -148,33 +161,23 @@
 
 $(document).ready(function() {
     var table = $('.datatable').DataTable();
+    
 });
 
 function _formAppointment(id) {
     var modal_id = "modal_form_appointment";
     var modal_content_id = "modal_form_appointment_body";
-    var spinner =
-        '<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
     var modalTitle = id > 0 ? $("#INPUT_HIDDEN_EDIT_APPONTMENT").val() : $("#INPUT_HIDDEN_NEW_APPONTMENT").val();
-    $("#APPONTMENT_MODAL_TITLE").html('<i class="feather icon-edit"></i> ' + modalTitle);
+    $("#APPONTMENT_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!} ' + modalTitle);
     $.ajax({
         url: "/reception/form/appointment/" + id,
         type: "GET",
         dataType: "html",
         success: function(html, status) {
             $("#" + modal_content_id).html(html);
-            alert('start_time');
-            $("#start_time").datepicker({
-                format: "yyyy-mm-dd",
-                autoclose: true,
-                todayBtn: true,
-                startDate: "{{$current_time}}",
-                //minuteStep: 10
-                }).on('show.bs.modal', function(event) {
-                    event.stopPropagation();
-                });
         },
     });
 };
@@ -192,18 +195,10 @@ $("#FORM_APPOINTMENT").submit(function(event) {
         success: function(response) {
             if (response.success) {
                 $("#modal_form_appointment").modal('hide');
-                swal({
-                    title: "Success!",
-                    text: response.msg,
-                    icon: "success",
-                });
-                window.location.href = '{{route("reception.appointment")}}';
+                _showResponseMessage("success", response.msg);
+                setTimeout(function(){ window.location.href = '{{route("reception.appointment")}}'; }, 1500);
             } else {
-                swal({
-                    title: "Error!",
-                    text: response.msg,
-                    icon: "error",
-                });
+                _showResponseMessage("error", response.msg);
             }
         },
         error: function() {

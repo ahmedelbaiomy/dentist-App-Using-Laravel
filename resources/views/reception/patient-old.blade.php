@@ -1,44 +1,39 @@
-@extends('layouts/layoutMaster')
-
-@section('title', 'Patient Lists')
-
-@section('vendor-style')
-<!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
-<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
-@endsection
-
-@section('page-style')
-{{-- Page Css files --}}
-
-@endsection
+@extends('layouts.app')
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Patient Lists</h4>
-                <h5 class='text-success'>You have total {{ count($patients) }} Patients.</h5>
+<script>
 
-                <div class="row mb-2">    
-                    <div class="col-md-5">
-                        
-                    </div>
+    function delete_func(val) {
+        document.getElementById(val).submit();
+    }
 
-                    <div class="col-md-5 text-right">
-                        <a href="#" id="new_modal_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_invoice_modal"><span><i data-feather="plus"></i> Create Quick Invoice</span></a>
-                    </div>  
+</script>
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Patient Lists</li>
+    </ol>
+</div>
+<div class="content-wrapper">  
+    <div class="row mb-2">    
+        <div class="col-md-5">
+            <h5 class='text-success'>You have total {{ count($patients) }} Patients.</h5>
+        </div>
 
-                    <div class="col-md-2 text-right">
-                        <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_patient_modal"><i data-feather="plus"></i></a>
-                    </div> 
-                </div>
+        <div class="col-md-5 text-right">
+            <a href="#" id="new_modal_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_invoice_modal"><span class="icon-plus1">Create Quick Invoice</span></a>
+        </div>  
 
-
-                <div class="table-responsive">
+        <div class="col-md-2 text-right">
+            <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_patient_modal"><span class="icon-plus1"></span></a>
+        </div> 
+        
+    </div> 
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
                         <table class="datatable table"> 
                         <thead>
                                 <tr>
@@ -55,7 +50,7 @@
                             </thead>
                             <tbody>
                             @foreach($patients as $patient)
-                                <tr onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer">
+                                <tr onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: url(hand.cur), pointer">
                                         <td><span>{{ $patient->name }}</span></td>
                                         <td><span>{{ $patient->email }}</span></td>
                                         <td><span>{{ $patient->birthday }}</span></td>
@@ -73,13 +68,13 @@
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
                                             <button type="button"  data-toggle="modal" data-target="#edit_patient_modal"  data-id="{{ $patient }}" class="btn btn-info">
-                                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
+                                                <i class="icon-edit1"></i>
                                             </button>
                                             <button onclick="delete_func('delete_frm_{{ $patient->id }}')" type="button" class="btn btn-danger">
                                                 <form action="{{ route('reception.patient.destroy', $patient->id)}}" name="delete_frm_{{ $patient->id }}" id="delete_frm_{{ $patient->id }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <i data-feather="trash"></i>
+                                                    <i class="icon-cancel"></i>
                                                 </form>    
                                             
                                             </button>                                            
@@ -90,13 +85,11 @@
                             </tbody>                            
                         </table>
                     </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="add_patient_modal">
     <div class="modal-dialog modal-lg" role="document">
         
@@ -145,8 +138,8 @@
                 </div>
             </div><!-- .modal-body -->
             <div class="modal-footer">
-                <button  class="btn btn-primary" id="patient_save_btn"><i data-feather="save"></i>&nbsp;Save</button>                                        
-                <button  data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>                                            
+                <button  class="btn btn-primary" id="patient_save_btn"><span class="icon-save"></span>&nbsp;Save</button>                                        
+                <button  data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button>                                            
             </div>
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
@@ -203,8 +196,8 @@
                 </div>
             </div><!-- .modal-body -->
             <div class="modal-footer">
-                <button  class="btn btn-primary" id="patient_update_btn"><i data-feather="save"></i>&nbsp;Update</button>                                        
-                <button  data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>                                            
+                <button  class="btn btn-primary" id="patient_update_btn"><span class="icon-save"></span>&nbsp;Update</button>                                        
+                <button  data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button>                                            
             </div>
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
@@ -294,30 +287,13 @@
                 </div>
             </div><!-- .modal-body -->
             <div class="modal-footer">
-                <button  class="btn btn-primary" id="invoice_save_btn"><i data-feather="save"></i>&nbsp;Save</button>                                        
-                <button  data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>                                            
+                <button  class="btn btn-primary" id="invoice_save_btn"><span class="icon-save"></span>&nbsp;Save</button>                                        
+                <button  data-dismiss="modal" class="btn btn-danger"><span class="icon-close"></span>&nbsp;Cancel</button>                                            
             </div>
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
 </div>
 
-
-@endsection
-
-@section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
-<script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
-<script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
-@endsection
-@section('page-script')
-<script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
     var save_arr = Array();
     var time     = new Date().getTime(); 
@@ -434,8 +410,6 @@ $(document).ready(function(){
 
 
 });
-function delete_func(val) {
-        document.getElementById(val).submit();
-    }
 </script>
+
 @endsection

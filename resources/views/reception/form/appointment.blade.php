@@ -1,7 +1,6 @@
 
     {{ csrf_field() }}
     <input type="hidden" name="id" value="@if($appointment!=null) {{ $appointment->id }} @else 0 @endif">
-
     <div class="row gy-4">
         <div class="col-md-6">
             <div class="form-group">
@@ -40,13 +39,15 @@
             <label class="form-label" for="start_time">Choose date *</label>
             @php
                 $start_time ='';
+                $slot_time = '';
                 if($appointment){
                     $dt = Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$appointment->start_time);
                     $start_time = $dt->format('Y-m-d');
+                    $slot_time = $dt->format('H:i');
                 }
             @endphp
-            <input class="form-control form-control-lg clsDatePicker" id="start_time" name="start_time" onchange="_loadSlots()"
-                size="16" type="text" value="{{$start_time}}" required>
+            <input type="hidden" id="INPUT_DEFAULT_SLOT" value="{{$slot_time}}">
+            <input class="form-control form-control-lg datepicker" id="start_time" name="start_time" onchange="_loadSlots()" type="text" value="{{$start_time}}" required>
         </div>
     </div>
     <div class="row">
@@ -100,11 +101,6 @@
     </div>
 
     <input class="d-none" type="submit" value="SUBMIT" id="SUBMIT_APPOINTMENT_FORM">
-<style>
-.clsDatePicker {
-    z-index: 100000;
-}
-</style>
 <script>
 _loadSlots();
 function _loadSlots() {
@@ -132,15 +128,12 @@ $('#select_doctor').on('change', function() {
     _loadSlots();
 });
 
-/* $(document).ready(function(){
-    $("#start_time").datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            todayBtn: true,
-            startDate: "{{$current_time}}",
-            //minuteStep: 10
-    }).on('show.bs.modal', function(event) {
-        event.stopPropagation();
+$(document).ready(function(){
+    var yesterday = new Date((new Date()).valueOf()-1000*60*60*24);
+    $('.datepicker').pickadate({
+        format: 'yyyy-mm-dd',
+        hiddenName: false,
+        disable: [{from: [0, 0, 0], to: yesterday}],
     });
-}); */
+}); 
 </script>
