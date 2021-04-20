@@ -7,8 +7,19 @@
                             data-feather="menu"></i></a></li>
             </ul>
             <ul class="nav navbar-nav">
-            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{ route('admin.doctor') }}" data-toggle="tooltip" data-placement="top" title="doctors"><i class="ficon" data-feather="user-plus"></i></a></li>
-            <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('admin.schedules') }}" data-toggle="tooltip" data-placement="top" title="Doctor Schedule Timings"><i class="ficon" data-feather="clock"></i></a></li>
+            @if(Auth::user())
+                @if(Auth::user()->user_type == "admin")   
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{ route('admin.doctor') }}" data-toggle="tooltip" data-placement="top" title="doctors"><i class="ficon" data-feather="user-plus"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('admin.schedules') }}" data-toggle="tooltip" data-placement="top" title="Doctor Schedule Timings"><i class="ficon" data-feather="clock"></i></a></li>
+                    @elseif(Auth::user()->user_type == "doctor")
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{ route('doctor.home') }}" data-toggle="tooltip" data-placement="top" title="Dashboard"><i class="ficon" data-feather="home"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('doctor.appointment') }}" data-toggle="tooltip" data-placement="top" title="Appointments"><i class="ficon" data-feather="calendar"></i></a></li>
+                    @elseif(Auth::user()->user_type == "reception")
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="{{ route('reception.home') }}" data-toggle="tooltip" data-placement="top" title="Dashboard"><i class="ficon" data-feather="home"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('reception.appointment') }}" data-toggle="tooltip" data-placement="top" title="Appointments"><i class="ficon" data-feather="calendar"></i></a></li>
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style" href="{{ route('reception.patient') }}" data-toggle="tooltip" data-placement="top" title="Patients"><i class="ficon" data-feather="user-x"></i></a></li>
+                @endif
+            @endif
             </ul>
         </div>
         <ul class="nav navbar-nav align-items-center ml-auto">
