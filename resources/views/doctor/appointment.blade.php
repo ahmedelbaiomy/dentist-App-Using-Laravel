@@ -5,6 +5,8 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -20,7 +22,7 @@
             <div class="card-body">
                 <h4 class="card-title">Appointments Lists</h4>
                 <div class="table-responsive">
-                    <table class="datatable table">
+                    <table class="datatable table table-bordered">
                         <thead>
                             <tr>
                                 <th>Star Time</th>

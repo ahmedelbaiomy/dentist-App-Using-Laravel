@@ -5,6 +5,8 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 <link href="{{ asset('assets/css/libs/jstree.css?ver=2.3.0') }}" rel="stylesheet">
 @endsection
 
@@ -56,7 +58,7 @@
 
                     <div class="col-md-9">
                         <div class="table-responsive">
-                            <table class="datatable table" style="border: 1px solid #eee;">
+                            <table class="datatable table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Service Name</th>

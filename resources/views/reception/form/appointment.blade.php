@@ -45,6 +45,12 @@
                     $start_time = $dt->format('Y-m-d');
                     $slot_time = $dt->format('H:i');
                 }
+
+                if($appointment==null){
+                    $dNow = Carbon\Carbon::now();
+                    $start_time = $dNow->format('Y-m-d');
+                }
+
             @endphp
             <input type="hidden" id="INPUT_DEFAULT_SLOT" value="{{$slot_time}}">
             <input class="form-control form-control-lg datepicker" id="start_time" name="start_time" onchange="_loadSlots()" type="text" value="{{$start_time}}" required>
@@ -52,12 +58,10 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <p>Choose time slot :</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="alert alert-info" id="DIV_TIME_SLOT" role="alert"></div>
+            <div class="form-group mt-1">
+                <label class="form-label">Choose time slot :</label>
+                <div class="alert alert-info p-1 mb-0" id="DIV_TIME_SLOT" role="alert"></div>
+            </div>
         </div>
     </div>
     <div class="row">

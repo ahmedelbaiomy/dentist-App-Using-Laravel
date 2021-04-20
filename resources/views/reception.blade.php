@@ -89,19 +89,7 @@ var previewEventPopup = $('#previewEventPopup');
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
-    //events: {!!$events!!},
-	events: [
-		{
-        "id": 1,
-        "title": " Patient 222",
-        "start": "2021-04-11 09:00:00",
-        "end": "2021-04-11 10:00:00",
-        "className": "new_color_8",
-        "description": "nnn",
-        "p_id": 2,
-        "d_id": 8
-    }
-  	], 
+    events: {!!$events!!},
     editable: true,
     //dragScroll: true,
     dayMaxEvents: 2,
@@ -128,7 +116,9 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
       ];
     },
     eventClick: function(info) {
-        window.location.href = 'patientprofile/' + info.p_id + "/" + info.d_id;
+        //console.log(info.event.extendedProps.p_id);
+        //console.log(info.event.extendedProps.d_id);
+        window.location.href = 'patientprofile/' + info.event.extendedProps.p_id + "/" + info.event.extendedProps.d_id;
     },
 	drop: function(date, allDay) { // this function is called when something is dropped
 

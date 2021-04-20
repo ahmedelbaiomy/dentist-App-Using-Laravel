@@ -5,6 +5,8 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -45,82 +47,29 @@
 
                     <div class="tab-pane active" id="tabOverview">
 
-                        <div class="card">
-                            <div class="card-aside-wrap">
-                                <div class="card-inner card-inner-lg">
-                                    <div class="nk-block-head nk-block-head-lg">
-                                        <div class="nk-block-between">
-                                            <div class="nk-block-head-content">
-                                                <h4 class="nk-block-title">Personal Information</h4>
-                                                <div class="nk-block-des">
-                                                    <p>Basic info, like your name and address, that you on Nio Platform.
-                                                    </p>
-                                                </div>
-                                            </div>
+                        <div class="row">
+                            <div class="col-md-4">
 
+                                <div class="d-flex flex-row bd-highlight mb-2">
+                                    <div class="p-2 bd-highlight">
+                                        <div class="avatar bg-light-primary avatar-lg">
+                                            <span class="avatar-content">{{ $short_name }}</span>
                                         </div>
-                                    </div><!-- .nk-block-head -->
-                                    <div class="nk-block">
-                                    </div><!-- .nk-block -->
+                                    </div>
+                                    <div class="p-2 bd-highlight">
+                                        <p class="lead-text">{{ $patient_data[0]->name }}</p>
+                                        <p class="sub-text">{{ $patient_data[0]->email }}</p>
+                                    </div>
                                 </div>
 
-                                <div class="card-aside card-aside-left user-aside toggle-slide toggle-slide-left toggle-break-lg toggle-screen-lg"
-                                    data-content="userAside" data-toggle-screen="lg" data-toggle-overlay="true">
-                                    <div class="card-inner-group" data-simplebar="init">
-                                        <div class="simplebar-wrapper" style="margin: 0px;">
-                                            <div class="simplebar-height-auto-observer-wrapper">
-                                                <div class="simplebar-height-auto-observer"></div>
-                                            </div>
-                                            <div class="simplebar-mask">
-                                                <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                                    <div class="simplebar-content-wrapper"
-                                                        style="height: auto; overflow: hidden;">
-                                                        <div class="simplebar-content" style="padding: 0px;">
-                                                            <div class="card-inner">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar bg-primary">
-                                                                        <span>{{ $short_name }}</span>
-                                                                    </div>
-                                                                    <div class="user-info">
-                                                                        <span
-                                                                            class="lead-text">{{ $patient_data[0]->name }}</span>
-                                                                        <span
-                                                                            class="sub-text">{{ $patient_data[0]->email }}</span>
-                                                                    </div>
+                                <h6 class="overline-title-alt">Birthday: <small>{{ $patient_data[0]->email }}</small></h6>
+                                <h6 class="overline-title-alt">Phone: <small>{{ $patient_data[0]->phone }}</small></h6>
+                                <h6 class="overline-title-alt">Address: <small>{{ $patient_data[0]->address }}</small></h6>
 
-                                                                </div><!-- .user-card -->
-                                                            </div><!-- .card-inner -->
-                                                            <div class="card-inner">
-                                                                <div class="user-account-info py-0">
-                                                                    <h6 class="overline-title-alt">Birthday:
-                                                                        <small>{{ $patient_data[0]->email }}</small>
-                                                                    </h6>
-                                                                    <h6 class="overline-title-alt">Phone:
-                                                                        <small>{{ $patient_data[0]->phone }}</small>
-                                                                    </h6>
-                                                                    <h6 class="overline-title-alt">Address:
-                                                                        <small>{{ $patient_data[0]->address }}</small>
-                                                                    </h6>
-                                                                </div>
-                                                            </div><!-- .card-inner -->
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="simplebar-placeholder" style="width: auto; height: 446px;">
-                                            </div>
-                                        </div>
-                                        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                                            <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-                                        </div>
-                                        <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                                            <div class="simplebar-scrollbar"
-                                                style="height: 0px; display: none; transform: translate3d(0px, 0px, 0px);">
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-inner-group -->
-                                </div><!-- card-aside -->
+                            </div>
+                            <div class="col-md-8">
+                            <h4 class="nk-block-title mt-2">Personal Information</h4>
+                            <p>Basic info, like your name and address, that you Nio Platform.</p>
                             </div>
                         </div>
 
@@ -128,195 +77,253 @@
 
                     <div class="tab-pane" id="tabProcedures">
                         <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-2">
-                                <div class="links flex-center">
-                                    @foreach($services as $service)
-                                    <div class="item" class="img-fluid">
-                                        <a href="#" class="btn btn-outline-warning"
-                                            style="border-radius: 15px; border-color: #ffc107 !important;">{{ $service->name }}</a>
-                                    </div>
-                                    @endforeach
-                                </div>
-                                @if(count($services) == 0 )
-                                <div class="links flex-center">
-                                    <h5 class='text-success'>No services.</h5>
-                                </div>
-                                @endif
-                            </div>
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="flex-center position-ref">
-                                            <div class="">
-                                                <div class="links">
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/18.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>18</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/17.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>17</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/16.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>16</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/15.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>15</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/14.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>14</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/13.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>13</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/12.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>12</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/11.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>11</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/11.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>21</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/12.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>22</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/13.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>23</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/14.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>24</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/15.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>25</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/16.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>26</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/17.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>27</p>
-                                                    </div>
-                                                    <div class="item">
-                                                        <img src="{{ asset('assets/tooth_images/18.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                        <p>28</p>
-                                                    </div>
+
+                                    <div class="d-flex flex-row bd-highlight links flex-center">
+                                        @foreach($services as $service)
+                                        <div class="p-2 bd-highlight"><a href="#" class="btn btn-outline-warning" style="border-radius: 15px; border-color: #ffc107 !important;">{{ $service->name }}</a></div>
+                                        @endforeach
+                                    </div>
+                                    @if(count($services) == 0 )
+                                    <div class="links flex-center">
+                                        <h5 class='text-success'>No services.</h5>
+                                    </div>
+                                    @endif
+
+                                    <div class="d-flex flex-row bd-highlight mb-3">
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(18)">
+                                                    <img src="{{ asset('assets/tooth_images/18.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>18</p>
                                                 </div>
-                                                <div class="links" style="margin-top:20px;">
-                                                    <div class="item">
-                                                        <p>48</p>
-                                                        <img src="{{ asset('assets/tooth_images/48.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>47</p>
-                                                        <img src="{{ asset('assets/tooth_images/47.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>46</p>
-                                                        <img src="{{ asset('assets/tooth_images/46.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>45</p>
-                                                        <img src="{{ asset('assets/tooth_images/45.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>44</p>
-                                                        <img src="{{ asset('assets/tooth_images/44.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>43</p>
-                                                        <img src="{{ asset('assets/tooth_images/43.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>42</p>
-                                                        <img src="{{ asset('assets/tooth_images/42.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>41</p>
-                                                        <img src="{{ asset('assets/tooth_images/41.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item flip">
-                                                        <p>31</p>
-                                                        <img src="{{ asset('assets/tooth_images/41.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>32</p>
-                                                        <img src="{{ asset('assets/tooth_images/42.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>33</p>
-                                                        <img src="{{ asset('assets/tooth_images/43.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>34</p>
-                                                        <img src="{{ asset('assets/tooth_images/44.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>35</p>
-                                                        <img src="{{ asset('assets/tooth_images/45.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>36</p>
-                                                        <img src="{{ asset('assets/tooth_images/46.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>37</p>
-                                                        <img src="{{ asset('assets/tooth_images/47.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
-                                                    <div class="item">
-                                                        <p>38</p>
-                                                        <img src="{{ asset('assets/tooth_images/48.svg') }}" alt=""
-                                                            class="img-fluid">
-                                                    </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(17)">
+                                                    <img src="{{ asset('assets/tooth_images/17.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>17</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(16)">
+                                                    <img src="{{ asset('assets/tooth_images/16.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>16</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(15)">
+                                                    <img src="{{ asset('assets/tooth_images/15.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>15</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(14)">
+                                                    <img src="{{ asset('assets/tooth_images/14.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>14</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(13)">
+                                                    <img src="{{ asset('assets/tooth_images/13.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>13</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(12)">
+                                                    <img src="{{ asset('assets/tooth_images/12.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>12</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(11)">
+                                                    <img src="{{ asset('assets/tooth_images/11.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>11</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(21)">
+                                                    <img src="{{ asset('assets/tooth_images/11.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>21</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(22)">
+                                                    <img src="{{ asset('assets/tooth_images/12.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>22</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(23)">
+                                                    <img src="{{ asset('assets/tooth_images/13.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>23</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(24)">
+                                                    <img src="{{ asset('assets/tooth_images/14.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>24</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(25)">
+                                                    <img src="{{ asset('assets/tooth_images/15.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>25</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(26)">
+                                                    <img src="{{ asset('assets/tooth_images/16.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>26</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(27)">
+                                                    <img src="{{ asset('assets/tooth_images/17.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>27</p>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(28)">
+                                                    <img src="{{ asset('assets/tooth_images/18.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                    <p>28</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row bd-highlight mb-3">
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(48)">
+                                                    <p>48</p>
+                                                    <img src="{{ asset('assets/tooth_images/48.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(47)">
+                                                    <p>47</p>
+                                                    <img src="{{ asset('assets/tooth_images/47.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(46)">
+                                                    <p>46</p>
+                                                    <img src="{{ asset('assets/tooth_images/46.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(45)">
+                                                    <p>45</p>
+                                                    <img src="{{ asset('assets/tooth_images/45.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(44)">
+                                                    <p>44</p>
+                                                    <img src="{{ asset('assets/tooth_images/44.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(43)">
+                                                    <p>43</p>
+                                                    <img src="{{ asset('assets/tooth_images/43.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(42)">
+                                                    <p>42</p>
+                                                    <img src="{{ asset('assets/tooth_images/42.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(41)">
+                                                    <p>41</p>
+                                                    <img src="{{ asset('assets/tooth_images/41.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item flip" onClick="openmodal(31)">
+                                                    <p>31</p>
+                                                    <img src="{{ asset('assets/tooth_images/41.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(32)">
+                                                    <p>32</p>
+                                                    <img src="{{ asset('assets/tooth_images/42.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(33)">
+                                                    <p>33</p>
+                                                    <img src="{{ asset('assets/tooth_images/43.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(34)">
+                                                    <p>34</p>
+                                                    <img src="{{ asset('assets/tooth_images/44.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(35)">
+                                                    <p>35</p>
+                                                    <img src="{{ asset('assets/tooth_images/45.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(36)">
+                                                    <p>36</p>
+                                                    <img src="{{ asset('assets/tooth_images/46.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(37)">
+                                                    <p>37</p>
+                                                    <img src="{{ asset('assets/tooth_images/47.svg') }}" alt=""
+                                                        class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bd-highlight">
+                                                <div class="item" onClick="openmodal(38)">
+                                                    <p>38</p>
+                                                    <img src="{{ asset('assets/tooth_images/48.svg') }}" alt=""
+                                                        class="img-fluid">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table class="datatable table">
+                                            <table class="datatable table table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>Teeth ID</th>
@@ -368,7 +375,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="datatable table">
+                                            <table class="datatable table table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>Code</th>
@@ -401,7 +408,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="datatable table">
+                                            <table class="datatable table table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>Title</th>

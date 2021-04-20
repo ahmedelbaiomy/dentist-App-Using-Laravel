@@ -5,6 +5,8 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -21,7 +23,7 @@
                 <h4 class="card-title">Patient Lists</h4>
                 <h5 class='text-success'>You have total {{ count($patients) }} Patients.</h5>
                 <div class="table-responsive">
-                    <table class="datatable table">
+                    <table class="datatable table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>

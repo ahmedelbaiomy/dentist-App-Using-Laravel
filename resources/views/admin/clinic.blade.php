@@ -5,6 +5,8 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" />
 @endsection
 
@@ -34,68 +36,73 @@
                             data-target="#add_clinic_modal"><i data-feather="plus"></i></a>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="datatable table">
-                        <thead>
-                            <tr>
-                                <th>YEAR</th>
-                                <th>Jan</th>
-                                <th>Feb</th>
-                                <th>Mar</th>
-                                <th>Apr</th>
-                                <th>May</th>
-                                <th>Jun</th>
-                                <th>Jul</th>
-                                <th>Aug</th>
-                                <th>Sep</th>
-                                <th>Oct</th>
-                                <th>Nov</th>
-                                <th>Dec</th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($clinics as $clinic)
-                            <tr>
-                                <td><span class="tb-status text-danger">{{ $clinic->year }}</span></td>
-                                <td><span>{{ $clinic->jan }}</span></td>
-                                <td><span>{{ $clinic->feb }}</span></td>
-                                <td><span>{{ $clinic->mar }}</span></td>
-                                <td><span>{{ $clinic->apr }}</span></td>
-                                <td><span>{{ $clinic->may }}</span></td>
-                                <td><span>{{ $clinic->jun }}</span></td>
-                                <td><span>{{ $clinic->jul }}</span></td>
-                                <td><span>{{ $clinic->aug }}</span></td>
-                                <td><span>{{ $clinic->sep }}</span></td>
-                                <td><span>{{ $clinic->oct }}</span></td>
-                                <td><span>{{ $clinic->nov }}</span></td>
-                                <td><span>{{ $clinic->dec }}</span></td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm">
-                                        <button type="button" data-toggle="modal" data-target="#edit_clinic_modal"
-                                            data-id="{{ $clinic }}" class="btn btn-info">
-                                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
-                                        </button>
-                                        <button onclick="delete_func('delete_frm_{{ $clinic->id }}')" type="button"
-                                            class="btn btn-danger">
-                                            <form action="{{ route('admin.clinic.destroy', $clinic->id)}}"
-                                                name="delete_frm_{{ $clinic->id }}" id="delete_frm_{{ $clinic->id }}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}
-                                            </form>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="datatable table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>YEAR</th>
+                                        <th>Jan</th>
+                                        <th>Feb</th>
+                                        <th>Mar</th>
+                                        <th>Apr</th>
+                                        <th>May</th>
+                                        <th>Jun</th>
+                                        <th>Jul</th>
+                                        <th>Aug</th>
+                                        <th>Sep</th>
+                                        <th>Oct</th>
+                                        <th>Nov</th>
+                                        <th>Dec</th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($clinics as $clinic)
+                                    <tr>
+                                        <td><span class="tb-status text-danger">{{ $clinic->year }}</span></td>
+                                        <td><span>{{ $clinic->jan }}</span></td>
+                                        <td><span>{{ $clinic->feb }}</span></td>
+                                        <td><span>{{ $clinic->mar }}</span></td>
+                                        <td><span>{{ $clinic->apr }}</span></td>
+                                        <td><span>{{ $clinic->may }}</span></td>
+                                        <td><span>{{ $clinic->jun }}</span></td>
+                                        <td><span>{{ $clinic->jul }}</span></td>
+                                        <td><span>{{ $clinic->aug }}</span></td>
+                                        <td><span>{{ $clinic->sep }}</span></td>
+                                        <td><span>{{ $clinic->oct }}</span></td>
+                                        <td><span>{{ $clinic->nov }}</span></td>
+                                        <td><span>{{ $clinic->dec }}</span></td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" data-toggle="modal" data-target="#edit_clinic_modal"
+                                                    data-id="{{ $clinic }}" class="btn btn-info">
+                                                    {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
+                                                </button>
+                                                <button onclick="delete_func('delete_frm_{{ $clinic->id }}')" type="button"
+                                                    class="btn btn-danger">
+                                                    <form action="{{ route('admin.clinic.destroy', $clinic->id)}}"
+                                                        name="delete_frm_{{ $clinic->id }}" id="delete_frm_{{ $clinic->id }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}
+                                                    </form>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
 
-                    </table>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
         </div>

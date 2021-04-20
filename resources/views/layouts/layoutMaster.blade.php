@@ -100,6 +100,32 @@
             });
         }
     })
+    // Page full screen
+  $(".nav-link-expand").on("click", function (e) {
+      console.log('okkk');
+    if (typeof screenfull != "undefined") {
+      if (screenfull.isEnabled) {
+        screenfull.toggle();
+      }
+    }
+  });
+  if (typeof screenfull != "undefined") {
+    if (screenfull.isEnabled) {
+      $(document).on(screenfull.raw.fullscreenchange, function () {
+        if (screenfull.isFullscreen) {
+          $(".nav-link-expand")
+            .find("i")
+            .toggleClass("icon-minimize icon-maximize");
+          $("html").addClass("full-screen");
+        } else {
+          $(".nav-link-expand")
+            .find("i")
+            .toggleClass("icon-maximize icon-minimize");
+          $("html").removeClass("full-screen");
+        }
+      });
+    }
+  }
     </script>
 </body>
 
