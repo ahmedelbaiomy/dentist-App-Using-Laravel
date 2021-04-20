@@ -20,20 +20,11 @@
                             class="round" src="{{ asset('new-assets/app-assets/images/portrait/small/avatar-s-11.jpg') }}" alt="avatar"
                             height="40" width="40"><span class="avatar-status-online"></span></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user"><a class="dropdown-item"
-                        href="javascript:void(0);"><i class="mr-50" data-feather="user"></i> Profile</a><a
-                        class="dropdown-item" href="javascript:void(0);"><i class="mr-50" data-feather="mail"></i>
-                        Inbox</a><a class="dropdown-item" href="javascript:void(0);"><i class="mr-50"
-                            data-feather="check-square"></i> Task</a><a class="dropdown-item"
-                        href="javascript:void(0);"><i class="mr-50" data-feather="message-square"></i> Chats</a>
-                    <div class="dropdown-divider"></div>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
+                    
                     <a class="dropdown-item" href="{{ route('account_setting') }}"><i
                             class="mr-50" data-feather="settings"></i> Settings</a>
-                    
-                    <!-- <a class="dropdown-item"
-                        href="javascript:void(0);"><i class="mr-50" data-feather="credit-card"></i> Pricing</a><a
-                        class="dropdown-item" href="javascript:void(0);"><i class="mr-50"
-                            data-feather="help-circle"></i> FAQ</a> -->
+                    <div class="dropdown-divider"></div>
                             
                             <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         href="{{ route('logout') }}"><i class="mr-50" data-feather="power"></i> Logout</a>

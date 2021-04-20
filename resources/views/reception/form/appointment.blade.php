@@ -45,7 +45,7 @@
                     $start_time = $dt->format('Y-m-d');
                 }
             @endphp
-            <input class="form-control form-control-lg" id="start_time" name="start_time" onchange="_loadSlots()"
+            <input class="form-control form-control-lg clsDatePicker" id="start_time" name="start_time" onchange="_loadSlots()"
                 size="16" type="text" value="{{$start_time}}" required>
         </div>
     </div>
@@ -99,8 +99,12 @@
         </div>
     </div>
 
-    <input type="submit" value="SUBMIT" id="SUBMIT_APPOINTMENT_FORM">
-
+    <input class="d-none" type="submit" value="SUBMIT" id="SUBMIT_APPOINTMENT_FORM">
+<style>
+.clsDatePicker {
+    z-index: 100000;
+}
+</style>
 <script>
 _loadSlots();
 function _loadSlots() {
@@ -127,7 +131,8 @@ function _loadSlots() {
 $('#select_doctor').on('change', function() {
     _loadSlots();
 });
-$(document).ready(function(){
+
+/* $(document).ready(function(){
     $("#start_time").datepicker({
             format: "yyyy-mm-dd",
             autoclose: true,
@@ -137,5 +142,5 @@ $(document).ready(function(){
     }).on('show.bs.modal', function(event) {
         event.stopPropagation();
     });
-});
+}); */
 </script>
