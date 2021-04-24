@@ -189,7 +189,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
         }
     }
 }); */
-//getDoctorappointmentCalender();
+getDoctorappointmentCalender();
 function getDoctorappointmentCalender() {
     var doctor_id = [];
     $('input[name="doctor_id[]"]:checked').each(function() {
