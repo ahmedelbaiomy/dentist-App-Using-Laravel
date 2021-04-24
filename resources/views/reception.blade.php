@@ -13,6 +13,7 @@
 {{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/pages/app-calendar.css') }}"> 
 <!-- <link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/custom-calendar.css') }}" /> -->
+<link rel="stylesheet" href="{{ asset('assets/css/color.css') }}">
 @endsection
 
 @section('content')
@@ -39,10 +40,12 @@
                     <div class="card-body pb-0">
                         <div class="calendar-events-filter">
 							@foreach(json_decode($events) as $event)
-                            <div class="custom-control custom-control-danger custom-checkbox mb-1">
-                                <input type="checkbox" id="{{$event->d_id}}" name="doctor_id[]" onchange="getDoctorappointmentCalender()" class="custom-control-input input-filter" value="{{$event->d_id}}" />
-                                <label class="custom-control-label" for="{{$event->d_id}}">{{$event->title}}</label>
-                            </div>
+                                @if($event->d_id>0 && $event->p_id>0)
+                                <div class="custom-control custom-control-danger custom-checkbox mb-1">
+                                    <input type="checkbox" id="{{$event->d_id}}" name="doctor_id[]" onchange="getDoctorappointmentCalender()" class="custom-control-input input-filter" value="{{$event->d_id}}" checked/>
+                                    <label class="custom-control-label {{$event->className}}" for="{{$event->d_id}}">{{$event->title}}</label>
+                                </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -186,11 +189,13 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
         }
     }
 }); */
+//getDoctorappointmentCalender();
 function getDoctorappointmentCalender() {
     var doctor_id = [];
     $('input[name="doctor_id[]"]:checked').each(function() {
         doctor_id.push(this.value);
     });
+    //console.log(doctor_id);
 
     $.ajax({
         type: "post",
@@ -200,9 +205,16 @@ function getDoctorappointmentCalender() {
             "doctor_id": doctor_id
         },
         success: function(data) {
+            //console.log(data);
+            //calendar.refetchEvents();
             //$('#calendar').fullCalendar('removeEvents');
             //$('#calendar').fullCalendar('addEventSource', data);
-			calendar.addEventSource( data );
+            var eventSources = calendar.getEventSources();            
+            var len = eventSources.length;
+            for (var i = 0; i < len; i++) { 
+                eventSources[i].remove(); 
+            } 
+            calendar.addEventSource( data );
         },
     });
 }

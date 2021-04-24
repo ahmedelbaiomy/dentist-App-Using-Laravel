@@ -34,6 +34,41 @@
             </div>
         </div>
     </div>
+
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="form-label" for="default-05">Duration(Minutes*)</label>
+                <div class="form-control-wrap">
+                    <input type="number" min="1" max="480" id="duration" name="duration" value="@if($appointment!=null){{$appointment->duration}}@endif"
+                        class="form-control form-control-lg" required>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    @php
+        $duration ='';
+        if($appointment!=null){
+            $duration = $appointment->duration;
+        }
+    @endphp
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="select-doctos">Duration(Minutes*)</label>
+                <select class="form-control" id="duration" name="duration" required>
+                    <option {{($duration==15)?'selected':''}} value="15">15 mins</option>
+                    <option {{($duration==30)?'selected':''}} value="30">30 mins</option>
+                    <option {{($duration==45)?'selected':''}} value="45">45 mins</option>
+                    <option {{($duration==60)?'selected':''}} value="60">60 mins</option>
+                    <option {{($duration==90)?'selected':''}} value="90">90 mins</option>
+                    <option {{($duration==120)?'selected':''}} value="120">120 mins</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <label class="form-label" for="start_time">Choose date *</label>
@@ -64,17 +99,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="form-label" for="default-05">Duration(Minutes*)</label>
-                <div class="form-control-wrap">
-                    <input type="number" min="1" max="480" id="duration" name="duration" value="@if($appointment!=null){{$appointment->duration}}@endif"
-                        class="form-control form-control-lg" required>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <div class="row">
         <div class="col-md-12">

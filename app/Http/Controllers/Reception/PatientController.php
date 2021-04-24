@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\User;
 use DB;
+use Carbon\Carbon;
 
 
 class PatientController extends Controller
@@ -36,14 +37,18 @@ class PatientController extends Controller
 
     public function store(Request $data) 
     {
+        
+        $birthday_date = Carbon::createFromFormat('Y-m-d',$data['birthday']);
+        //dd($birthday_date);
         Patient::updateOrCreate(
             [
                 'id' => $data['id']
             ],
             [
             'name' => $data['name'],
+            'ar_name' => $data['ar_name'],
             'email' => $data['email'],
-            'birthday' => $data['birthday'],
+            'birthday' => $birthday_date,
             'address' => $data['address'],
             'phone' => $data['phone'],
             'state' => 0,

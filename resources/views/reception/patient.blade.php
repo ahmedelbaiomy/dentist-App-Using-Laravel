@@ -42,8 +42,8 @@
                         <table class="datatable table"> 
                         <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
+                                    <th>En name</th>
+                                    <th>Ar name</th>
                                     <th>Birthday</th>
                                     <th>Address</th>
                                     <th>Phone</th>
@@ -55,13 +55,13 @@
                             </thead>
                             <tbody>
                             @foreach($patients as $patient)
-                                <tr onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer">
-                                        <td><span>{{ $patient->name }}</span></td>
-                                        <td><span>{{ $patient->email }}</span></td>
-                                        <td><span>{{ $patient->birthday }}</span></td>
-                                        <td><span>{{ $patient->address }}</span></td>
-                                        <td><span>{{ $patient->phone }}</span></td>
-                                        <td>
+                                <tr>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->name }}</span></td>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->ar_name }}</span></td>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->birthday }}</span></td>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->address }}</span></td>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->phone }}</span></td>
+                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer">
                                             @if($patient->state == 0)
                                                 <span class="tb-status text-success">Open</span>
                                             @elseif($patient->state == 1)
@@ -109,10 +109,17 @@
             </div>
             <div class="modal-body">
                 <div class="row gy-4">
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="first-name">Full Name*</label>
+                            <label class="form-label" for="first-name">English name*</label>
                             <input type="text" id="a_name" name="a_name" class="form-control form-control-lg" placeholder="Enter Full name" require>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="first-name">Arabic name*</label>
+                            <input type="text" id="ar_name" name="ar_name" class="form-control form-control-lg" placeholder="Enter Full name" require>
                         </div>
                     </div>
 
@@ -126,7 +133,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="birth-day">Date of Birth</label>
-                            <input type="text" id="a_birthday" name="a_birthday" data-date-format="yyyy-mm-dd" class="form-control form-control-lg datepicker" placeholder="Enter your birthday">
+                            <input type="text" id="a_birthday" name="a_birthday" class="form-control form-control-lg" placeholder="Enter your birthday">
                         </div>
                     </div>
 
@@ -167,10 +174,18 @@
             <div class="modal-body">
                 <input type="hidden" id="e_patient_id" name="e_patient_id">
                 <div class="row gy-4">
+                    
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="first-name">Full Name*</label>
+                            <label class="form-label" for="first-name">English name*</label>
                             <input type="text" id="e_name" name="e_name" class="form-control form-control-lg" placeholder="Enter Full name">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="first-name">Arabic name*</label>
+                            <input type="text" id="e_ar_name" name="e_ar_name" class="form-control form-control-lg" placeholder="Enter Full name">
                         </div>
                     </div>
 
@@ -184,7 +199,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" for="birth-day">Date of Birth</label>
-                            <input type="text" id="e_birthday" name="e_birthday" data-date-format="yyyy-mm-dd" class="form-control form-control-lg datepicker" placeholder="Enter your birthday">
+                            <input type="text" id="e_birthday" name="e_birthday" class="form-control form-control-lg" placeholder="Enter your birthday">
                         </div>
                     </div>
 
@@ -319,6 +334,16 @@
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
+
+    $('#a_birthday').pickadate({
+        format: 'yyyy-mm-dd',
+        hiddenName: false
+    })
+    $('#e_birthday').pickadate({
+        format: 'yyyy-mm-dd',
+        hiddenName: false
+    })
+
     var save_arr = Array();
     var time     = new Date().getTime(); 
     var total    = 0; 
@@ -358,13 +383,11 @@
 <script>
 $(document).ready(function(){
     var table = $('.datatable').DataTable();
-    $('.datepicker').pickadate({
-        format: 'yyyy-mm-dd',
-        hiddenName: true
-    })
+    
     $("#patient_save_btn").click(function(e){
         e.preventDefault();
         var name = $("#a_name").val();
+        var ar_name = $("#ar_name").val();
         var email = $("#a_email").val();
         var birthday = $("#a_birthday").val();
         var phone = $("#a_phone").val();
@@ -375,6 +398,7 @@ $(document).ready(function(){
                 type:"POST",
                 data:{
                     name: name,
+                    ar_name: ar_name,
                     email: email,
                     birthday: birthday,
                     phone: phone,
@@ -396,6 +420,7 @@ $(document).ready(function(){
         var patient_data = $(e.relatedTarget).data('id');
         $("#e_patient_id").val(patient_data['id']);
         $("#e_name").val(patient_data['name']);
+        $("#e_ar_name").val(patient_data['ar_name']);
         $("#e_email").val(patient_data['email']);
         $("#e_phone").val(patient_data['phone']);
         $("#e_birthday").val(patient_data['birthday']);
@@ -407,6 +432,7 @@ $(document).ready(function(){
         e.preventDefault();
         var id = $("#e_patient_id").val();
         var name = $("#e_name").val();
+        var ar_name = $("#e_ar_name").val();
         var email = $("#e_email").val();
         var birthday = $("#e_birthday").val();
         var phone = $("#e_phone").val();
@@ -418,6 +444,7 @@ $(document).ready(function(){
                 data:{
                     id: id,
                     name: name,
+                    ar_name: ar_name,
                     email: email,
                     birthday: birthday,
                     phone: phone,

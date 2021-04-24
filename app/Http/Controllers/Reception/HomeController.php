@@ -118,8 +118,13 @@ class HomeController extends Controller
                                                 FROM appointments
                                         LEFT JOIN users ON appointments.doctor_id = users.id
                                         LEFT JOIN patients ON patients.id = appointments.patient_id'))->whereIn('d_id',$request->doctor_id);
-
-                                    return response()->json($events);
+                                    $newData=[];
+                                    if(count($events)>0){
+                                        foreach($events as $e){
+                                            $newData[]=$e;
+                                        }
+                                    }
+                                    return response()->json($newData);
 
     }
     public function getDoctorTimeSlots($doctor_id,$start_date){

@@ -44,7 +44,7 @@ class AppointmentController extends Controller
         $appointments = json_encode(DB::select("SELECT appointments.*, users.email as d_email, patients.email as p_email 
                                                     FROM appointments
                                                     LEFT JOIN users ON users.id = appointments.doctor_id
-                                                    LEFT JOIN patients ON patients.id = appointments.patient_id"));
+                                                    LEFT JOIN patients ON patients.id = appointments.patient_id ORDER by appointments.id desc"));
         
         return view('reception.appointment',compact('appointments', 'patients', 'doctors', 'current_time' ));
     }

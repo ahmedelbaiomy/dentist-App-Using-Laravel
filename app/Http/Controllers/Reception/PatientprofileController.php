@@ -120,7 +120,12 @@ class PatientprofileController extends Controller
 
     public function BillingStore(Request $request)
     {
-        $service_ids      = $request->servic_ids;
+        //dd($request->all());
+        $service_ids=[];
+        if($request->has('servic_ids')){
+           $service_ids      = $request->servic_ids; 
+        }
+        
         $total            = 0;
 
         $newbilling       = new Invoice;
@@ -128,26 +133,27 @@ class PatientprofileController extends Controller
         $newbilling->from = auth()->user()->id;
         $newbilling->to   = $request->patient_id;
         $newbilling->save();
+        if(count($service_ids)>0){
+            foreach($service_ids as $serservice_id)
+            {
+                $servicearr = DB::select("SELECT patient_notes.id, patient_notes.patient_id,patient_notes.doctor_id, patient_notes.teeth_id, patient_notes.note, patient_notes.category_id, patient_notes.type, service_categories.name, services.price FROM patient_notes 
+                                        LEFT JOIN service_categories on patient_notes.category_id = service_categories.id
+                                        left join services on service_categories.id = services.category_id
+                                        WHERE patient_notes.id = ?                                
+                                        GROUP BY patient_notes.id", [$serservice_id]);
+                $service = json_decode(json_encode($servicearr), true);
 
-        foreach($service_ids as $serservice_id)
-        {
-            $servicearr = DB::select("SELECT patient_notes.id, patient_notes.patient_id,patient_notes.doctor_id, patient_notes.teeth_id, patient_notes.note, patient_notes.category_id, patient_notes.type, service_categories.name, services.price FROM patient_notes 
-                                    LEFT JOIN service_categories on patient_notes.category_id = service_categories.id
-                                    left join services on service_categories.id = services.category_id
-                                    WHERE patient_notes.id = ?                                
-                                    GROUP BY patient_notes.id", [$serservice_id]);
-            $service = json_decode(json_encode($servicearr), true);
-
-            $newInvoicelist                = new Invoicelist;
-            $newInvoicelist->invoice_id    = $newbilling->id;
-            $newInvoicelist->invoice_code  = $newbilling->code;
-            $newInvoicelist->teeth_id      = $service['0']['teeth_id'];
-            $newInvoicelist->service       = $service['0']['name'];
-            $newInvoicelist->amount        = $service['0']['price'] ? $service['0']['price'] : 0;
-            $newInvoicelist->save();
-            
-            $total += $service['0']['price'];
-            DB::table('patient_notes')->where('id',$serservice_id)->update(['invoiced' => 1]);
+                $newInvoicelist                = new Invoicelist;
+                $newInvoicelist->invoice_id    = $newbilling->id;
+                $newInvoicelist->invoice_code  = $newbilling->code;
+                $newInvoicelist->teeth_id      = $service['0']['teeth_id'];
+                $newInvoicelist->service       = $service['0']['name'];
+                $newInvoicelist->amount        = $service['0']['price'] ? $service['0']['price'] : 0;
+                $newInvoicelist->save();
+                
+                $total += $service['0']['price'];
+                DB::table('patient_notes')->where('id',$serservice_id)->update(['invoiced' => 1]);
+            }
         }
         DB::table('invoices')->where('id',$newbilling->id)->update(['total' => $total]);
         return back()->with('success_paid_invoice', '1');

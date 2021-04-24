@@ -24,7 +24,7 @@
           @csrf
           <div class="form-group">
             <label for="login-username" class="form-label">{{ __('Username') }}</label>
-            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="john@example.com" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
+            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Username" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
             @error('username')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

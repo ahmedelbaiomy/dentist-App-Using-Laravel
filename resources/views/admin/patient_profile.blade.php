@@ -4,6 +4,7 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
+<link href="{{ asset('assets/css/libs/jstree.css?ver=2.3.0') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
@@ -557,6 +558,7 @@
 @endsection
 
 @section('vendor-script')
+<script src="{{ asset('assets/js/libs/jstree.js?ver=2.3.0') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
@@ -610,11 +612,7 @@ $("#notemodal #note_save_btn").click(function(e) {
             url: '{{ route("admin.patient.profilestore" )}}',
             type: "POST",
             data: {
-                patient_id: {
-                    {
-                        $patient_id
-                    }
-                },
+                patient_id: {{$patient_id}},
                 category: category,
                 teeth_id: teeth_id,
                 notes: notes,
@@ -737,11 +735,7 @@ $("#view_notemodal #note_save_btn").click(function(e) {
             type: "POST",
             data: {
                 id: $("#view_notemodal #profile_id").val(),
-                patient_id: {
-                    {
-                        $patient_id
-                    }
-                },
+                patient_id: {{$patient_id}},
                 category: category,
                 teeth_id: teeth_id,
                 notes: notes,
