@@ -1,5 +1,6 @@
 
     {{ csrf_field() }}
+    <input type="hidden" id="TYPE_FORM" value="@if($appointment!=null) 1 @else 0 @endif">
     <input type="hidden" name="id" value="@if($appointment!=null) {{ $appointment->id }} @else 0 @endif">
     <div class="row gy-4">
         <div class="col-md-6">
@@ -131,7 +132,34 @@
 
     <input class="d-none" type="submit" value="SUBMIT" id="SUBMIT_APPOINTMENT_FORM">
 <script>
-_loadSlots();
+_getNearstAvalabilityTime();
+function _getNearstAvalabilityTime(){
+    var TYPE_FORM=$("#TYPE_FORM").val();
+    if(TYPE_FORM==0){
+        var loaderHtml ='<i class="fa fa-spinner spin"></i>';
+        $("#DIV_TIME_SLOT").html(loaderHtml);
+        var doctor_id = $("#select_doctor").val();
+        var start_date = $("#start_time").val();
+        if(doctor_id>0 && start_date!=''){
+            $.ajax({
+                type: "GET",
+                url: "/reception/get/nearst/time/" + doctor_id+'/'+start_date,
+                dataType: "JSON",
+                success: function(result) {
+                    $("#start_time").val(result.start_date);
+                    _loadSlots();
+                },
+                error: function(err) {
+                    //$("#DIV_TIME_SLOT").html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
+                },
+            }).done(function(data) {});
+        }
+    }
+}
+var TYPE_FORM=$("#TYPE_FORM").val();
+if(TYPE_FORM!=0){
+    _loadSlots();
+}
 function _loadSlots() {
     //alert('_loadSlots');
     var loaderHtml ='<i class="fa fa-spinner spin"></i>';
@@ -154,7 +182,11 @@ function _loadSlots() {
     }   
 }
 $('#select_doctor').on('change', function() {
-    _loadSlots();
+    if(TYPE_FORM==0){
+        _getNearstAvalabilityTime();
+    }else{
+        _loadSlots();
+    }
 });
 
 $(document).ready(function(){

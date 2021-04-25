@@ -84,5 +84,18 @@ class DbHelperTools
           }
         }
         return $deletedRows;
+    }
+    public function checkNearstAvalabilityTime($doctor_id,$start_date,$iCount){
+        $tentativeMaxLimit = 10;
+        $day = strtoupper(Carbon::createFromFormat('Y-m-d',$start_date)->format('l'));
+        $slots = Schedule::where([['doctor_id',$doctor_id],['day',$day]])->orderBy('slot')->get();
+        if(count($slots)>0 || $iCount>=$tentativeMaxLimit){
+            return ['doctor_id'=>$doctor_id,'start_date'=>$start_date];
+        }
+        $iCount++;
+        $dt=Carbon::createFromFormat('Y-m-d',$start_date);
+        $date = $dt->addDays(1);
+        $start_date=$date->format('Y-m-d');
+        return $this->checkNearstAvalabilityTime($doctor_id,$start_date,$iCount);
     }      
 }

@@ -127,6 +127,11 @@ class HomeController extends Controller
                                     return response()->json($newData);
 
     }
+    public function getDoctorNearstTime($doctor_id,$start_date){
+        $DbHelperTools=new DbHelperTools();
+        $rs=$DbHelperTools->checkNearstAvalabilityTime($doctor_id,$start_date,0);
+        return response()->json($rs);
+    }
     public function getDoctorTimeSlots($doctor_id,$start_date){
         //Carbon::createFromFormat('Y-m-d H:i:s',$start_date)->dayOfWeek;
         //$number_day_of_week = $users = DB::table('doctor_schedules')->select('id','start_hour')->whereRaw(DB::raw('WEEKDAY(start_hour) = '.$number_day_of_week))->get();

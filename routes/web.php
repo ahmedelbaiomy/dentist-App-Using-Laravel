@@ -174,6 +174,7 @@ Route::group(['middleware' => ['auth', 'is_reception']], function () {
     
     Route::post('reception/getDoctorappointmentCalender', [App\Http\Controllers\Reception\HomeController::class, 'getDoctorappointmentCalender'])->name('reception.getDoctorappointmentCalender');
     Route::get('reception/get/time/slots/{doctor_id}/{start_date}', [App\Http\Controllers\Reception\HomeController::class, 'getDoctorTimeSlots']);
+    Route::get('reception/get/nearst/time/{doctor_id}/{start_date}', [App\Http\Controllers\Reception\HomeController::class, 'getDoctorNearstTime']);
 
     Route::get('reception/form/appointment/{appointment_id}', [App\Http\Controllers\Reception\HomeController::class, 'formAppointment']);
     Route::post('reception/form/appointment', [App\Http\Controllers\Reception\HomeController::class, 'storeFormAppointment']);
