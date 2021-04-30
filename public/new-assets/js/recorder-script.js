@@ -160,6 +160,9 @@ function createDownloadLink(blob) {
 		  };
 		  var fd=new FormData();
 		  fd.append("audio_data",blob, filename);
+
+		  console.log(fd);return false;
+
 		  xhr.open("POST","/reception/upload/recorde",true);
 		  xhr.send(fd);
 	})
