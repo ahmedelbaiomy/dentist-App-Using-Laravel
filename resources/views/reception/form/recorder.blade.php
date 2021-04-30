@@ -20,9 +20,19 @@
                 <h4 class="card-title">Recorder</h4>
                 <!-- recoder -->
                 <div id="controls">
-                    <button id="recordButton">Record</button>
+                    <button id="recordButton" type="button" class="btn btn-icon btn-outline-primary">
+                        <i data-feather="mic"></i>
+                    </button>
+                    <button id="pauseButton" type="button" class="btn btn-icon btn-outline-primary" disabled>
+                        <i data-feather="pause-circle"></i>
+                    </button>
+                    <button id="stopButton" type="button" class="btn btn-icon btn-outline-primary" disabled>
+                        <i data-feather="stop-circle"></i>
+                    </button>
+
+                    <!-- <button id="recordButton">Record</button>
                     <button id="pauseButton" disabled>Pause</button>
-                    <button id="stopButton" disabled>Stop</button>
+                    <button id="stopButton" disabled>Stop</button> -->
                 </div>
                 <div id="formats">Format: start recording to see sample rate</div>
                 <p><strong>Recordings:</strong></p>
