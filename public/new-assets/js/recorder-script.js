@@ -161,7 +161,7 @@ function createDownloadLink(blob) {
 		      }
 		  };
 		  var fd=new FormData();
-		  fd.append("audio_data",blob, filename);
+		  fd.append("audio_data",blob, filename+".wav");
 		  fd.append("_token",$('meta[name="csrf-token"]').attr("content"));
 		  //console.log(filename);return false;
 		  xhr.open("POST","/reception/upload/recorde",true);

@@ -215,7 +215,7 @@ class HomeController extends Controller
             $original_name=$request->file('audio_data')->getClientOriginalName();
             $size=$request->file('audio_data')->getSize();
             //$extension=$request->file('audio_data')->getClientOriginalExtension();
-            dd($original_name);
+            //dd($original_name);
             //$filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
 
 
@@ -224,7 +224,7 @@ class HomeController extends Controller
                 File::makeDirectory($path, 0755, true, true);
             }
             
-            $path=$request->file('audio_data')->storeAs('public/uploads/files/audio',$filename);
+            $path=$request->file('audio_data')->storeAs('public/uploads/files/audio',$original_name);
 
             dd($path);
         }
