@@ -208,7 +208,15 @@ class HomeController extends Controller
         return view('reception.form.recorder');
     }
     public function storeRecorde(Request $request) {
-        dd($request->all());
+        //dd($request->all());
+        if($request->hasFile('audio_data')){
+            $original_name=$request->file('audio_data')->getClientOriginalName();
+            $size=$request->file('audio_data')->getSize();
+            $extension=$request->file('audio_data')->getClientOriginalExtension();
+            dd($original_name);
+        }
+        exit();
+
         return response ()->json ( [ 
             'success' => true
         ] );
