@@ -211,22 +211,25 @@ class HomeController extends Controller
     public function storeRecorde(Request $request) {
         //dd($request->all());
         if($request->hasFile('audio_data')){
-            $uniqueid=uniqid();
-            $original_name=$request->file('audio_data')->getClientOriginalName();
-            $size=$request->file('audio_data')->getSize();
-            //$extension=$request->file('audio_data')->getClientOriginalExtension();
-            //dd($original_name);
-            //$filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
+            $uploadedFile = $request->file ( 'audio_data' );
+            $original_name=$uploadedFile->getClientOriginalName();
+            $size=$uploadedFile->getSize();
+            
 
 
-            $path = 'uploads/files/audio';
+            $path = 'uploads/files/audio/';
             if(!File::exists($path)) {
                 File::makeDirectory($path, 0755, true, true);
             }
-            
-            $path=$request->file('audio_data')->storeAs('public/uploads/files/audio',$original_name);
 
-            dd($path);
+            
+			
+			Storage::disk ( 'public' )->putFileAs ( $path, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public' )->exists ( $path."{$original_name}" );
+			 if ($exists) {
+				dd('success');
+			}
+
         }
         exit();
 
