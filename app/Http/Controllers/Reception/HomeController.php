@@ -214,9 +214,9 @@ class HomeController extends Controller
             $uniqueid=uniqid();
             $original_name=$request->file('audio_data')->getClientOriginalName();
             $size=$request->file('audio_data')->getSize();
-            $extension=$request->file('audio_data')->getClientOriginalExtension();
-            dd($extension);
-            $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
+            //$extension=$request->file('audio_data')->getClientOriginalExtension();
+            dd($original_name);
+            //$filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
 
 
             $path = 'uploads/files/audio';
