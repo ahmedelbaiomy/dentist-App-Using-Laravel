@@ -216,16 +216,13 @@ class HomeController extends Controller
             $original_name=$uploadedFile->getClientOriginalName();
             $size=$uploadedFile->getSize();
             
-
-
             $path = 'uploads/files/audio/';
             if(!File::exists($path)) {
                 File::makeDirectory($path, 0755, true, true);
             }
 
-            
-			
-			Storage::disk ( 'public' )->putFileAs ( $path, $uploadedFile, $original_name );
+			$p=Storage::disk ( 'public' )->putFileAs ( $path, $uploadedFile, $original_name );
+            dd($p);
 			$exists = Storage::disk ( 'public' )->exists ( $path."{$original_name}" );
 			 if ($exists) {
 				dd('success');
