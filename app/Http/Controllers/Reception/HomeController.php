@@ -223,7 +223,7 @@ class HomeController extends Controller
                 File::makeDirectory($path, 0755, true, true);
             }
             
-            $path=$file->storeAs('public/uploads/files/audio',$filename);
+            $path=$request->file('audio_data')->storeAs('public/uploads/files/audio',$name);
 
             dd($original_name);
         }
