@@ -161,10 +161,26 @@ function createDownloadLink(blob) {
 		  var fd=new FormData();
 		  fd.append("audio_data",blob, filename);
 
-		  console.log(filename);return false;
+		  //console.log(filename);return false;
+		  //xhr.open("POST","/reception/upload/recorde",true);
+		  //xhr.send(fd);
+		  $.ajaxSetup({
+			headers: {
+			  "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+			},
+		  });
 
-		  xhr.open("POST","/reception/upload/recorde",true);
-		  xhr.send(fd);
+		  $.ajax({
+			url: "/reception/upload/recorde",
+			type: "POST",
+			cache: false,
+			data: fd,
+			dataType: "JSON",
+			success: function(result, status) {},
+			error: function(result, status, error) {},
+			complete: function(result, status) {},
+		});
+
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li
