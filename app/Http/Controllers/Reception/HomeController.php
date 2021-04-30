@@ -207,4 +207,10 @@ class HomeController extends Controller
     public function recorder(){
         return view('reception.form.recorder');
     }
+    public function storeRecorde(Request $request) {
+        dd($request->all());
+        return response ()->json ( [ 
+            'success' => true
+        ] );
+    }
 }

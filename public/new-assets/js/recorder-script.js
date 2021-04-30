@@ -1,3 +1,8 @@
+$.ajaxSetup({
+	headers: {
+	  "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+	},
+});
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
@@ -155,7 +160,7 @@ function createDownloadLink(blob) {
 		  };
 		  var fd=new FormData();
 		  fd.append("audio_data",blob, filename);
-		  xhr.open("POST","upload.php",true);
+		  xhr.open("POST","/reception/recorder",true);
 		  xhr.send(fd);
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
