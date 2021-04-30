@@ -204,4 +204,7 @@ class HomeController extends Controller
                 'msg' => $msg 
         ] );
     }
+    public function recorder(){
+        return view('reception.form.recorder');
+    }
 }

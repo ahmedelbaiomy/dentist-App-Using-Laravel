@@ -136,6 +136,9 @@ Route::group(['middleware' => ['auth', 'is_reception']], function () {
     Route::get('/', function () {
     	return redirect('reception/home');
 	});
+
+    Route::get('reception/recorder', [App\Http\Controllers\Reception\HomeController::class, 'recorder'])->name('reception.recorder');
+
     Route::get('reception/home', [App\Http\Controllers\Reception\HomeController::class, 'index'])->name('reception.home');
     Route::get('reception/home/get_patient_profile/{patient_id}', [App\Http\Controllers\Reception\HomeController::class, 'getProfile']);
 
