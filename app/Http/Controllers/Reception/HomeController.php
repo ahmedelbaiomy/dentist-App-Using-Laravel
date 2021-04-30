@@ -225,7 +225,7 @@ class HomeController extends Controller
             
             $path=$request->file('audio_data')->storeAs('public/uploads/files/audio',$filename);
 
-            dd($original_name);
+            dd($path);
         }
         exit();
 
