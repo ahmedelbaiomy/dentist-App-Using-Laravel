@@ -9,6 +9,7 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Library\Services\DbHelperTools;
 
 
@@ -210,9 +211,20 @@ class HomeController extends Controller
     public function storeRecorde(Request $request) {
         //dd($request->all());
         if($request->hasFile('audio_data')){
+            $uniqueid=uniqid();
             $original_name=$request->file('audio_data')->getClientOriginalName();
             $size=$request->file('audio_data')->getSize();
             $extension=$request->file('audio_data')->getClientOriginalExtension();
+            $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
+
+
+            $path = 'uploads/files/audio';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+            
+            $path=$file->storeAs('public/uploads/files/audio',$filename);
+
             dd($original_name);
         }
         exit();
