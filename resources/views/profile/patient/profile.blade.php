@@ -3,6 +3,7 @@
 @section('title', 'Patient profile')
 
 @section('vendor-style')
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/plugins/forms/form-validation.css') }}">
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
 @endsection
 
@@ -100,7 +101,7 @@ $birthday = $dt->format('d/m/Y');
                     </div>
                 </div>
  -->
-<!-- 
+                <!-- 
                 <div class="mt-2">
                     <h6 class="mb-75">Birthday:</h5>
                         <p class="card-text">{{$birthday}}</p>
@@ -246,29 +247,231 @@ $birthday = $dt->format('d/m/Y');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- @foreach($notes as $note)
-                                    <tr>
-                                        <td><span>#NOTE-{{ $note->id }}</span></td>
-                                        <td><span>{{ $note->note }}</span></td>
-                                        <td>
-                                            <p class='mb-0'><span class="badge badge-light-primary">Created at : {{ $note->created_at->format('Y/m/d h:i:s') }}</span></p>
-                                            <p class='mb-0'><span class="badge badge-light-primary">By : {{ $note->user->name }}</span></p>
-                                        </td>
-                                        <td>
-                                            <button type="button" onclick="_deleteNote({{ $note->id }})" class="btn btn-icon btn-outline-danger">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}</button>
-                                        </td>
-                                    </tr>
-                                    @endforeach -->
                                 </tbody>
                             </table>
                         </div>
                         <!-- Notes -->
                     </div>
                     <div class="tab-pane" id="billing" aria-labelledby="billing-tab" role="tabpanel">
-                        <p>Billing</p>
+                        <!-- <p>Billing</p> -->
+
+
+                        <div class="table-responsive">
+                            <a style="float: right;color: #fff;"
+                                onclick="document.getElementById('addbillingform1').submit();"
+                                class="btn btn-icon btn-primary mb-1">
+                                <i data-feather="plus"></i>
+                            </a>
+                            <table id="mytable1" class="datatable table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Teeth ID</th>
+                                        <th>Doctor</th>
+                                        <th>Service Name</th>
+                                        <th>Note</th>
+                                        <th>Price</th>
+                                        <th>Type</th>
+                                        <th class="tb-tnx-action">
+                                            Action
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form id="addbillingform1" action="{{ route('reception.patient.BillingStore') }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="patient_id" value="{{ $patient_id }}">
+                                        @foreach($services as $service)
+                                        <?php $doctorinfo = DB::table('users')->where('id',$service->doctor_id)->first(); ?>
+                                        <tr>
+                                            <td><input type="hidden" name="teeth_id[]"
+                                                    value="{{ $service->teeth_id }}"><span>{{ $service->teeth_id }}</span>
+                                            </td>
+                                            <td><span>{{$doctorinfo ? $doctorinfo->name : 'Doctor'  }}</span></td>
+                                            <td><input type="hidden" name="service[]"
+                                                    value="{{ $service->name }}"><span>{{ $service->name }}</span></td>
+                                            <td><span>{{ $service->note }}</span></td>
+                                            <td><input type="hidden" name="amount[]"
+                                                    value="{{ $service->price }}"><span>{{ $service->price }}</span>
+                                            </td>
+                                            <td><span>{{ $service->type }}</span></td>
+                                            <td class="text-center">
+                                                @if($service->type != "completed")
+                                                <div class="btn-group btn-group-sm">
+                                                    <button type="button" data-toggle="modal"
+                                                        data-target="#view_notemodal"
+                                                        data-id="{{ json_encode($service) }}" class="btn btn-info">
+                                                        <i class="icon-edit1"></i>
+                                                    </button>
+                                                </div>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($service->invoiced == 0)
+                                                <input type="checkbox" name="servic_ids[]" value="{{$service->id}}">
+                                                @else
+                                                <p>invoiced</p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </form>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="datatable table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Amount</th>
+                                        <th>Paid</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($invoices as $invoice)
+                                    <?php 
+                                                                $invoicedetails = DB::table('invoice_lists')->where('invoice_id',$invoice->id)->get(); 
+                                                                $total += $invoice->amount;
+                                                            ?>
+                                    <tr>
+                                        <td><span>{{ $invoice->code }}</span></td>
+                                        <td><span>{{ $invoice->d_email }}</span></td>
+                                        <td><span>{{ $invoice->p_email }}</span></td>
+                                        <td><span>{{ $invoice->amount }}</span></td>
+                                        <td>
+                                            @if($invoice->paid == 0)
+                                            <?php $dept += $invoice->amount; ?>
+                                            <form action="{{route('reception.patient.BillingPaid')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="invoiceid" value="{{$invoice->id}}">
+                                                <button type="submit" class="btn btn-primary">Paid</button>
+                                            </form>
+                                            @else
+                                            <?php $paid += $invoice->amount; ?>
+                                            <p>Paid</p>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{route('reception.invoice.generatepdf',$invoice->id)}}"
+                                                    class="btn btn-info">
+                                                    PDF
+                                                </a>
+                                            </div>
+                                        </td>
+                                        {{--  <td>
+                                                                    <a href="#" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#show_invoice_modal{{$invoice->id}}"><span
+                                            class="icon-eye"></span></a>
+                                        </td> --}}
+                                    </tr>
+                                    <tr>
+                                        <div class="modal" id="show_invoice_modal{{$invoice->id}}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Invoice Details</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-4">
+                                        <h4> Total : {{$total}}</h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4> Paid : {{$paid}}</h4>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4> Residual : {{$dept}}</h4>
+                                    </div>
+                                </div>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane" id="storageIcon" aria-labelledby="storageIcon-tab" role="tabpanel">
-                        <p>Storage</p>
+                        <!-- <p>Storage</p> -->
+                        <div class="row mb-2">
+                            <div class="col-md-10">
+                            </div>
+                            <div class="col-md-2 text-right">
+                                <!-- <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
+                                    data-target="#add_storage_modal"><span class="icon-plus1"></span></a> -->
+                                    
+                                <button class="btn btn-icon btn-primary"><i data-feather="plus"></i></button>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="datatable table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Title</th>
+                                                        <th>Description</th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($storages as $storage)
+                                                    <tr>
+                                                        <td><span>{{ $storage->title }}</span></td>
+                                                        <td><span>{{ $storage->description }}</span></td>
+                                                        <td class="text-center">
+                                                            <div class="btn-group btn-group-sm">
+                                                                <a href="{{ route('storage.download', $storage->id) }}"
+                                                                    class="btn btn-primary"><i
+                                                                        class="icon-cloud"></i></a>
+                                                                <button
+                                                                    onclick="delete_func('delete_frm_{{ $storage->id }}')"
+                                                                    type="button" class="btn btn-danger">
+                                                                    <form
+                                                                        action="{{ route('doctor.storage.destroy', ['storage_id' => $storage->id, 'patient_id' => $patient_id ])}}"
+                                                                        name="delete_frm_{{ $storage->id }}"
+                                                                        id="delete_frm_{{ $storage->id }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <i class="icon-cancel"></i>
+                                                                    </form>
+
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -298,8 +501,7 @@ $birthday = $dt->format('d/m/Y');
                 </form>
             </div><!-- .modal-body -->
             <div class="modal-footer">
-                <button onclick="_submit_note_form()" class="btn btn-primary"><i
-                        data-feather="save"></i>&nbsp;Save</button>
+                <button onclick="_submit_note_form()" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Save <span id="SPAN_SAVE"></span> </button>
                 <button data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
             </div>
         </div><!-- .modal-content -->
@@ -309,6 +511,7 @@ $birthday = $dt->format('d/m/Y');
 @endsection
 
 @section('vendor-script')
+<script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
@@ -374,7 +577,34 @@ function _formNote(patient_id, note_id) {
         },
     });
 };
-$("#FORM_NOTE").submit(function(event) {
+
+$("#FORM_NOTE").validate({
+  rules: {},
+  messages: {},
+  submitHandler: function(form) {
+    $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
+    var formData = $(form).serializeArray();
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: formData,
+        url: '/profile/form/note',
+        success: function(response) {
+            if (response.success) {
+                $("#modal_form_note").modal('hide');
+                _showResponseMessage("success", response.msg);
+                _reload_notes_datatable();
+            } else {
+                _showResponseMessage("error", response.msg);
+            }
+        },
+        error: function() {}
+    }).done(function(data) {});
+    return false;
+  },
+});
+
+/* $("#FORM_NOTE").submit(function(event) {
     event.preventDefault();
     var formData = $(this).serializeArray();
     $.ajax({
@@ -398,7 +628,7 @@ $("#FORM_NOTE").submit(function(event) {
 
     });
     return false;
-});
+}); */
 
 function _submit_note_form() {
     $("#SUBMIT_NOTE_FORM").click();

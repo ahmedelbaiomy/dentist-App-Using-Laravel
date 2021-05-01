@@ -8,10 +8,17 @@
             <label class="form-label" for="cf-default-textarea">Description</label>
             <div class="form-control-wrap">
                 <textarea class="form-control form-control-sm" cols="30" rows="5" id="note" name="note"
-                    placeholder="Type Your Note Here....">@if($note!=null){{$note->note}}@endif</textarea>
+                    placeholder="Type Your Note Here...." required>@if($note!=null){{$note->note}}@endif</textarea>
             </div>
         </div>
     </div>
 </div>
+
+<div class="card shadow-none bg-transparent border-primary mb-0">
+    <div class="card-body">
+        @include('profile/patient/recorder-form')
+    </div>
+</div>
+
 
 <input class="d-none" type="submit" value="SUBMIT" id="SUBMIT_NOTE_FORM">
