@@ -207,7 +207,7 @@ class HomeController extends Controller
         ] );
     }
     public function recorder(){
-        return view('reception.form.recorder');
+        return view('profile.patient.recorder');
     }
     public function storeRecorde(Request $request) {
         //dd($request->all());

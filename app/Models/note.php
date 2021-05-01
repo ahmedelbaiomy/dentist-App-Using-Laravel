@@ -9,4 +9,9 @@ class note extends Model
 {
     public $table = 'notes';
     protected $fillable = ['user_id', 'patient_id', 'note'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

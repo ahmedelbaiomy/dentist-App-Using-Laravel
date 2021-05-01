@@ -27,6 +27,13 @@ Route::get('/home', function () {
 
 Route::get('account_setting', [App\Http\Controllers\HomeController::class, 'account_setting'])->name('account_setting');
 Route::post('changepassword', [App\Http\Controllers\HomeController::class, 'changepassword'])->name('changepassword');
+/* NEW PROFILE */
+Route::get('/profile/patient/{patient_id}', [App\Http\Controllers\AppController::class, 'patientProfile'])->name('patient_profile');
+Route::get('/profile/form/note/{patient_id}/{note_id}', [App\Http\Controllers\AppController::class, 'formNote']);
+Route::post('/profile/form/note', [App\Http\Controllers\AppController::class, 'storeFormNote']);
+Route::delete('/profile/delete/note/{note_id}', [App\Http\Controllers\AppController::class, 'deleteNote']);
+Route::post('/profile/sdt/notes/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtNotes']);
+
 
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 

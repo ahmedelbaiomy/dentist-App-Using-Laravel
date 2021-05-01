@@ -1,6 +1,7 @@
 <?php
 namespace App\Library\Services;
 use Carbon\Carbon;
+use App\Models\note;
 use App\Models\Schedule;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,22 @@ class DbHelperTools
             $row->duration = (isset($data['duration']))?$data['duration']:null;
             $row->comments = (isset($data['comments']))?$data['comments']:null;
             $row->status = (isset($data['status']))?$data['status']:null;
+            $row->save ();
+            $id = $row->id;
+        }
+        return $id;
+    }
+    public function manageNote($data){
+        $id=0;
+        if (count($data)>0){
+            $row = new note();
+            $id=(isset($data['id']))?$data['id']:0;
+            if ($id > 0) {
+                $row = note::find ( $id );
+            }
+            $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
+            $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
+            $row->note = (isset($data['note']))?$data['note']:null;
             $row->save ();
             $id = $row->id;
         }
@@ -82,6 +99,12 @@ class DbHelperTools
           }else{
             $deletedRows = Schedule::whereIn('id', $ids)->delete();
           }
+        }elseif($type=='note'){
+            if($force_delete==1){
+                $deletedRows = note::whereIn('id', $ids)->forceDelete();
+              }else{
+                $deletedRows = note::whereIn('id', $ids)->delete();
+            }
         }
         return $deletedRows;
     }
