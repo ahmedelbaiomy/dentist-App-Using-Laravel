@@ -75,6 +75,14 @@ class AppController extends Controller
 		$success = false;
         $msg = 'Oops, something went wrong !';
         $id = 0;
+        if($request->hasFile('audio_data')){
+            $uploadedFile = $request->file ( 'audio_data' );
+            $original_name=$uploadedFile->getClientOriginalName();
+            dd($original_name);
+        }
+        dd('NO');
+
+
         if ($request->isMethod('post')) {
             $DbHelperTools=new DbHelperTools();
             $data = array(
