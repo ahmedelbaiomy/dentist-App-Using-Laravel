@@ -657,6 +657,7 @@ $("#FORM_NOTE").validate({
                     $("#modal_form_note").modal('hide');
                     _showResponseMessage("success", response.msg);
                     _reload_notes_datatable();
+                    $("#SPAN_SAVE").removeClass("spinner-border spinner-border-sm");
                 } else {
                     _showResponseMessage("error", response.msg);
                 }
