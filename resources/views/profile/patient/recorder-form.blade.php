@@ -16,6 +16,11 @@
                 {!!\App\Library\Helpers\Helper::getSvgIconeByAction('STOP')!!}
             </button>
         </div>
+        
+        <!-- timer -->
+        <p><span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span></p>
+        <!-- timer -->
+
         <p id="formats"><small>Format: start recording to see sample rate</small></p>
         <input type="hidden" id="BLOB_FILE" value="">
         <ul class="list-unstyled" id="recordingsList"></ul>
@@ -23,5 +28,5 @@
     </div>
 </div>
 <script src="{{ asset('new-assets/js/recorder.js') }}"></script>
+<script src="{{ asset('new-assets/js/timer.js') }}"></script>
 <script src="{{ asset('new-assets/js/recorder-form.js') }}"></script>
-<script src="{{ asset('new-assets/js/main.js') }}"></script>

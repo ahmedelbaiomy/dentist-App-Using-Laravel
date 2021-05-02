@@ -234,7 +234,6 @@ $birthday = $dt->format('d/m/Y');
                                 <!--  <a href="#" id="new_modal_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modal_form_note"><i data-feather="plus"></i></a> -->
                             </div>
                         </div>
-
                         <!-- Notes -->
                         <div class="table-responsive">
                             <table id="notes_datatable" class="table">
@@ -415,7 +414,7 @@ $birthday = $dt->format('d/m/Y');
                             <div class="col-md-2 text-right">
                                 <!-- <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
                                     data-target="#add_storage_modal"><span class="icon-plus1"></span></a> -->
-                                    
+
                                 <button class="btn btn-icon btn-primary"><i data-feather="plus"></i></button>
 
                             </div>
@@ -502,7 +501,8 @@ $birthday = $dt->format('d/m/Y');
                 </form>
             </div><!-- .modal-body -->
             <div class="modal-footer">
-                <button onclick="_submit_note_form()" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Save <span id="SPAN_SAVE"></span> </button>
+                <button onclick="_submit_note_form()" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Save
+                    <span id="SPAN_SAVE"></span> </button>
                 <button data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
             </div>
         </div><!-- .modal-content -->
@@ -580,75 +580,43 @@ function _formNote(patient_id, note_id) {
 };
 
 $("#FORM_NOTE").validate({
-  rules: {},
-  messages: {},
-  submitHandler: function(form) {
-    var formDataToUpload = new FormData(form);
-    $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
-    var fileUrl=$('#BLOB_FILE').val();
-    var block = fileUrl.split(";");
-    // Get the content type of the image
-    var contentType = block[0].split(":")[1];// In this case "image/gif"
-    // get the real base64 content of the file
-    var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
-    // Convert it to a blob to upload
-    var blob = b64toBlob(realData, contentType);
-    var filename = Math.floor(Date.now() / 1000);
-    formDataToUpload.append("audio_data",blob, filename+".wav");
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        data: formDataToUpload,
-        url: '/profile/form/note',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            if (response.success) {
-                $("#modal_form_note").modal('hide');
-                _showResponseMessage("success", response.msg);
-                _reload_notes_datatable();
-            } else {
-                _showResponseMessage("error", response.msg);
-            }
-        },
-        error: function() {}
-    }).done(function(data) {});
-    return false;
-  },
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        var formDataToUpload = new FormData(form);
+        $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
+        var fileUrl = $('#BLOB_FILE').val();
+        var block = fileUrl.split(";");
+        // Get the content type of the image
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+        // Convert it to a blob to upload
+        var blob = b64toBlob(realData, contentType);
+        var filename = Math.floor(Date.now() / 1000);
+        formDataToUpload.append("audio_data", blob, filename + ".wav");
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: formDataToUpload,
+            url: '/profile/form/note',
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    $("#modal_form_note").modal('hide');
+                    _showResponseMessage("success", response.msg);
+                    _reload_notes_datatable();
+                } else {
+                    _showResponseMessage("error", response.msg);
+                }
+            },
+            error: function() {}
+        }).done(function(data) {});
+        return false;
+    },
 });
-
-/* $("#FORM_NOTE").submit(function(event) {
-    event.preventDefault();
-    var formData = $(this).serializeArray();
-    var blob=$('#BLOB_FILE').val();
-    var filename = Math.floor(Date.now() / 1000);
-    formData.append("audio_data",blob, filename+".wav");
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        data: formData,
-        url: '/profile/form/note',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            if (response.success) {
-                $("#modal_form_note").modal('hide');
-                _showResponseMessage("success", response.msg);
-                _reload_notes_datatable();
-            } else {
-                _showResponseMessage("error", response.msg);
-            }
-        },
-        error: function() {
-
-        }
-    }).done(function(data) {
-
-    });
-    return false;
-}); */
 
 function _submit_note_form() {
     $("#SUBMIT_NOTE_FORM").click();
@@ -699,28 +667,29 @@ function _deleteNote(id) {
 }
 
 function b64toBlob(b64Data, contentType, sliceSize) {
-        contentType = contentType || '';
-        sliceSize = sliceSize || 512;
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
 
-        var byteCharacters = atob(b64Data);
-        var byteArrays = [];
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
 
-        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            var slice = byteCharacters.slice(offset, offset + sliceSize);
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
 
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
         }
 
-      var blob = new Blob(byteArrays, {type: contentType});
-      return blob;
-}
+        var byteArray = new Uint8Array(byteNumbers);
 
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {
+        type: contentType
+    });
+    return blob;
+}
 </script>
 @endsection
