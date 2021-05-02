@@ -123,6 +123,7 @@ function createDownloadLink(blob) {
 	
 	var url = URL.createObjectURL(blob);
 	$('#BLOB_FILE').val(url);
+	$('#INPUT_FILE').val(url);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
 	var link = document.createElement('a');
