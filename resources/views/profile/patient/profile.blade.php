@@ -242,6 +242,7 @@ $birthday = $dt->format('d/m/Y');
                                     <tr>
                                         <th>ID</th>
                                         <th>Description</th>
+                                        <th>Attachment</th>
                                         <th>Created</th>
                                         <th>Action</th>
                                     </tr>
