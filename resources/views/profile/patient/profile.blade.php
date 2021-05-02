@@ -586,8 +586,13 @@ $("#FORM_NOTE").validate({
     var formData = $(form).serializeArray();
     var dataURI=$('#BLOB_FILE').val();
     var blob=dataURItoBlob(dataURI);
+    console.log(blob);return false;
+
     var filename = Math.floor(Date.now() / 1000);
     formData.append("audio_data",blob, filename+".wav");
+
+
+
     $.ajax({
         type: "POST",
         dataType: 'json',
