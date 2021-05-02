@@ -76,7 +76,7 @@ class AppController extends Controller
         $msg = 'Oops, something went wrong !';
         $id = 0;
         if($request->hasFile('audio_data')){
-            $uploadedFile = $request->file ( 'audio_data' );
+            $uploadedFile = $request->file('audio_data');
             $original_name=$uploadedFile->getClientOriginalName();
             dd($original_name);
         }
