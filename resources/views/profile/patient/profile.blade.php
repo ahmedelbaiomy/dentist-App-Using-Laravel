@@ -642,8 +642,6 @@ $("#FORM_NOTE").validate({
     rules: {},
     messages: {},
     submitHandler: function(form) {
-        //$('#stopButton').click();
-        stopRecording();
         var formDataToUpload = new FormData(form);
         $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
         var fileUrl = $('#BLOB_FILE').val();
@@ -682,6 +680,7 @@ $("#FORM_NOTE").validate({
 });
 
 function _submit_note_form() {
+    stopRecording();
     $("#SUBMIT_NOTE_FORM").click();
 }
 
