@@ -128,7 +128,7 @@ function createDownloadLink(blob) {
 	reader.readAsDataURL(blob); 
 	reader.onloadend = function() {
 		var base64data = reader.result;                
-		console.log(base64data);
+		//console.log(base64data);
 		$('#BLOB_FILE').val(base64data);
 	}
 

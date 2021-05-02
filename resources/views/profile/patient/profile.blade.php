@@ -582,16 +582,22 @@ $("#FORM_NOTE").validate({
   rules: {},
   messages: {},
   submitHandler: function(form) {
+    var formDataToUpload = new FormData(form);
     $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
-    var formData = $(form).serializeArray();
-    var blob=$('#BLOB_FILE').val();
-    //console.log(blob);return false;
+    var fileUrl=$('#BLOB_FILE').val();
+    var block = fileUrl.split(";");
+    // Get the content type of the image
+    var contentType = block[0].split(":")[1];// In this case "image/gif"
+    // get the real base64 content of the file
+    var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+    // Convert it to a blob to upload
+    var blob = b64toBlob(realData, contentType);
     var filename = Math.floor(Date.now() / 1000);
-    formData.append("audio_data",blob, filename+".wav");
+    formDataToUpload.append("audio_data",blob, filename+".wav");
     $.ajax({
         type: "POST",
         dataType: 'json',
-        data: formData,
+        data: formDataToUpload,
         url: '/profile/form/note',
         cache: false,
         contentType: false,
@@ -691,29 +697,28 @@ function _deleteNote(id) {
     });
 }
 
-function dataURItoBlob(dataURI) {
-  // convert base64 to raw binary data held in a string
-  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-  var byteString = atob(dataURI.split(',')[1]);
+function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
 
-  // separate out the mime component
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
 
-  // write the bytes of the string to an ArrayBuffer
-  var ab = new ArrayBuffer(byteString.length);
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
 
-  // create a view into the buffer
-  var ia = new Uint8Array(ab);
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
 
-  // set the bytes of the buffer to the correct values
-  for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-  }
+            var byteArray = new Uint8Array(byteNumbers);
 
-  // write the ArrayBuffer to a blob, and you're done
-  var blob = new Blob([ab], {type: mimeString});
-  return blob;
+            byteArrays.push(byteArray);
+        }
 
+      var blob = new Blob(byteArrays, {type: contentType});
+      return blob;
 }
 
 </script>
