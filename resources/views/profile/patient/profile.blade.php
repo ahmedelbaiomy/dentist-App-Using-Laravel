@@ -578,7 +578,7 @@ function _formNote(patient_id, note_id) {
     });
 };
 
-$("#FORM_NOTE").validate({
+/* $("#FORM_NOTE").validate({
   rules: {},
   messages: {},
   submitHandler: function(form) {
@@ -606,11 +606,14 @@ $("#FORM_NOTE").validate({
     }).done(function(data) {});
     return false;
   },
-});
+}); */
 
-/* $("#FORM_NOTE").submit(function(event) {
+$("#FORM_NOTE").submit(function(event) {
     event.preventDefault();
     var formData = $(this).serializeArray();
+    var blob=$('#BLOB_FILE').val();
+    var filename = Math.floor(Date.now() / 1000);
+    formData.append("audio_data",blob, filename+".wav");
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -632,7 +635,7 @@ $("#FORM_NOTE").validate({
 
     });
     return false;
-}); */
+});
 
 function _submit_note_form() {
     $("#SUBMIT_NOTE_FORM").click();
