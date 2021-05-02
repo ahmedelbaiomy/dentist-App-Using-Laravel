@@ -100,27 +100,8 @@ function pauseRecording(){
 
 	}
 }
-function stopRecording(callback) {
-	pause();
-	//disable the stop button, enable the record too allow for new recordings
-	stopButton.disabled = true;
-	recordButton.disabled = false;
-	pauseButton.disabled = true;
 
-	//reset button just in case the recording is stopped while paused
-	pauseButton.innerHTML="Pause";
-	
-	//tell the recorder to stop the recording
-	rec.stop();
-
-	//stop microphone access
-	gumStream.getAudioTracks()[0].stop();
-
-	//create the wav blob and pass it on to createDownloadLink
-	rec.exportWAV(createDownloadLink);
-	callback();
-  }
-/* function stopRecording() {
+function stopRecording() {
 	console.log("stopButton clicked");
 	pause();
 	//disable the stop button, enable the record too allow for new recordings
@@ -139,7 +120,7 @@ function stopRecording(callback) {
 
 	//create the wav blob and pass it on to createDownloadLink
 	rec.exportWAV(createDownloadLink);
-} */
+}
 
 function createDownloadLink(blob) {
 	

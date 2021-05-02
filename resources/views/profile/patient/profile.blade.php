@@ -680,9 +680,11 @@ $("#FORM_NOTE").validate({
 });
 
 function _submit_note_form() {
-    //stopRecording();
-    stopRecording(function() {
-        $("#SUBMIT_NOTE_FORM").click();
+    $.ajax({
+        url:stopRecording(),
+        success:function(){
+            $("#SUBMIT_NOTE_FORM").click();
+        }
     });
 }
 
