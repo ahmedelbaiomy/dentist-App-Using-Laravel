@@ -33,36 +33,45 @@ $birthday = $dt->format('d/m/Y');
 
 
                 <div class="row">
-                    <div class="col-xl-6 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
-                        <div class="user-avatar-section">
-                            <div class="d-flex justify-content-start">
-                                <!-- avatar -->
-                                <div class="avatar mr-1">
+                    <div class="col-xl-12 col-lg-12 d-flex flex-column justify-content-between border-container-lg">
+                        <!-- <div class="user-avatar-section"> -->
+                        <div class="d-flex justify-content-start">
+                            <!-- avatar -->
+                            <div class="demo-inline-spacing">
+                                <div class="avatar mr-1 mt-0">
                                     <div class="avatar bg-light-primary avatar-lg">
                                         <span class="avatar-content">{{ $short_name }}</span>
                                     </div>
                                 </div>
-                                <!--/ avatar -->
-                                <div class="d-flex flex-column ml-1">
-                                    <div class="user-info mb-1">
-                                        <h4 class="mb-0">{{ $patient_data[0]->name }}</h4>
-                                        <span class="card-text">{{ $patient_data[0]->email }}</span>
-                                    </div>
-                                    <!-- <div class="d-flex flex-wrap">
+                            </div>
+                            <!--/ avatar -->
+                            <div class="d-flex flex-column ml-1">
+                                <div class="user-info mb-1">
+                                    <h4 class="mb-0">{{ $patient_data[0]->name }}</h4>
+                                    <span class="card-text">{{ $patient_data[0]->email }}</span>
+                                </div>
+                                <!-- <div class="d-flex flex-wrap">
                                         <a href="{{url('app/user/edit')}}" class="btn btn-primary">Edit</a>
                                         <button class="btn btn-outline-danger ml-1">Delete</button>
                                     </div> -->
-                                </div>
-
                             </div>
+
                         </div>
+                        <!-- </div> -->
+
+
+                        <ul class="list-inline mt-2">
+                            <li class="list-inline-item"><i data-feather="calendar" class=""></i> Birthday : <strong>{{$birthday}}</strong></li>
+                            <li class="list-inline-item"><i data-feather="phone" class=""></i> Phone : <strong>{{ $patient_data[0]->phone }}</strong></li>
+                            <li class="list-inline-item"><i data-feather="map" class=""></i> Address : <strong>{{ $patient_data[0]->address }}</strong></li>
+                        </ul>
 
                     </div>
-                    <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
+                    <!-- <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
                         <p><i data-feather="calendar" class="mr-1"></i> Birthday : {{$birthday}}</p>
                         <p><i data-feather="phone" class="mr-1"></i> Phone : {{ $patient_data[0]->phone }}</p>
                         <p><i data-feather="map" class="mr-1"></i> Address : {{ $patient_data[0]->address }}</p>
-                    </div>
+                    </div> -->
                 </div>
 
 
@@ -663,7 +672,7 @@ function _submit_note_form() {
     var fileUrl = $('#BLOB_FILE').val();
     if (fileUrl != '') {
         $("#SUBMIT_NOTE_FORM").click();
-    }else{
+    } else {
         $.ajax({
             url: stopRecording(),
             success: function() {
