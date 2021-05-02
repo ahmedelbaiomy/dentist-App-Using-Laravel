@@ -158,7 +158,7 @@ function createDownloadLink(blob) {
 	li.appendChild(document.createTextNode(filename+".wav "))
 
 	//add the save to disk link to li
-	li.appendChild(link);
+	//li.appendChild(link);
 	
 	//upload link
 	var upload = document.createElement('a');
@@ -178,8 +178,8 @@ function createDownloadLink(blob) {
 		  xhr.open("POST","/reception/upload/recorde",true);
 		  xhr.send(fd);
 	})
-	li.appendChild(document.createTextNode (" "))//add a space in between
-	li.appendChild(upload)//add the upload link to li
+	//li.appendChild(document.createTextNode (" "))//add a space in between
+	//li.appendChild(upload)//add the upload link to li
 
 	//add the li element to the ol
 	recordingsList.appendChild(li);

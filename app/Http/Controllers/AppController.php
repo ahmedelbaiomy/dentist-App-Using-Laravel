@@ -130,7 +130,7 @@ class AppController extends Controller
     public function sdtNotes(Request $request,$patient_id)
     {
         $data=$meta=[];
-        $notes = note::where('patient_id',$patient_id)->get();
+        $notes = note::where('patient_id',$patient_id)->orderByDesc('id')->get();
         foreach ($notes as $d) {
             $row=array();
                 //ID
