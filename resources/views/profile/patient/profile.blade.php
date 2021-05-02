@@ -65,21 +65,21 @@ $birthday = $dt->format('d/m/Y');
                                     <i data-feather="user" class="mr-1"></i>
                                     <span class="card-text user-info-title font-weight-bold mb-0">Birthday</span>
                                 </div>
-                                <p class="card-text mb-0">{{$birthday}}</p>
+                                <p class="card-text mb-0"> {{$birthday}}</p>
                             </div>
                             <div class="d-flex flex-wrap my-50">
                                 <div class="user-info-title">
                                     <i data-feather="check" class="mr-1"></i>
                                     <span class="card-text user-info-title font-weight-bold mb-0">Phone</span>
                                 </div>
-                                <p class="card-text mb-0">{{ $patient_data[0]->phone }}</p>
+                                <p class="card-text mb-0"> {{ $patient_data[0]->phone }}</p>
                             </div>
                             <div class="d-flex flex-wrap my-50">
                                 <div class="user-info-title">
                                     <i data-feather="star" class="mr-1"></i>
                                     <span class="card-text user-info-title font-weight-bold mb-0">Address</span>
                                 </div>
-                                <p class="card-text mb-0">{{ $patient_data[0]->address }}</p>
+                                <p class="card-text mb-0"> {{ $patient_data[0]->address }}</p>
                             </div>
                         </div>
                     </div>
@@ -153,21 +153,21 @@ $birthday = $dt->format('d/m/Y');
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="procedures-tab" data-toggle="tab" href="#procedures"
-                            aria-controls="home" role="tab" aria-selected="true"><i data-feather="home"></i>
+                            aria-controls="home" role="tab" aria-selected="true"><i data-feather="grid"></i>
                             Procedures</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" aria-controls="profile"
-                            role="tab" aria-selected="false"><i data-feather="tool"></i>
+                            role="tab" aria-selected="false"><i data-feather="mic"></i>
                             Notes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" aria-controls="about"
-                            role="tab" aria-selected="false"><i data-feather="user"></i> Billing</a>
+                            role="tab" aria-selected="false"><i data-feather="file-text"></i> Billing</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="storageIcon-tab" data-toggle="tab" href="#storageIcon"
-                            aria-controls="storage" role="tab" aria-selected="false"><i data-feather="user"></i>
+                            aria-controls="storage" role="tab" aria-selected="false"><i data-feather="archive"></i>
                             Storage</a>
                     </li>
                 </ul>

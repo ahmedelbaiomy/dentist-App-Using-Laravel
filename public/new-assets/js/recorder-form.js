@@ -25,6 +25,8 @@ pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
 	console.log("recordButton clicked");
+	$('#timer-block').removeClass('d-none');
+	$('#formats').removeClass('d-none');
 	start();
 	/*
 		Simple constraints object, for more advanced audio features see
