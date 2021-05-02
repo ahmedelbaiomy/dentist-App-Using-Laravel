@@ -680,8 +680,10 @@ $("#FORM_NOTE").validate({
 });
 
 function _submit_note_form() {
-    stopRecording();
-    $("#SUBMIT_NOTE_FORM").click();
+    //stopRecording();
+    stopRecording(function() {
+        $("#SUBMIT_NOTE_FORM").click();
+    });
 }
 
 function _deleteNote(id) {

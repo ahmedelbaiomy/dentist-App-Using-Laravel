@@ -91,7 +91,7 @@ class AppController extends Controller
 			$resultPath=Storage::disk('public_uploads')->putFileAs ( $audioPath, $uploadedFile, $original_name );
 			$exists = Storage::disk ( 'public_uploads' )->exists ( $audioPath."{$original_name}" );
 			if(!$exists) {
-				$resultPath='';
+				$resultPath=null;
 			}
         }
         if ($request->isMethod('post')) {
