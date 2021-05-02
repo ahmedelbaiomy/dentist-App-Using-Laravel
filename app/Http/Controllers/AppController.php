@@ -138,7 +138,7 @@ class AppController extends Controller
                 //<th>Description</th>
                 $row[]=$d->note;
                 //attachment
-                $audio=(isset($d->audio_file))?'<audio controls><source src="'.public_path(base64_decode($d->audio_file)).'" type="audio/wav"></audio>':'';
+                $audio=(isset($d->audio_file))?'<audio controls><source src="/'.base64_decode($d->audio_file).'" type="audio/wav"></audio>':'';
                 $row[]=$audio;
                 //<th>Created</th>
                 $created='<p class="mb-0"><span class="badge badge-light-primary">Created at : '.$d->created_at->format('Y/m/d h:i:s').'</span></p>';
