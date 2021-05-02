@@ -680,12 +680,17 @@ $("#FORM_NOTE").validate({
 });
 
 function _submit_note_form() {
-    $.ajax({
-        url:stopRecording(),
-        success:function(){
-            $("#SUBMIT_NOTE_FORM").click();
-        }
-    });
+    var fileUrl = $('#BLOB_FILE').val();
+    if (fileUrl != '') {
+        $.ajax({
+            url: stopRecording(),
+            success: function() {
+                $("#SUBMIT_NOTE_FORM").click();
+            }
+        });
+    }else{
+        $("#SUBMIT_NOTE_FORM").click();
+    }
 }
 
 function _deleteNote(id) {
