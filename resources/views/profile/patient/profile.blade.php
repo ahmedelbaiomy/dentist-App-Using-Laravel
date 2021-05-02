@@ -621,7 +621,6 @@ function _formNote(patient_id, note_id) {
         type: "GET",
         dataType: "html",
         success: function(html, status) {
-            reset();//reset timer
             $("#" + modal_content_id).html(html);
         },
     });
