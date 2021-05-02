@@ -509,6 +509,65 @@ $birthday = $dt->format('d/m/Y');
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
 
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="add_storage_modal">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+
+                <form action="{{ route('file.upload.post') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" id="p_id" name="p_id" value="{{$patient_id}}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" for="birth-day">Title</label>
+                                <input class="form-control form-control-sm" id="a_title" name="a_title" type="text"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" for="cf-default-textarea">Description</label>
+                                <div class="form-control-wrap">
+                                    <textarea class="form-control form-control-sm" cols="30" rows="5" id="a_description"
+                                        name="a_description" placeholder="Write your description" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input type="file" name="file" class="form-control" required>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                <li class="text-right">
+                                    <button type="submit" class="btn btn-lg btn-primary">Save</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div><!-- .modal-body -->
+
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
+
 @endsection
 
 @section('vendor-script')
@@ -583,10 +642,11 @@ $("#FORM_NOTE").validate({
     rules: {},
     messages: {},
     submitHandler: function(form) {
+        $('#stopButton').click();
         var formDataToUpload = new FormData(form);
         $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
         var fileUrl = $('#BLOB_FILE').val();
-        if(fileUrl!=''){
+        if (fileUrl != '') {
             var block = fileUrl.split(";");
             // Get the content type of the image
             var contentType = block[0].split(":")[1]; // In this case "image/gif"
