@@ -495,7 +495,7 @@ $birthday = $dt->format('d/m/Y');
                 </button>
             </div>
             <div class="modal-body modal-body-lg">
-                <form id="FORM_NOTE">
+                <form id="FORM_NOTE" enctype="multipart/form-data">
                     <div id='modal_form_note_body'>
                     </div>
                 </form>

@@ -80,7 +80,7 @@ class AppController extends Controller
             $original_name=$uploadedFile->getClientOriginalName();
             dd($original_name);
         }
-        dd('NO');
+        dd($request);
 
 
         if ($request->isMethod('post')) {
