@@ -54,6 +54,9 @@ class DbHelperTools
             $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
             $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
             $row->note = (isset($data['note']))?$data['note']:null;
+            if(isset($data['audio_file'])){
+                $row->audio_file = (isset($data['audio_file']))?$data['audio_file']:null;
+            }
             $row->save ();
             $id = $row->id;
         }

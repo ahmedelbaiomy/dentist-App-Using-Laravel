@@ -101,9 +101,9 @@ class AppController extends Controller
                 'patient_id'=>$request->patient_id,
                 'user_id'=>auth()->user()->id,
                 'note'=>$request->note,
-                'path'=>$resultPath,
+                'audio_file'=>base64_encode('uploads/'.$resultPath),
             );
-            dd($data);
+            //dd($data);
             $note_id=$DbHelperTools->manageNote($data);
             $success = true;
             $msg = 'Your note have been saved successfully';
