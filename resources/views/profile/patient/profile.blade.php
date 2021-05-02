@@ -59,29 +59,9 @@ $birthday = $dt->format('d/m/Y');
 
                     </div>
                     <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
-                        <div class="user-info-wrapper">
-                            <div class="d-flex flex-wrap">
-                                <div class="user-info-title">
-                                    <i data-feather="user" class="mr-1"></i>
-                                    <span class="card-text user-info-title font-weight-bold mb-0">Birthday</span>
-                                </div>
-                                <p class="card-text mb-0"> {{$birthday}}</p>
-                            </div>
-                            <div class="d-flex flex-wrap my-50">
-                                <div class="user-info-title">
-                                    <i data-feather="check" class="mr-1"></i>
-                                    <span class="card-text user-info-title font-weight-bold mb-0">Phone</span>
-                                </div>
-                                <p class="card-text mb-0"> {{ $patient_data[0]->phone }}</p>
-                            </div>
-                            <div class="d-flex flex-wrap my-50">
-                                <div class="user-info-title">
-                                    <i data-feather="star" class="mr-1"></i>
-                                    <span class="card-text user-info-title font-weight-bold mb-0">Address</span>
-                                </div>
-                                <p class="card-text mb-0"> {{ $patient_data[0]->address }}</p>
-                            </div>
-                        </div>
+                        <p><i data-feather="calendar" class="mr-1"></i> Birthday : {{$birthday}}</p>
+                        <p><i data-feather="phone" class="mr-1"></i> Phone : {{ $patient_data[0]->phone }}</p>
+                        <p><i data-feather="map" class="mr-1"></i> Address : {{ $patient_data[0]->address }}</p>
                     </div>
                 </div>
 
