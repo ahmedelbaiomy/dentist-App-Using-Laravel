@@ -584,8 +584,8 @@ $("#FORM_NOTE").validate({
   submitHandler: function(form) {
     $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
     var formData = $(form).serializeArray();
-    var dataURI=$('#BLOB_FILE').val();
-    var blob=dataURItoBlob(dataURI);
+    var blob=$('#BLOB_FILE').val();
+
     console.log(blob);return false;
 
     var filename = Math.floor(Date.now() / 1000);
