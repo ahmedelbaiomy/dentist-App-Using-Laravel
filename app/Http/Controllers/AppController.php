@@ -75,14 +75,23 @@ class AppController extends Controller
 		$success = false;
         $msg = 'Oops, something went wrong !';
         $id = 0;
+        $resultPath='';
         if($request->hasFile('audio_data')){
-            $uploadedFile = $request->file('audio_data');
+            $uploadedFile = $request->file ( 'audio_data' );
             $original_name=$uploadedFile->getClientOriginalName();
-            dd($original_name);
+            $size=$uploadedFile->getSize();
+            $path = 'uploads/files/audio/';
+            $audioPath='files/audio/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+
+			$resultPath=Storage::disk('public_uploads')->putFileAs ( $audioPath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $audioPath."{$original_name}" );
+			/* if ($exists) {
+				dd('success');
+			} */
         }
-        dd($request->all());
-
-
         if ($request->isMethod('post')) {
             $DbHelperTools=new DbHelperTools();
             $data = array(
@@ -90,8 +99,9 @@ class AppController extends Controller
                 'patient_id'=>$request->patient_id,
                 'user_id'=>auth()->user()->id,
                 'note'=>$request->note,
+                'path'=>$resultPath,
             );
-            //dd($data);
+            dd($data);
             $note_id=$DbHelperTools->manageNote($data);
             $success = true;
             $msg = 'Your note have been saved successfully';
