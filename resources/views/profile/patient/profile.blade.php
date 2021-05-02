@@ -578,7 +578,7 @@ function _formNote(patient_id, note_id) {
     });
 };
 
-/* $("#FORM_NOTE").validate({
+$("#FORM_NOTE").validate({
   rules: {},
   messages: {},
   submitHandler: function(form) {
@@ -593,6 +593,9 @@ function _formNote(patient_id, note_id) {
         dataType: 'json',
         data: formData,
         url: '/profile/form/note',
+        cache: false,
+        contentType: false,
+        processData: false,
         success: function(response) {
             if (response.success) {
                 $("#modal_form_note").modal('hide');
@@ -606,9 +609,9 @@ function _formNote(patient_id, note_id) {
     }).done(function(data) {});
     return false;
   },
-}); */
+});
 
-$("#FORM_NOTE").submit(function(event) {
+/* $("#FORM_NOTE").submit(function(event) {
     event.preventDefault();
     var formData = $(this).serializeArray();
     var blob=$('#BLOB_FILE').val();
@@ -619,6 +622,9 @@ $("#FORM_NOTE").submit(function(event) {
         dataType: 'json',
         data: formData,
         url: '/profile/form/note',
+        cache: false,
+        contentType: false,
+        processData: false,
         success: function(response) {
             if (response.success) {
                 $("#modal_form_note").modal('hide');
@@ -635,7 +641,7 @@ $("#FORM_NOTE").submit(function(event) {
 
     });
     return false;
-});
+}); */
 
 function _submit_note_form() {
     $("#SUBMIT_NOTE_FORM").click();
