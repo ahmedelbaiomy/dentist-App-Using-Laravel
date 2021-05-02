@@ -682,14 +682,14 @@ $("#FORM_NOTE").validate({
 function _submit_note_form() {
     var fileUrl = $('#BLOB_FILE').val();
     if (fileUrl != '') {
+        $("#SUBMIT_NOTE_FORM").click();
+    }else{
         $.ajax({
             url: stopRecording(),
             success: function() {
                 $("#SUBMIT_NOTE_FORM").click();
             }
         });
-    }else{
-        $("#SUBMIT_NOTE_FORM").click();
     }
 }
 
