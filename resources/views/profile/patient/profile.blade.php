@@ -354,10 +354,6 @@ $birthday = $dt->format('d/m/Y');
                                                 </a>
                                             </div>
                                         </td>
-                                        {{--  <td>
-                                                                    <a href="#" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#show_invoice_modal{{$invoice->id}}"><span
-                                            class="icon-eye"></span></a>
-                                        </td> --}}
                                     </tr>
                                     <tr>
                                         <div class="modal" id="show_invoice_modal{{$invoice->id}}">
@@ -401,10 +397,10 @@ $birthday = $dt->format('d/m/Y');
                             <div class="col-md-10">
                             </div>
                             <div class="col-md-2 text-right">
-                                <!-- <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
-                                    data-target="#add_storage_modal"><span class="icon-plus1"></span></a> -->
+                                <button id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
+                                    data-target="#add_storage_modal"><i data-feather="plus"></i></button> 
 
-                                <button class="btn btn-icon btn-primary"><i data-feather="plus"></i></button>
+                                <!-- <button class="btn btn-icon btn-primary"><i data-feather="plus"></i></button> -->
 
                             </div>
                         </div>
@@ -414,7 +410,7 @@ $birthday = $dt->format('d/m/Y');
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="datatable table">
+                                            <table id="storage_datatable" class="table">
                                                 <thead>
                                                     <tr>
                                                         <th>Title</th>
@@ -606,6 +602,9 @@ var _reload_notes_datatable = function() {
     $('#notes_datatable').DataTable().ajax.reload();
 }
 
+var storage_datatable = $('#storage_datatable');
+storage_datatable.DataTable();
+
 
 function _formNote(patient_id, note_id) {
     var modal_id = "modal_form_note";
@@ -622,6 +621,7 @@ function _formNote(patient_id, note_id) {
         type: "GET",
         dataType: "html",
         success: function(html, status) {
+            reset();//reset timer
             $("#" + modal_content_id).html(html);
         },
     });
