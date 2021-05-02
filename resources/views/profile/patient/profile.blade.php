@@ -586,15 +586,17 @@ $("#FORM_NOTE").validate({
         var formDataToUpload = new FormData(form);
         $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
         var fileUrl = $('#BLOB_FILE').val();
-        var block = fileUrl.split(";");
-        // Get the content type of the image
-        var contentType = block[0].split(":")[1]; // In this case "image/gif"
-        // get the real base64 content of the file
-        var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
-        // Convert it to a blob to upload
-        var blob = b64toBlob(realData, contentType);
-        var filename = Math.floor(Date.now() / 1000);
-        formDataToUpload.append("audio_data", blob, filename + ".wav");
+        if(fileUrl!=''){
+            var block = fileUrl.split(";");
+            // Get the content type of the image
+            var contentType = block[0].split(":")[1]; // In this case "image/gif"
+            // get the real base64 content of the file
+            var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+            // Convert it to a blob to upload
+            var blob = b64toBlob(realData, contentType);
+            var filename = Math.floor(Date.now() / 1000);
+            formDataToUpload.append("audio_data", blob, filename + ".wav");
+        }
         $.ajax({
             type: "POST",
             dataType: 'json',
