@@ -17,7 +17,7 @@
             </button>
         </div>
         <p id="formats"><small>Format: start recording to see sample rate</small></p>
-        <input type="text" id="BLOB_FILE" name="audio_data" value="">
+        <input type="hidden" id="BLOB_FILE" name="audio_data" value="">
         <ul class="list-unstyled" id="recordingsList"></ul>
         <!-- recoder -->
     </div>

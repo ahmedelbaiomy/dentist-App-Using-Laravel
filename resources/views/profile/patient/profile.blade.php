@@ -585,6 +585,7 @@ $("#FORM_NOTE").validate({
     $("#SPAN_SAVE").addClass("spinner-border spinner-border-sm");
     var formData = $(form).serializeArray();
     var blob=$('#BLOB_FILE').val();
+    console.log(blob);return false;
     var filename = Math.floor(Date.now() / 1000);
     formData.append("audio_data",blob, filename+".wav");
     $.ajax({
