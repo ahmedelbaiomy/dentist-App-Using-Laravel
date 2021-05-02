@@ -123,7 +123,16 @@ function createDownloadLink(blob) {
 	
 	var url = URL.createObjectURL(blob);
 	//console.log(blob);
-	$('#BLOB_FILE').val(blob);
+
+	var reader = new FileReader();
+	reader.readAsDataURL(blob); 
+	reader.onloadend = function() {
+		var base64data = reader.result;                
+		console.log(base64data);
+		$('#BLOB_FILE').val(base64data);
+	}
+
+	//$('#BLOB_FILE').val(blob);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
 	var link = document.createElement('a');
