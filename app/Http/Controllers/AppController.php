@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\note;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Library\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
