@@ -82,7 +82,8 @@
                                                     <i data-feather="trash"></i>
                                                 </form>    
                                             
-                                            </button>                                            
+                                            </button>
+                                            <a href="/profile/patient/{{$patient->id}}" class="btn btn-icon btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('VIEW')!!}</a>                                            
                                         </div>                                    
                                     </td>                                    
                                 </tr>
