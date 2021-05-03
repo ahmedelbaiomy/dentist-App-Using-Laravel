@@ -123,7 +123,7 @@ function stopRecording() {
 }
 
 function createDownloadLink(blob) {
-	
+	pause();
 	var url = URL.createObjectURL(blob);
 	//console.log(blob);
 
