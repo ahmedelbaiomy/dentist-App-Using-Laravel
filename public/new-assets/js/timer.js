@@ -1,9 +1,9 @@
-let hour = 0;
-let minute = 0;
-let second = 0;
-let millisecond = 0;
+var hour = 0;
+var minute = 0;
+var second = 0;
+var millisecond = 0;
 
-let cron;
+var cron;
 
 function start() {
   pause();
