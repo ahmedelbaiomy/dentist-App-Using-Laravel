@@ -488,7 +488,7 @@ $birthday = $dt->format('d/m/Y');
             <div class="modal-footer">
                 <button onclick="_submit_note_form()" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Save
                     <span id="SPAN_SAVE"></span> </button>
-                <button data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+                <button onclick="_reset_note_form()" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
             </div>
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
@@ -625,6 +625,11 @@ function _formNote(patient_id, note_id) {
         },
     });
 };
+
+function _reset_note_form(){
+    var modal_content_id = "modal_form_note_body";
+    $("#" + modal_content_id).html('');
+}
 
 $("#FORM_NOTE").validate({
     rules: {},
