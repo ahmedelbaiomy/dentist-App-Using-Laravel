@@ -475,7 +475,7 @@ $birthday = $dt->format('d/m/Y');
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="NOTE_MODAL_TITLE">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" onclick="_reset_note_form()" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
