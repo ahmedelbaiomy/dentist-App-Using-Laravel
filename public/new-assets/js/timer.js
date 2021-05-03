@@ -20,7 +20,6 @@ function pause() {
   clearInterval(cron);
 }
 
-reset();
 function reset() {
   hour = 0;
   minute = 0;
