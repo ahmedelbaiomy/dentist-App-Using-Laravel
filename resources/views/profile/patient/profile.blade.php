@@ -627,8 +627,10 @@ function _formNote(patient_id, note_id) {
 };
 
 function _reset_note_form(){
+    console.log('_reset_note_form');
     var modal_content_id = "modal_form_note_body";
-    $("#" + modal_content_id).html('');
+    stopRecording();
+    $("#" + modal_content_id).html('<p></p>');
 }
 
 $("#FORM_NOTE").validate({
