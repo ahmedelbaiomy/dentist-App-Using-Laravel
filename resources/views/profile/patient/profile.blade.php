@@ -641,6 +641,7 @@ function take_photo() {
     });
 }
 function show_upload_file(){
+    Webcam.reset( '#BLOCK_CAMERA' );
     $('#data_uri_hidden').val('');
     $('#BLOCK_UPLOAD_FILE').html('<input type="file" class="form-control-file" name="file" id="file" required />');
 }
