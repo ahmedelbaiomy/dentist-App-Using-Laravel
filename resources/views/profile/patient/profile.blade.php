@@ -870,9 +870,9 @@ $("#FORM_STORAGE").validate({
     submitHandler: function(form) {
 
         $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
+        var fileUrl = $('#data_uri_hidden').val();
         if (fileUrl != '') {
             var formData = new FormData(form);
-            var fileUrl = $('#data_uri_hidden').val();
             var block = fileUrl.split(";");
             // Get the content type of the image
             var contentType = block[0].split(":")[1]; // In this case "image/gif"
