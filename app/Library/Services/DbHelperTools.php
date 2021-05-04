@@ -110,6 +110,12 @@ class DbHelperTools
               }else{
                 $deletedRows = note::whereIn('id', $ids)->delete();
             }
+        }elseif($type=='patientstorage'){
+            if($force_delete==1){
+                $deletedRows = Patientstorage::whereIn('id', $ids)->forceDelete();
+              }else{
+                $deletedRows = Patientstorage::whereIn('id', $ids)->delete();
+            }
         }
         return $deletedRows;
     }

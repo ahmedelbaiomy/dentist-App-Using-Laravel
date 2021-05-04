@@ -32,6 +32,7 @@ Route::get('/profile/patient/{patient_id}', [App\Http\Controllers\AppController:
 Route::get('/profile/form/note/{patient_id}/{note_id}', [App\Http\Controllers\AppController::class, 'formNote']);
 Route::post('/profile/form/note', [App\Http\Controllers\AppController::class, 'storeFormNote']);
 Route::delete('/profile/delete/note/{note_id}', [App\Http\Controllers\AppController::class, 'deleteNote']);
+Route::delete('/profile/delete/storage/{patient_storage_id}', [App\Http\Controllers\AppController::class, 'deletePatientStorage']);
 Route::post('/profile/sdt/notes/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtNotes']);
 Route::post('/profile/sdt/storages/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtStorages']);
 Route::post('/profile/form/storage', [App\Http\Controllers\AppController::class, 'storeFormStorage']);

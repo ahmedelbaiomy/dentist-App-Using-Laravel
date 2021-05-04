@@ -908,5 +908,49 @@ $("#FORM_STORAGE").validate({
         return false;
     },
 });
+
+function _deletePatientStorage(id) {
+    var successMsg = "Your file has been deleted.";
+    var errorMsg = "Your file has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/profile/delete/storage/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    _reload_storages_datatable();
+                },
+            });
+        }
+    });
+}
 </script>
 @endsection

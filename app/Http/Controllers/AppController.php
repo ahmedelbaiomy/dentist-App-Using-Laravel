@@ -134,6 +134,27 @@ class AppController extends Controller
         }
         return response()->json(['success'=>$success]);
     }
+    public function deletePatientStorage($id){
+        /**
+         * forceDelete
+         */
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id){
+            //unlink audio
+            $d = Patientstorage::select('url')->where('id',$id)->first();
+            //dd(base64_decode($d->url));
+            if(File::exists('uploads/'.base64_decode($d->url))){
+                File::delete('uploads/'.base64_decode($d->url));
+            }
+            //delete from database
+            $deletedRows = $DbHelperTools->massDeletes([$id],'patientstorage',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }
+        return response()->json(['success'=>$success]);
+    }
     public function sdtNotes(Request $request,$patient_id)
     {
         $data=$meta=[];
@@ -232,7 +253,7 @@ class AppController extends Controller
                 $created='<p class="mb-0"><span class="badge badge-light-primary">Created at : '.$d->created_at->format('Y/m/d h:i:s').'</span></p>';
                 $row[]=$created;
                 //Actions
-                $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deleteStorage('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deletePatientStorage('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
                 $row[]=$btn_delete;
             $data[]=$row;
         }    
