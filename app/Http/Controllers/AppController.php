@@ -123,8 +123,8 @@ class AppController extends Controller
         if($id){
             //unlink audio
             $d = note::select('audio_file')->where('id',$id)->first();
-            if(File::exists(public_path('uploads/'.base64_decode($d->audio_file)))){
-                File::delete(public_path('uploads/'.base64_decode($d->audio_file)));
+            if(File::exists('uploads/'.base64_decode($d->audio_file))){
+                File::delete('uploads/'.base64_decode($d->audio_file));
             }else{
                 dd('File does not exists.');
             }
