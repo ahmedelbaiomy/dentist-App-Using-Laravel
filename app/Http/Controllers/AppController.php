@@ -123,16 +123,13 @@ class AppController extends Controller
         if($id){
             //unlink audio
             $d = note::select('audio_file')->where('id',$id)->first();
-            if(File::exists('uploads/'.base64_decode($d->audio_file))){
-                File::delete('uploads/'.base64_decode($d->audio_file));
-            }else{
-                dd('File does not exists.');
+            if(File::exists(base64_decode($d->audio_file))){
+                File::delete(base64_decode($d->audio_file));
             }
             //delete from database
             $deletedRows = $DbHelperTools->massDeletes([$id],'note',0);
             if($deletedRows>0){
               $success = true;
-              
             }
         }
         return response()->json(['success'=>$success]);
