@@ -550,13 +550,15 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <!-- WEBCAM JS -->
                         <div class="col-md-12">
+
+                            <button type="button" onclick="show_upload_file();" class="btn btn-outline-primary"><i data-feather="upload"></i>&nbsp;Upload file</button>
                             <button type="button" onclick="setup_camera(); $(this).hide().next().show();" class="btn btn-outline-primary"><i data-feather="camera"></i>&nbsp;Access Camera</button>
                             <button type="button" onclick="take_photo()" class="btn btn-outline-primary" style="display:none"><i data-feather="camera"></i> Take photos</button>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="hidden" id="data_uri_hidden">
-                                <div id="my_camera"></div>
+                                <div id="BLOCK_CAMERA"></div>
                             </div>
                             <div class="col-md-6">
                                 <div class="card" id="results"></div>
@@ -564,11 +566,11 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <!-- WEBCAM JS -->
                         <!-- INPUT FILE -->
-                        <!-- <div class="col-md-12">
-                            <div class="form-group">
-                                <input type="file" class="form-control-file" name="file" id="file" required />
+                        <div class="col-md-12">
+                            <div class="form-group" id="BLOCK_UPLOAD_FILE">
+                                <!-- <input type="file" class="form-control-file" name="file" id="file" required /> -->
                             </div>
-                        </div> -->
+                        </div>
                         <!-- INPUT FILE -->
 
                     </div>
@@ -624,8 +626,10 @@ Webcam.set({
     jpeg_quality: 90
 });
 function setup_camera() {
+    $('#data_uri_hidden').val('');
 	Webcam.reset();
-	Webcam.attach( '#my_camera' );
+	Webcam.attach( '#BLOCK_CAMERA' );
+    hide_upload_file();
 }
 
 function take_photo() {
@@ -635,6 +639,13 @@ function take_photo() {
         $('#results').html('<img class="img-fluid" src="' + data_uri + '"/>');
         $('#data_uri_hidden').val(data_uri);
     });
+}
+function show_upload_file(){
+    $('#data_uri_hidden').val('');
+    $('#BLOCK_UPLOAD_FILE').html('<input type="file" class="form-control-file" name="file" id="file" required />');
+}
+function hide_upload_file(){
+    $('#BLOCK_UPLOAD_FILE').html('');
 }
 
 $(document).ready(function() {
@@ -857,9 +868,9 @@ $("#FORM_STORAGE").validate({
     submitHandler: function(form) {
 
         $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
-        var formData = new FormData(form);
-        var fileUrl = $('#data_uri_hidden').val();
         if (fileUrl != '') {
+            var formData = new FormData(form);
+            var fileUrl = $('#data_uri_hidden').val();
             var block = fileUrl.split(";");
             // Get the content type of the image
             var contentType = block[0].split(":")[1]; // In this case "image/gif"
@@ -869,9 +880,9 @@ $("#FORM_STORAGE").validate({
             var blob = b64toBlob(realData, contentType);
             var filename = Math.floor(Date.now() / 1000);
             formData.append("file", blob, filename + ".jpeg");
+        }else{
+            var formData = new FormData($(form)[0]);
         }
-        //var formData = new FormData($(form)[0]);
-        //$("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
         $.ajax({
             type: "POST",
             dataType: 'json',
