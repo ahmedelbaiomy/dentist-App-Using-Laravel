@@ -550,8 +550,8 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <!-- WEBCAM JS -->
                         <div class="col-md-12">
-                            <button onclick="setup(); $(this).hide().next().show();" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Access Camera</button>
-                            <button onclick="take_snapshot()" class="btn btn-icon btn-outline-primary" style="display:none"><i data-feather="camera"></i></button>
+                            <button type="button" onclick="setup_camera(); $(this).hide().next().show();" class="btn btn-outline-primary"><i data-feather="camera"></i>&nbsp;Access Camera</button>
+                            <button type="button" onclick="take_photo()" class="btn btn-outline-primary" style="display:none"><i data-feather="camera"></i> Take photos</button>
                             
                         </div>
                         <div class="row">
@@ -624,12 +624,12 @@ Webcam.set({
     image_format: 'jpeg',
     jpeg_quality: 90
 });
-function setup() {
+function setup_camera() {
 	Webcam.reset();
 	Webcam.attach( '#my_camera' );
 }
 
-function take_snapshot() {
+function take_photo() {
     // take snapshot and get image data
     Webcam.snap(function(data_uri) {
         // display results in page
