@@ -4,7 +4,15 @@
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/plugins/forms/form-validation.css') }}">
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}"> -->
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"
+    integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw=="
+    crossorigin="anonymous" />
 @endsection
 
 @section('page-style')
@@ -61,9 +69,15 @@ $birthday = $dt->format('d/m/Y');
 
 
                         <ul class="list-inline mt-2">
-                            <li class="list-inline-item"><i data-feather="calendar" class=""></i> Birthday : <strong>{{$birthday}}</strong></li>
-                            <li class="list-inline-item"><i data-feather="phone" class=""></i> Phone : <strong>{{ $patient_data[0]->phone }}</strong></li>
-                            <li class="list-inline-item"><i data-feather="map" class=""></i> Address : <strong>{{ $patient_data[0]->address }}</strong></li>
+                            <li class="list-inline-item"><i data-feather="calendar" class=""></i> Birthday :
+                                <strong>{{$birthday}}</strong>
+                            </li>
+                            <li class="list-inline-item"><i data-feather="phone" class=""></i> Phone :
+                                <strong>{{ $patient_data[0]->phone }}</strong>
+                            </li>
+                            <li class="list-inline-item"><i data-feather="map" class=""></i> Address :
+                                <strong>{{ $patient_data[0]->address }}</strong>
+                            </li>
                         </ul>
 
                     </div>
@@ -225,7 +239,7 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <!-- Notes -->
                         <div class="table-responsive">
-                            <table id="notes_datatable" class="table">
+                            <table id="notes_datatable" class="datatables-ajax table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -397,8 +411,8 @@ $birthday = $dt->format('d/m/Y');
                             <div class="col-md-10">
                             </div>
                             <div class="col-md-2 text-right">
-                                <button id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
-                                    data-target="#add_storage_modal"><i data-feather="plus"></i></button> 
+                                <button class="btn btn-icon btn-primary" data-toggle="modal"
+                                    data-target="#modal_form_storage"><i data-feather="plus"></i></button>
 
                                 <!-- <button class="btn btn-icon btn-primary"><i data-feather="plus"></i></button> -->
 
@@ -413,15 +427,16 @@ $birthday = $dt->format('d/m/Y');
                                             <table id="storage_datatable" class="table">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Title</th>
                                                         <th>Description</th>
-                                                        <th>
-                                                            Action
-                                                        </th>
+                                                        <th>Attachment</th>
+                                                        <th>Created</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($storages as $storage)
+                                                    <!-- @foreach($storages as $storage)
                                                     <tr>
                                                         <td><span>{{ $storage->title }}</span></td>
                                                         <td><span>{{ $storage->description }}</span></td>
@@ -447,7 +462,7 @@ $birthday = $dt->format('d/m/Y');
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    @endforeach
+                                                    @endforeach -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -475,7 +490,8 @@ $birthday = $dt->format('d/m/Y');
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="NOTE_MODAL_TITLE">Modal title</h5>
-                <button type="button" onclick="_reset_note_form()" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" onclick="_reset_note_form()" class="close" data-dismiss="modal"
+                    aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -488,18 +504,20 @@ $birthday = $dt->format('d/m/Y');
             <div class="modal-footer">
                 <button onclick="_submit_note_form()" class="btn btn-primary"><i data-feather="save"></i>&nbsp;Save
                     <span id="SPAN_SAVE"></span> </button>
-                <button onclick="_reset_note_form()" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+                <button onclick="_reset_note_form()" data-dismiss="modal" class="btn btn-danger"><i
+                        data-feather="x"></i>&nbsp;Cancel</button>
             </div>
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
 
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="add_storage_modal">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modal_form_storage">
     <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="STORAGE_MODAL_TITLE">Add file</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -508,14 +526,15 @@ $birthday = $dt->format('d/m/Y');
             <div class="modal-body">
 
 
-                <form action="{{ route('file.upload.post') }}" method="POST" enctype="multipart/form-data">
+                <!-- <form id="FORM_STORAGE" action="{{ route('file.upload.post') }}" method="POST" enctype="multipart/form-data"> -->
+                <form id="FORM_STORAGE" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" id="p_id" name="p_id" value="{{$patient_id}}">
+                    <input type="hidden" id="patient_id" name="patient_id" value="{{$patient_id}}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label" for="birth-day">Title</label>
-                                <input class="form-control form-control-sm" id="a_title" name="a_title" type="text"
+                                <input class="form-control form-control-sm" id="title" name="title" type="text"
                                     required>
                             </div>
                         </div>
@@ -524,23 +543,22 @@ $birthday = $dt->format('d/m/Y');
                             <div class="form-group">
                                 <label class="form-label" for="cf-default-textarea">Description</label>
                                 <div class="form-control-wrap">
-                                    <textarea class="form-control form-control-sm" cols="30" rows="5" id="a_description"
-                                        name="a_description" placeholder="Write your description" required></textarea>
+                                    <textarea class="form-control form-control-sm" cols="30" rows="5" id="description"
+                                        name="description" placeholder="Write your description" required></textarea>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <input type="file" name="file" class="form-control" required>
-                        </div>
+                        <!-- <div class="col-md-12">
+                            <div id="my_camera"></div>
+                        </div> -->
 
-
                         <div class="col-md-12">
-                            <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                <li class="text-right">
-                                    <button type="submit" class="btn btn-lg btn-primary">Save</button>
-                                </li>
-                            </ul>
+
+                            <div class="form-group">
+                                <input type="file" class="form-control-file" name="file" id="file" required />
+                            </div>
+
                         </div>
 
                     </div>
@@ -549,36 +567,67 @@ $birthday = $dt->format('d/m/Y');
 
             </div><!-- .modal-body -->
 
+            <div class="modal-footer">
+                <button onclick="$('#FORM_STORAGE').submit()" class="btn btn-primary"><i
+                        data-feather="save"></i>&nbsp;Save
+                    <span id="SPAN_SAVE_STORAGE"></span> </button>
+                <button data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+            </div>
+
         </div><!-- .modal-content -->
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
 
+
+<div id="my_camera"></div>
+	
 @endsection
 
 @section('vendor-script')
 <script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+<!-- <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script> -->
+
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
+
+
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('new-assets/js/recorder.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"
+    integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA=="
+    crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ asset('new-assets/js/webcam/webcam.min.js') }}"></script>
 @endsection
 @section('page-script')
 <!-- <script src="{{ asset('new-assets/js/recorder-script.js') }}"></script> -->
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
+Webcam.set({
+    width: 320,
+    height: 240,
+    image_format: 'jpeg',
+    jpeg_quality: 90
+});
+Webcam.attach('#my_camera');
+
 $(document).ready(function() {
-    var table = $('.datatable').DataTable();
+    //var table = $('.datatable').DataTable();
+    //$("a.fancybox-file").fancybox();
 });
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
 });
-
+/* nOTES */
 var dtUrl = '/profile/sdt/notes/{{ $patient_data[0]->id }}';
 var notes_datatable = $('#notes_datatable');
 notes_datatable.DataTable({
@@ -602,8 +651,32 @@ var _reload_notes_datatable = function() {
     $('#notes_datatable').DataTable().ajax.reload();
 }
 
+/* storageS */
+var dtStorageUrl = '/profile/sdt/storages/{{ $patient_data[0]->id }}';
 var storage_datatable = $('#storage_datatable');
-storage_datatable.DataTable();
+storage_datatable.DataTable({
+    responsive: true,
+    processing: true,
+    paging: true,
+    ordering: false,
+    ajax: {
+        url: dtStorageUrl,
+        type: 'POST',
+        data: {
+            pagination: {
+                perpage: 50,
+            },
+        },
+    },
+    lengthMenu: [5, 10, 25, 50],
+    pageLength: 25,
+    drawCallback: function(settings) {
+        $("a.fancybox-file").fancybox();
+    },
+});
+var _reload_storages_datatable = function() {
+    $('#storage_datatable').DataTable().ajax.reload();
+}
 
 
 function _formNote(patient_id, note_id) {
@@ -626,7 +699,7 @@ function _formNote(patient_id, note_id) {
     });
 };
 
-function _reset_note_form(){
+function _reset_note_form() {
     console.log('_reset_note_form');
     var modal_content_id = "modal_form_note_body";
     stopRecording();
@@ -758,5 +831,36 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     });
     return blob;
 }
+
+/* Storage form */
+$("#FORM_STORAGE").validate({
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        var formData = new FormData($(form)[0]);
+        $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            data: formData,
+            url: '/profile/form/storage',
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    $("#modal_form_storage").modal('hide');
+                    _showResponseMessage("success", response.msg);
+                    _reload_storages_datatable();
+                    $("#SPAN_SAVE_STORAGE").removeClass("spinner-border spinner-border-sm");
+                } else {
+                    _showResponseMessage("error", response.msg);
+                }
+            },
+            error: function() {}
+        }).done(function(data) {});
+        return false;
+    },
+});
 </script>
 @endsection

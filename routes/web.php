@@ -33,6 +33,9 @@ Route::get('/profile/form/note/{patient_id}/{note_id}', [App\Http\Controllers\Ap
 Route::post('/profile/form/note', [App\Http\Controllers\AppController::class, 'storeFormNote']);
 Route::delete('/profile/delete/note/{note_id}', [App\Http\Controllers\AppController::class, 'deleteNote']);
 Route::post('/profile/sdt/notes/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtNotes']);
+Route::post('/profile/sdt/storages/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtStorages']);
+Route::post('/profile/form/storage', [App\Http\Controllers\AppController::class, 'storeFormStorage']);
+Route::get('/profile/patient/storage/{id}/download', [App\Http\Controllers\AppController::class, 'downloadPatientFile']);
 
 
 Route::group(['middleware' => ['auth', 'is_admin']], function () {

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\note;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Models\Patientstorage;
 use App\Library\Helpers\Helper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Library\Services\DbHelperTools;
+use Illuminate\Support\Facades\Storage;
 
 class AppController extends Controller
 {
@@ -146,6 +147,86 @@ class AppController extends Controller
                 $row[]=$created;
                 //Actions
                 $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deleteNote('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                $row[]=$btn_delete;
+            $data[]=$row;
+        }    
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+    public function storeFormStorage(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $id = 0;
+        $resultPath='';
+        if($request->hasFile('file')){
+            $uploadedFile = $request->file ( 'file' );
+            $original_name=time().'_'.$uploadedFile->getClientOriginalName();
+            
+            $path = 'uploads/files/docs/';
+            $filePath='files/docs/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+
+			$resultPath=Storage::disk('public_uploads')->putFileAs ( $filePath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $filePath."{$original_name}" );
+			if(!$exists) {
+				$resultPath=null;
+			}
+        }
+        if ($request->isMethod('post')) {
+
+            //dd($request->all());
+
+            $DbHelperTools=new DbHelperTools();
+            $data = array(
+                'id'=>$request->id,
+                'patient_id'=>$request->patient_id,
+                'title'=>$request->title,
+                'description'=>$request->description,
+                'url'=>(isset($resultPath))?base64_encode($resultPath):null,
+            );
+            $storage_id=$DbHelperTools->managePatientStorage($data);
+            $success = true;
+            $msg = 'You have successfully upload file.';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
+    }
+    public function downloadPatientFile($id)
+    {
+        $storage = Patientstorage::where('id', $id)->firstOrFail();
+		//$exists = Storage::disk ( 'public_uploads' )->exists ( base64_decode($storage->url));
+        $pathToFile='uploads/'.base64_decode($storage->url);
+        //dd($pathToFile);
+        return response()->download($pathToFile);
+    }
+    public function sdtStorages(Request $request,$patient_id)
+    {
+        $data=$meta=[];
+        $files = Patientstorage::where('patient_id',$patient_id)->orderByDesc('id')->get();
+        foreach ($files as $d) {
+            $row=array();
+                //ID
+                $row[]='#FILE-'.$d->id;
+                //<th>Title</th>
+                $row[]=$d->title;
+                //<th>Description</th>
+                $row[]=$d->description;
+                //attachment
+                $btn_download='<a href="/profile/patient/storage/'.$d->id.'/download" class="btn btn-icon btn-outline-primary" title="download">'.Helper::getSvgIconeByAction('DOWNLOAD').'</a>';
+                $file=(isset($d->url))?base64_decode($d->url):'';
+                $btn_fancybox='<a class="btn btn-icon btn-outline-info mr-1 fancybox-file" href="/uploads/'.$file.'">'.Helper::getSvgIconeByAction('VIEW').'</a>';
+                $row[]=$btn_fancybox.$btn_download;
+                //<th>Created</th>
+                $created='<p class="mb-0"><span class="badge badge-light-primary">Created at : '.$d->created_at->format('Y/m/d h:i:s').'</span></p>';
+                $row[]=$created;
+                //Actions
+                $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deleteStorage('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
                 $row[]=$btn_delete;
             $data[]=$row;
         }    

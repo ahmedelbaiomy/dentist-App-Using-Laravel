@@ -2,8 +2,10 @@
 namespace App\Library\Services;
 use Carbon\Carbon;
 use App\Models\note;
+use App\Models\Storage;
 use App\Models\Schedule;
 use App\Models\Appointment;
+use App\Models\Patientstorage;
 use Illuminate\Support\Facades\DB;
   
 class DbHelperTools
@@ -123,5 +125,30 @@ class DbHelperTools
         $date = $dt->addDays(1);
         $start_date=$date->format('Y-m-d');
         return $this->checkNearstAvalabilityTime($doctor_id,$start_date,$iCount);
+    }
+    public function managePatientStorage($data){
+        $id=0;
+        if (count($data)>0){
+            $row = new Patientstorage();
+            $id=(isset($data['id']))?$data['id']:0;
+            if ($id > 0) {
+                $row = Patientstorage::find ( $id );
+            }
+            if(isset($data['patient_id'])){
+                $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
+            }
+            if(isset($data['title'])){
+                $row->title = (isset($data['title']))?$data['title']:null;
+            }
+            if(isset($data['description'])){
+                $row->description = (isset($data['description']))?$data['description']:null;
+            }
+            if(isset($data['url'])){
+                $row->url = (isset($data['url']))?$data['url']:null;
+            }
+            $row->save ();
+            $id = $row->id;
+        }
+        return $id;
     }      
 }
