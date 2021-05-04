@@ -548,18 +548,28 @@ $birthday = $dt->format('d/m/Y');
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <div class="col-md-12">
-                            <div id="my_camera"></div>
-                        </div> -->
-
+                        <!-- WEBCAM JS -->
                         <div class="col-md-12">
-
+                            <button onclick="take_snapshot()" class="btn btn-icon btn-outline-primary" onclick=""><i
+                                    data-feather="camera"></i></button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" id="data_uri_hidden">
+                                <div id="my_camera"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card" id="results"></div>
+                            </div>
+                        </div>
+                        <!-- WEBCAM JS -->
+                        <!-- INPUT FILE -->
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <input type="file" class="form-control-file" name="file" id="file" required />
                             </div>
-
                         </div>
+                        <!-- INPUT FILE -->
 
                     </div>
                 </form>
@@ -578,9 +588,6 @@ $birthday = $dt->format('d/m/Y');
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
 
-
-<div id="my_camera"></div>
-	
 @endsection
 
 @section('vendor-script')
@@ -610,13 +617,24 @@ $birthday = $dt->format('d/m/Y');
 <!-- <script src="{{ asset('new-assets/js/recorder-script.js') }}"></script> -->
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
-Webcam.set({
+/* Webcam.set({
     width: 320,
     height: 240,
     image_format: 'jpeg',
     jpeg_quality: 90
 });
-Webcam.attach('#my_camera');
+Webcam.attach('#my_camera'); */
+
+function take_snapshot() {
+    // take snapshot and get image data
+    Webcam.snap(function(data_uri) {
+        // display results in page
+        document.getElementById('results').innerHTML =
+            '<h2>Here is your image:</h2>' +
+            '<img src="' + data_uri + '"/>';
+        $('#data_uri_hidden').val(data_uri);
+    });
+}
 
 $(document).ready(function() {
     //var table = $('.datatable').DataTable();
