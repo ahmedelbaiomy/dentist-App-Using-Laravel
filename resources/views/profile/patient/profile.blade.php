@@ -556,7 +556,7 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" id="data_uri_hidden">
+                                <input type="hidden" id="data_uri_hidden">
                                 <div id="my_camera"></div>
                             </div>
                             <div class="col-md-6">
@@ -635,7 +635,6 @@ function take_photo() {
         // display results in page
         document.getElementById('results').innerHTML ='<img src="' + data_uri + '"/>';
         $('#data_uri_hidden').val(data_uri);
-        $('#file').val(data_uri);
     });
 }
 
@@ -708,8 +707,7 @@ function _formNote(patient_id, note_id) {
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
     var modalTitle = note_id > 0 ? $("#INPUT_HIDDEN_EDIT_NOTE").val() : $("#INPUT_HIDDEN_NEW_NOTE").val();
-    $("#NOTE_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('
-        EDIT ')!!} ' + modalTitle);
+    $("#NOTE_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
     $.ajax({
         url: "/profile/form/note/" + patient_id + '/' + note_id,
         type: "GET",
@@ -858,6 +856,25 @@ $("#FORM_STORAGE").validate({
     rules: {},
     messages: {},
     submitHandler: function(form) {
+
+
+        var formData = new FormData(form);
+        var fileUrl = $('#data_uri_hidden').val();
+        if (fileUrl != '') {
+            var block = fileUrl.split(";");
+            // Get the content type of the image
+            var contentType = block[0].split(":")[1]; // In this case "image/gif"
+
+            console.log(contentType);return false;
+            // get the real base64 content of the file
+            var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
+            // Convert it to a blob to upload
+            var blob = b64toBlob(realData, contentType);
+            var filename = Math.floor(Date.now() / 1000);
+            formData.append("file", blob, filename + ".wav");
+        }
+
+
         var formData = new FormData($(form)[0]);
         $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
         $.ajax({
