@@ -620,8 +620,8 @@ $birthday = $dt->format('d/m/Y');
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
 Webcam.set({
-    width: 320,
-    height: 240,
+    width: 230,
+    height: 173,
     image_format: 'jpeg',
     jpeg_quality: 90
 });
