@@ -552,7 +552,6 @@ $birthday = $dt->format('d/m/Y');
                         <div class="col-md-12">
                             <button type="button" onclick="setup_camera(); $(this).hide().next().show();" class="btn btn-outline-primary"><i data-feather="camera"></i>&nbsp;Access Camera</button>
                             <button type="button" onclick="take_photo()" class="btn btn-outline-primary" style="display:none"><i data-feather="camera"></i> Take photos</button>
-                            
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -565,11 +564,11 @@ $birthday = $dt->format('d/m/Y');
                         </div>
                         <!-- WEBCAM JS -->
                         <!-- INPUT FILE -->
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="form-group">
                                 <input type="file" class="form-control-file" name="file" id="file" required />
                             </div>
-                        </div>
+                        </div> -->
                         <!-- INPUT FILE -->
 
                     </div>
@@ -633,7 +632,7 @@ function take_photo() {
     // take snapshot and get image data
     Webcam.snap(function(data_uri) {
         // display results in page
-        document.getElementById('results').innerHTML ='<img src="' + data_uri + '"/>';
+        $('#results').val('<img class="img-fluid" src="' + data_uri + '"/>');
         $('#data_uri_hidden').val(data_uri);
     });
 }
@@ -857,26 +856,22 @@ $("#FORM_STORAGE").validate({
     messages: {},
     submitHandler: function(form) {
 
-
+        $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
         var formData = new FormData(form);
         var fileUrl = $('#data_uri_hidden').val();
         if (fileUrl != '') {
             var block = fileUrl.split(";");
             // Get the content type of the image
             var contentType = block[0].split(":")[1]; // In this case "image/gif"
-
-            console.log(contentType);return false;
             // get the real base64 content of the file
             var realData = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
             // Convert it to a blob to upload
             var blob = b64toBlob(realData, contentType);
             var filename = Math.floor(Date.now() / 1000);
-            formData.append("file", blob, filename + ".wav");
+            formData.append("file", blob, filename + ".jpeg");
         }
-
-
-        var formData = new FormData($(form)[0]);
-        $("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
+        //var formData = new FormData($(form)[0]);
+        //$("#SPAN_SAVE_STORAGE").addClass("spinner-border spinner-border-sm");
         $.ajax({
             type: "POST",
             dataType: 'json',
