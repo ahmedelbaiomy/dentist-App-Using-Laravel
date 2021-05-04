@@ -632,7 +632,7 @@ function take_photo() {
     // take snapshot and get image data
     Webcam.snap(function(data_uri) {
         // display results in page
-        $('#results').val('<img class="img-fluid" src="' + data_uri + '"/>');
+        $('#results').html('<img class="img-fluid" src="' + data_uri + '"/>');
         $('#data_uri_hidden').val(data_uri);
     });
 }
