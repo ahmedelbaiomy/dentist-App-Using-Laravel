@@ -586,7 +586,15 @@ $birthday = $dt->format('d/m/Y');
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
 
-l(async () => {
+let constraints = {video: {width: 9999}};
+    video.srcObject = await navigator.mediaDevices.getUserMedia(constraints);
+    let track = video.srcObject.getTracks()[0];
+    if (track.getSettings) {
+      let {width, height} = track.getSettings();
+      console.log(`${width}x${height}`);
+    }
+
+/* l(async () => {
   try {
     let constraints = {video: {width: 9999}};
     video.srcObject = await navigator.mediaDevices.getUserMedia(constraints);
@@ -600,7 +608,7 @@ l(async () => {
   } catch(e) {
     console.log(e);
   }
-})();
+})(); */
 
 Webcam.set({
     width: 230,
