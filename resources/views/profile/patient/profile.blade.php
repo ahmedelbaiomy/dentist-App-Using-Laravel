@@ -586,22 +586,23 @@ $birthday = $dt->format('d/m/Y');
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
 
-/* navigator.getMedia = ( navigator.getUserMedia || // use the proper vendor prefix
+navigator.getMedia = ( navigator.getUserMedia || // use the proper vendor prefix
                        navigator.webkitGetUserMedia ||
                        navigator.mozGetUserMedia ||
                        navigator.msGetUserMedia);
 
 navigator.getMedia({video: true}, function() {
   // webcam is available
-  stream.getTracks()[0].getSettings();
+  console.log('webcam is available');
 }, function() {
   // webcam is not available
-}); */
+  console.log('webcam is not available');
+});
 
 
-let stream = navigator.mediaDevices.getUserMedia({video: true});
+/* let stream = navigator.mediaDevices.getUserMedia({video: true});
 let {width, height} = stream.getTracks()[0].getSettings();
-console.log(`${width}x${height}`); // 640x480
+console.log(`${width}x${height}`); // 640x480 */
 
 Webcam.set({
     width: 768,
