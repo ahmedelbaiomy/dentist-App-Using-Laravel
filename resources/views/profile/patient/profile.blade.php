@@ -585,12 +585,13 @@ $birthday = $dt->format('d/m/Y');
 <!-- <script src="{{ asset('new-assets/js/recorder-script.js') }}"></script> -->
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
-Webcam.set({
-    width: 1280,
-	height: 720,
+/* Webcam.set({
+    width: 320,
+	height: 240,
     image_format: 'jpeg',
     jpeg_quality: 90
-});
+}); */
+Webcam.set();
 function setup_camera() {
     $('#data_uri_hidden').val('');
 	Webcam.reset();
