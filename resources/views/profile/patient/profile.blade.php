@@ -436,33 +436,6 @@ $birthday = $dt->format('d/m/Y');
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <!-- @foreach($storages as $storage)
-                                                    <tr>
-                                                        <td><span>{{ $storage->title }}</span></td>
-                                                        <td><span>{{ $storage->description }}</span></td>
-                                                        <td class="text-center">
-                                                            <div class="btn-group btn-group-sm">
-                                                                <a href="{{ route('storage.download', $storage->id) }}"
-                                                                    class="btn btn-primary"><i
-                                                                        class="icon-cloud"></i></a>
-                                                                <button
-                                                                    onclick="delete_func('delete_frm_{{ $storage->id }}')"
-                                                                    type="button" class="btn btn-danger">
-                                                                    <form
-                                                                        action="{{ route('doctor.storage.destroy', ['storage_id' => $storage->id, 'patient_id' => $patient_id ])}}"
-                                                                        name="delete_frm_{{ $storage->id }}"
-                                                                        id="delete_frm_{{ $storage->id }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <i class="icon-cancel"></i>
-                                                                    </form>
-
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -594,13 +567,6 @@ $birthday = $dt->format('d/m/Y');
 
 @section('vendor-script')
 <script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
-<!-- <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script> -->
-
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
@@ -619,6 +585,11 @@ $birthday = $dt->format('d/m/Y');
 <!-- <script src="{{ asset('new-assets/js/recorder-script.js') }}"></script> -->
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
+
+let stream = await navigator.mediaDevices.getUserMedia({video: true});
+let {width, height} = stream.getTracks()[0].getSettings();
+console.log(`${width}x${height}`); // 640x480
+
 Webcam.set({
     width: 230,
     height: 173,

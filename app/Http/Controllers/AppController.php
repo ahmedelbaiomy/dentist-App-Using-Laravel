@@ -50,9 +50,6 @@ class AppController extends Controller
         }
         $datas = json_encode($cat_arrs);
 
-        $storages = DB::select("SELECT * FROM patient_storage WHERE patient_id=?", [$patient_id]);
-
-
         $invoices = DB::select("SELECT invoices.id, invoices.code, invoices.from,invoices.paid, users.email AS d_email, invoices.to, patients.email AS p_email, t.amount  FROM invoices
             LEFT JOIN users ON invoices.from  = users.id
             LEFT JOIN patients ON invoices.to = patients.id
@@ -65,7 +62,7 @@ class AppController extends Controller
 
         //$notes = DB::table('notes')->where('patient_id',$patient_id)->get();
         $notes = note::where('patient_id',$patient_id)->get();
-        return view('profile.patient.profile', compact('patient_id', 'datas','notes','services', 'invoices', 'patient_data', 'short_name', 'storages','total','paid','dept'));
+        return view('profile.patient.profile', compact('patient_id', 'datas','notes','services', 'invoices', 'patient_data', 'short_name','total','paid','dept'));
     }
     public function formNote($patient_id,$note_id){
         $note=null;
