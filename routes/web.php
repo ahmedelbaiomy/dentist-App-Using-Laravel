@@ -25,6 +25,16 @@ Route::get('/home', function () {
     return redirect('/login');
 });
 
+Route::prefix('backup')->group(function () {
+    Route::prefix('data')->group(function () {
+        Route::get('/import', [App\Http\Controllers\BackupController::class, 'import']);
+        Route::get('/import/categories', [App\Http\Controllers\BackupController::class, 'importCategories']);
+        Route::get('/import/services', [App\Http\Controllers\BackupController::class, 'importServices']);
+        Route::get('/export', [App\Http\Controllers\BackupController::class, 'export']);
+        Route::get('/clear', [App\Http\Controllers\BackupController::class, 'clear']);
+    });
+  });
+
 Route::get('account_setting', [App\Http\Controllers\HomeController::class, 'account_setting'])->name('account_setting');
 Route::post('changepassword', [App\Http\Controllers\HomeController::class, 'changepassword'])->name('changepassword');
 /* NEW PROFILE */
@@ -37,7 +47,23 @@ Route::post('/profile/sdt/notes/{patient_id}', [App\Http\Controllers\AppControll
 Route::post('/profile/sdt/storages/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtStorages']);
 Route::post('/profile/form/storage', [App\Http\Controllers\AppController::class, 'storeFormStorage']);
 Route::get('/profile/patient/storage/{id}/download', [App\Http\Controllers\AppController::class, 'downloadPatientFile']);
+Route::get('/profile/get/procedures/tooths', [App\Http\Controllers\AppController::class, 'getProceduresTooths']);
+Route::get('/profile/construct/{type}/{patient_id}', [App\Http\Controllers\AppController::class, 'profileConstruct']);
+Route::post('/profile/sdt/invoices/{patient_id}', [App\Http\Controllers\AppController::class, 'sdtInvoices']);
+Route::get('/profile/get/invoice/items/{invoice_id}', [App\Http\Controllers\AppController::class, 'getInvoiceItems']);
+Route::get('/profile/form/invoice/{patient_id}/{invoice_id}', [App\Http\Controllers\AppController::class, 'formInvoice']);
+Route::post('/profile/form/invoice', [App\Http\Controllers\AppController::class, 'storeFormInvoice']);
+Route::get('/profile/form/discount/{invoice_id}', [App\Http\Controllers\AppController::class, 'formDiscount']);
+Route::post('/profile/form/discount', [App\Http\Controllers\AppController::class, 'storeFormDiscount']);
+Route::get('/profile/invoice/items/{invoice_id}', [App\Http\Controllers\AppController::class, 'formInvoiceItems']);
+Route::post('/profile/invoice/items', [App\Http\Controllers\AppController::class, 'storeInvoiceItems']);
+Route::post('/profile/sdt/services/to/invoice/{invoice_id}', [App\Http\Controllers\AppController::class, 'sdtServiceToInvoice']);
+Route::get('/profile/form/payment/{payment_id}/{invoice_id}', [App\Http\Controllers\AppController::class, 'formPayment']);
+Route::post('/profile/form/payment', [App\Http\Controllers\AppController::class, 'storeFormPayment']);
+Route::get('/profile/stats/invoice/{patient_id}', [App\Http\Controllers\AppController::class, 'getPatientStatsInvoice']);
 
+Route::get('/profile/form/refund/{refund_id}/{invoice_id}', [App\Http\Controllers\AppController::class, 'formRefund']);
+Route::post('/profile/form/refund', [App\Http\Controllers\AppController::class, 'storeFormRefund']);
 
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
@@ -46,6 +72,38 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 	});
 
     Route::get('admin/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.home');
+    
+    Route::prefix('admin/sdt')->group(function () {
+        Route::post('/doctors/stats', [App\Http\Controllers\Admin\HomeController::class, 'sdtDoctorStats']);
+        Route::post('/services/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtServices']);
+        Route::post('/procedures/{patient_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtProcedures']);
+    });
+    Route::get('/admin/form/service/{service_id}', [App\Http\Controllers\Admin\ServicesController::class, 'formService']);
+    Route::post('/admin/form/service', [App\Http\Controllers\Admin\ServicesController::class, 'storeFormService']);
+    
+    
+    Route::prefix('admin/form')->group(function () {
+        Route::get('/service/{service_id}', [App\Http\Controllers\Admin\ServicesController::class, 'formService']);
+        Route::post('/service', [App\Http\Controllers\Admin\ServicesController::class, 'storeFormService']);
+        Route::get('/category/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'formCategory']);
+        Route::post('/category', [App\Http\Controllers\Admin\ServicesController::class, 'storeFormCategory']);
+
+        Route::get('/procedure/service/item/{procedure_service_item_id}/{teeth_id}/{patient_id}/{doctor_id}', [App\Http\Controllers\Admin\ServicesController::class, 'formProcedureServiceItem']);
+        Route::post('/procedure/service/item', [App\Http\Controllers\Admin\ServicesController::class, 'storeFormProcedureServiceItem']);
+    });
+
+    Route::prefix('admin/select')->group(function () {
+        Route::get('/json/categories', [App\Http\Controllers\Admin\ServicesController::class, 'selectCategoriesOptions']);
+        Route::get('/json/services/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'selectServicesOptions']);
+        Route::get('/json/doctors/{doctor_id}', [App\Http\Controllers\Admin\ServicesController::class, 'selectDoctorsOptions']);
+    });
+    Route::prefix('admin/delete')->group(function () {
+        Route::delete('/service/{service_id}', [App\Http\Controllers\Admin\ServicesController::class, 'deleteService']);
+        Route::delete('/category/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'deleteCategory']);
+    });
+    Route::get('/admin/category/list', [App\Http\Controllers\Admin\ServicesController::class, 'listCategories']);
+    Route::get('/admin/get/price/service/{service_id}', [App\Http\Controllers\Admin\ServicesController::class, 'getPriceService']);
+    
 
     Route::get('admin/services', [App\Http\Controllers\Admin\ServicesController::class, 'index'])->name('admin.services');
     Route::post('admin/services', [App\Http\Controllers\Admin\ServicesController::class, 'store'])->name('admin.services');

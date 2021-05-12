@@ -3,6 +3,47 @@ namespace App\Library\Helpers;
   
 class Helper
 {
+    public static function getcssClassByType($type)
+    {
+        $cssClass = '';
+        $shortLabel = '';
+        switch ($type) {
+            case "existing":
+                $cssClass = 'info';
+                $shortLabel = 'E';
+                break;
+            case "planned":
+                $cssClass = 'danger';
+                $shortLabel = 'P';
+                break;
+            case "completed":
+                $cssClass = 'success';
+                $shortLabel = 'C';
+                break;
+            //invoice
+            case "draft":
+                $cssClass = 'warning';
+                $shortLabel = 'Draft';
+                break;
+            case "not_paid":
+                $cssClass = 'danger';
+                $shortLabel = 'Not paid';
+                break;
+            case "partial_paid":
+                $cssClass = 'primary';
+                $shortLabel = 'Partial paid';
+                break;
+            case "paid":
+                $cssClass = 'success';
+                $shortLabel = 'Paid';
+                break;
+            case "cancelled":
+                $cssClass = 'danger';
+                $shortLabel = 'Cancelled';
+                break;
+        }
+        return [$cssClass,$shortLabel];
+    }
     public static function getSvgIconeByAction($action)
     {
       $icone = '';
@@ -45,6 +86,24 @@ class Helper
             break;
         case "DOWNLOAD":
             $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>';
+            break;
+        case "TRENDING":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>';
+            break;
+        case "DOLLAR":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>';
+            break;
+        case "GIFT":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-gift"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>';
+            break;
+        case "PERCENT":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-percent"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>';
+            break;
+        case "TRENDING-DOWN":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-down"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>';
+            break;
+        case "MORE-VERTICAL":
+            $icone = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>';
             break;
       }
       return $icone;             

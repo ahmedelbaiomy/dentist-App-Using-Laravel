@@ -5,9 +5,10 @@
 @section('vendor-style')
 <!-- vendor css files -->
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
-<link href="{{ asset('assets/css/libs/jstree.css?ver=2.3.0') }}" rel="stylesheet">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -17,567 +18,374 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Services List</h4>
-                <div class="row my-3">
-                    <div class="col-md-12 text-right">
-                        <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
-                            data-target="#add_service_modal"><i data-feather="plus"></i></a>
+
+<div class="row match-height">
+    <!-- Employee Task Card -->
+    <div class="col-lg-3">
+        <div class="card card-employee-task">
+            <div class="card-header">
+                <h4 class="card-title">Categories</h4>
+                <div class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="todoActions"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i data-feather="more-vertical" class="font-medium-2 text-body"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="todoActions">
+                        <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formCategory(0)"><i data-feather="plus"></i> New</a>
+                        <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_loadCategories()"><i data-feather="refresh-ccw"></i> Reload</a>
                     </div>
                 </div>
-
-                <div class="row gy-4">
-                    <div class="col-md-3">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <input type="hidden" id="created_id">
-                                <div class="form-group">
-                                    <div class="form-control-wrap">
-                                        <input type="text" class="form-control form-control-outlined" id="root_cat"
-                                            placeholder="Input Root Category">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <div class="form-control-wrap">
-                                        <a href="#" class="btn btn-icon btn-primary" id="rootcat_save_btn"><i data-feather="plus"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="context-menu-tree">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-9">
-                        <div class="table-responsive">
-                            <table class="datatable table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Service Name</th>
-                                        <th>Price</th>
-                                        <th>Note</th>
-                                        <th>Category</th>
-                                        <th class="tb-tnx-action">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($services as $service)
-                                    <tr>
-                                        <td><span>{{ $service->service_name }}</span></td>
-                                        <td><span>{{ $service->price }}</span></td>
-                                        <td><span>{{ $service->note }}</span></td>
-                                        <td><span>{{ $service->s_name }}</span></td>
-                                        <td class="text-center">
-                                            <div class="btn-group btn-group-sm">
-                                                <button type="button" data-toggle="modal"
-                                                    data-target="#edit_service_modal"
-                                                    data-id="{{ json_encode($service) }}" class="btn btn-info">
-                                                    {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
-                                                </button>
-                                                <button onclick="delete_func('delete_frm_{{ $service->id }}')"
-                                                    type="button" class="btn btn-danger">
-                                                    <form action="{{ route('admin.services.destroy', $service->id)}}"
-                                                        name="delete_frm_{{ $service->id }}"
-                                                        id="delete_frm_{{ $service->id }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}
-                                                    </form>
-
-                                                </button>
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class="card-body" id="BLOCK_CATEGORIES">
+                
             </div>
         </div>
     </div>
+    <!--/ Employee Task Card -->
+    <div class="col-lg-9">
+        <!-- begin card -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Services <span id="spinner_reload_services"></span></h4>
+                <div class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="todoActions"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i data-feather="more-vertical" class="font-medium-2 text-body"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="todoActions">
+                        <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formService(0)"><i data-feather="plus"></i> New</a>
+                        <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_reload_services_datatable()"><i data-feather="refresh-ccw"></i> Reload</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="services_datatable">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th class="tb-tnx-action">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- begin card -->
+    </div>
 </div>
 
-
-<!-- @@ Add Modal @e -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="add_service_modal">
-    <div class="modal-dialog modal-lg" role="document">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="basicModalLabel">Add Service</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row gy-4">
-                    <input type="hidden" id="add_sel_category" value="0">
-                    <div class="col-md-4">
-                        <div id="add_context-menu-tree">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label" for="first-name">Service Name*</label>
-                                    <input type="text" id="a_service_name" name="a_service_name"
-                                        class="form-control form-control-lg" placeholder="Enter Service Name" require>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label" for="default-05">Price*(USD)</label>
-                                    <div class="form-control-wrap">
-                                        <input type="number" min="1" max="9999999999" id="a_price" name="a_price"
-                                            class="form-control form-control-lg">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label" for="cf-default-textarea">Note</label>
-                                    <div class="form-control-wrap">
-                                        <textarea class="form-control form-control-sm" cols="30" rows="5" id="a_note"
-                                            name="a_note" placeholder="Enter Note"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- .tab-pane -->
-                </div><!-- .tab-content -->
-            </div><!-- .modal-body -->
-            <div class="modal-footer">
-                <button href="#" class="btn btn-primary" id="service_save_btn"><i data-feather="save"></i>&nbsp;Save</button>
-                <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
-            </div>
-        </div><!-- .modal-content -->
-    </div><!-- .modal-dialog -->
-</div><!-- .modal -->
-
-
-
-
-
-
-
-<!-- @@ Edit Modal @e -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="edit_service_modal">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="basicModalLabel">Edit Service</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body modal-body-lg">
-
-                <input type="hidden" id="e_service_id" name="e_service_id">
-                <div class="modal-body">
-                    <div class="row gy-4">
-                        <input type="hidden" id="edit_sel_category" value="0">
-                        <div class="col-md-4">
-                            <div id="edit_context-menu-tree">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="first-name">Service Name*</label>
-                                        <input type="text" id="e_service_name" name="e_service_name"
-                                            class="form-control form-control-lg" placeholder="Enter Service Name"
-                                            require>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="default-05">Price* (USD)</label>
-                                        <div class="form-control-wrap">
-                                            <input type="number" min="1" max="9999999999" id="e_price" name="e_price"
-                                                class="form-control form-control-lg">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="form-label" for="cf-default-textarea">Note</label>
-                                        <div class="form-control-wrap">
-                                            <textarea class="form-control form-control-sm" cols="30" rows="5"
-                                                id="e_note" name="e_note" placeholder="Enter Note"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- .tab-pane -->
-
-                </div><!-- .tab-content -->
-            </div><!-- .modal-body -->
-            <div class="modal-footer">
-                <button href="#" class="btn btn-primary" id="service_update_btn"><i data-feather="save"></i>&nbsp;Update</button>
-                <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
-            </div>
-        </div><!-- .modal-content -->
-    </div><!-- .modal-dialog -->
-</div><!-- .modal -->
-
+<x-modal-form id="modal_form_category" formName="CATEGORY" content="modal_form_category_content" />
+<x-modal-form id="modal_form_service" formName="SERVICE" content="modal_form_service_content" />
 @endsection
 
 @section('vendor-script')
+<script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<!-- responsive -->
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
+
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
-<script src="{{ asset('assets/js/libs/jstree.js?ver=2.3.0') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
-$(document).ready(function() {
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@S service Home////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-var table = $('.datatable').DataTable();
-$("#context-menu-tree").jstree({
-    "core": {
-        "data": {!!$datas!!},
-        // 'data' : [
-        //     { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" },
-        //     { "id" : "ajson2", "parent" : "#", "text" : "Root node 2" },
-        //     { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
-        //     { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" },
-        // ],
-        "themes": {
-            "responsive": false
-        },
-        "check_callback": true
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
-    "plugins": ["contextmenu"],
-    "contextmenu": {
-        "items": function($node) {
-            var tree = $("#context-menu-tree").jstree(true);
-            return {
-                "Create": {
-                    "separator_before": false,
-                    "separator_after": false,
-                    "label": "Create",
-                    "action": function(obj) {
-                        $node = tree.create_node($node);
-                        tree.edit($node);
-                    }
-                },
-                "Rename": {
-                    "separator_before": false,
-                    "separator_after": false,
-                    "label": "Rename",
-                    "action": function(obj) {
-                        tree.edit($node);
-                    }
-                },
-                "Delete": {
-                    "separator_before": false,
-                    "separator_after": false,
-                    "label": "Delete",
-                    "action": function(obj) {
-                        tree.delete_node($node);
-                    }
+});
+//load categories
+_loadCategories();
+/* nOTES */
+var dtUrl = '/admin/sdt/services/0';
+var services_datatable = $('#services_datatable');
+services_datatable.DataTable({
+    responsive: true,
+    processing: true,
+    paging: true,
+    ordering: true,
+    ajax: {
+        url: dtUrl,
+        type: 'POST',
+        data: {
+            pagination: {
+                perpage: 50,
+            },
+        },
+    },
+    lengthMenu: [5, 10, 25, 50],
+    pageLength: 25,
+});
+var _reload_services_datatable = function() {
+    $('#services_datatable').DataTable().ajax.reload();
+}
+function _formService(service_id) {
+    var modal_id = "modal_form_service";
+    var modal_content_id = "modal_form_service_content";
+    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    $("#" + modal_id).modal("show");
+    $("#" + modal_content_id).html(spinner);
+    var modalTitle = (service_id > 0)? 'Edit service' : 'New service';
+    $("#SERVICE_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
+    $.ajax({
+        url: "/admin/form/service/" + service_id,
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#" + modal_content_id).html(html);
+            var idCategorie = $("#categorie_id_hidden").val();
+            _loadDatasCategoriesForSelectOptions('categoriesSelect',idCategorie);
+        },
+    });
+};
+function _loadDatasCategoriesForSelectOptions(select_id,selected_value = 0) { 
+    $.ajax({
+        url: '/admin/select/json/categories',
+        dataType: 'json',
+        success: function(response) {
+          var array = response;
+          if (array != '')
+          {
+            for (i in array) {                        
+             $('#'+select_id).append("<option value='"+array[i].id+"'>"+array[i].name+"</option>");
+           }
+          }
+        },
+    }).done(function() {
+        if(selected_value!=0 && selected_value!=''){
+            $('#'+select_id+' option[value="'+selected_value+'"]').attr('selected', 'selected');
+        }
+      });
+}
+
+$("#FORM_SERVICE").validate({
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        $("#SPAN_SAVE_SERVICE").addClass("spinner-border spinner-border-sm");
+        var formData = $(form).serializeArray(); // convert form to array
+        $.ajax({
+            type: "POST",
+            url: "/admin/form/service",
+            data: formData,
+            dataType: "JSON",
+            success: function(result) {
+                if (result.success) {
+                    _showResponseMessage("success", result.msg);
+                    $("#modal_form_service").modal("hide");
+                } else {
+                    _showResponseMessage("error", result.msg);
                 }
-            };
-        }
-    }
-}).bind("create_node.jstree", function(e, data) {
-    $.ajax({
-        url: '{{route("admin.services.category")}}',
-        type: "POST",
-        data: {
-            parent_id: data.node.parent,
-            name: data.node.text,
-            _token: "{{ csrf_token() }}",
-        },
-        success: function(response) {
-            $("#created_id").val(response['id'])
-        },
-    });
-}).bind("rename_node.jstree", function(e, data) {
-    $.ajax({
-        url: '{{route("admin.services.category")}}',
-        type: "PUT",
-        data: {
-            id: $("#created_id").val(),
-            name: data.node.text,
-            _token: "{{ csrf_token() }}",
-        },
-        success: function(response) {
-            console.log(response);
-        },
-    });
-
-}).bind("delete_node.jstree", function(e, data) {
-    $.ajax({
-        url: '{{route("admin.services.category.delete")}}',
-        type: "PUT",
-        data: {
-            id: data.node.id,
-            _token: "{{ csrf_token() }}",
-        },
-        success: function(response) {
-            console.log(response);
-        },
-    });
-});
-
-
-$("#context-menu-tree").bind("changed.jstree", function(e, data) {
-    // alert("Checked: " + data.node.id);
-    // alert("Parent: " + data.node.parent); 
-});
-
-$("#rootcat_save_btn").click(function(e) {
-    if ($("#root_cat").val() != "") {
-        $.ajax({
-            url: '{{ route("admin.services.rootcatstore") }}',
-            type: "POST",
-            data: {
-                name: $("#root_cat").val(),
-                _token: "{{ csrf_token() }}",
             },
-            success: function(response) {
-                //console.log(response['id']);
-                _showResponseMessage("success", 'Success.');
-                setTimeout(function(){ window.location.href = '{{route("admin.services")}}'; }, 1500);
+            error: function(error) {
+                _showResponseMessage(
+                    "error",
+                    "Oooops..."
+                );
+            },
+            complete: function(resultat, statut) {
+                $("#SPAN_SAVE_SERVICE").removeClass("spinner-border spinner-border-sm");
+                _reload_services_datatable();
             },
         });
-    }
-
-});
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@E service Home////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@S service add ////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-
-
-$("#add_context-menu-tree").jstree({
-    "core": {
-        "data": {!!$datas!!},
-        "themes": {
-            "responsive": false
-        },
-        "check_callback": true
+        return false;
     },
-    "plugins": ["contextmenu"],
-    "contextmenu": {
-        "items": function($node) {
-
-        }
-    }
 });
 
-
-$("#add_context-menu-tree").bind("changed.jstree", function(e, data) {
-    $("#add_sel_category").val(data.node.id);
-
-    //alert("Checked: " + data.node.id);
-    // alert("Parent: " + data.node.parent); 
-});
-
-
-
-
-
-
-$("#service_save_btn").click(function(e) {
-    e.preventDefault();
-    var service_name = $("#a_service_name").val();
-    var price = $("#a_price").val();
-    var note = $("#a_note").val();
-    var category = $("#add_sel_category").val();
-
-    if (service_name != "" && price != "") {
-        $.ajax({
-            url: '{{route("admin.services")}}',
-            type: "POST",
-            data: {
-                service_name: service_name,
-                price: price,
-                note: note,
-                category: category,
-                _token: "{{ csrf_token() }}",
-            },
-            success: function(response) {
-                $("#add_service_modal").modal('hide');
-                NioApp.Toast('Success.', 'success');
-                toastr.clear();
-                window.location.href = '{{route("admin.services")}}';
-            },
-        });
-    }
-});
-
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@E service add ////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@S service Eidt ////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-
-
-
-$('#edit_service_modal').on('show.bs.modal', function(e) {
-
-    var tmp = $('#edit_context-menu-tree').jstree(true);
-    if (tmp) {
-        tmp.destroy();
-    }
-
-    var service_data = $(e.relatedTarget).data('id');
-    $("#e_service_id").val(service_data['id']);
-    $("#e_service_name").val(service_data['service_name']);
-    $("#e_price").val(service_data['price']);
-    $("#e_note").val(service_data['note']);
-
-    // alert(service_data['category_id']);
-
-    var e_c_datas = {!!$datas!!};
-
-    var state_child = {
-        opened: true, // is the node open
-        disabled: false, // is the node disabled
-        selected: true // is the node selected
-    };
-
-    var state_parent = {
-        opened: true, // is the node open
-        disabled: false, // is the node disabled
-        selected: false // is the node selected
-    };
-
-    for (var i = 0; i < e_c_datas.length; i++) {
-
-        if (e_c_datas[i].id == service_data['category_id']) {
-            e_c_datas[i].state = state_child;
-        } else {
-            e_c_datas[i].state = state_parent;
-        }
-    };
-
-
-    console.log(e_c_datas);
-
-    $("#edit_context-menu-tree").jstree({
-        "core": {
-            "data": e_c_datas,
-            "themes": {
-                "responsive": false
-            },
-            "check_callback": true
+function _deleteService(id) {
+    var successMsg = "Your service has been deleted.";
+    var errorMsg = "Your service has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
         },
-        "plugins": ["contextmenu"],
-        "contextmenu": {
-            "items": function($node) {
-
-            }
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/delete/service/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    _reload_services_datatable();
+                },
+            });
         }
     });
+}
 
+function _loadCategories(){
+    var spinner ='<div class="spinner-border text-primary text-center"><span class="sr-only">Loading...</span></div>';
+    $("#BLOCK_CATEGORIES").html(spinner);
+    $.ajax({
+        url: "/admin/category/list",
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#BLOCK_CATEGORIES").html(html);
+        },
+    });
+}
 
+function _loadDatasByCategory(category_id){
+    var spinner ='<div class="spinner-border text-primary text-center"><span class="sr-only">Loading...</span></div>';
+    $('#spinner_reload_services').html(spinner);
+    var table = 'services_datatable';
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        url: '/admin/sdt/services/'+category_id,
+        success: function(response) {
+            $('#spinner_reload_services').html('');
+            if (response.data.length == 0) {
+                $('#'+table).dataTable().fnClearTable();
+                return 0;
+            }
+            $('#'+table).dataTable().fnClearTable();
+            $("#"+table).dataTable().fnAddData(response.data, true);
+        },
+        error: function() {
+            $('#'+table).dataTable().fnClearTable();
+        }
+    }).done(function(data) {
+        
+    });
+}
+function _formCategory(category_id) {
+    var modal_id = "modal_form_category";
+    var modal_content_id = "modal_form_category_content";
+    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    $("#" + modal_id).modal("show");
+    $("#" + modal_content_id).html(spinner);
+    var modalTitle = (category_id > 0)? 'Edit category' : 'New category';
+    $("#CATEGORY_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
+    $.ajax({
+        url: "/admin/form/category/" + category_id,
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#" + modal_content_id).html(html);
+        },
+    });
+};
 
-
-});
-
-
-$("#edit_context-menu-tree").bind("changed.jstree", function(e, data) {
-    $("#edit_sel_category").val(data.node.id);
-    //alert("Checked: " + data.node.id);
-    // alert("Parent: " + data.node.parent); 
-});
-
-
-$("#service_update_btn").click(function(e) {
-    e.preventDefault();
-    var id = $("#e_service_id").val();
-    var service_name = $("#e_service_name").val();
-    var price = $("#e_price").val();
-    var note = $("#e_note").val();
-    var category = $("#edit_sel_category").val();
-
-    if (service_name != "" && price != "") {
+$("#FORM_CATEGORY").validate({
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        $("#SPAN_SAVE_CATEGORY").addClass("spinner-border spinner-border-sm");
+        //var formData = $(form).serializeArray(); // convert form to array
+        var formData = new FormData($(form)[0]);
         $.ajax({
-            url: '{{route("admin.services")}}',
-            type: "PUT",
-            data: {
-                id: id,
-                service_name: service_name,
-                price: price,
-                note: note,
-                category: category,
-                _token: "{{ csrf_token() }}",
+            type: "POST",
+            url: "/admin/form/category",
+            data: formData,
+            dataType: "JSON",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(result) {
+                if (result.success) {
+                    _showResponseMessage("success", result.msg);
+                    $("#modal_form_category").modal("hide");
+                } else {
+                    _showResponseMessage("error", result.msg);
+                }
             },
-            success: function(response) {
-                $("#edit_service_modal").modal('hide');
-                NioApp.Toast('Success.', 'success');
-                toastr.clear();
-                window.location.href = '{{route("admin.services")}}';
+            error: function(error) {
+                _showResponseMessage(
+                    "error",
+                    "Oooops..."
+                );
+            },
+            complete: function(resultat, statut) {
+                $("#SPAN_SAVE_CATEGORY").removeClass("spinner-border spinner-border-sm");
+                _loadCategories();
             },
         });
-    }
+        return false;
+    },
 });
 
-
-/////////////////////////////////////////////////////////////////////////////
-////////////////////////@Eservice add ////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
-
-
-});
-function delete_func(val) {
-    document.getElementById(val).submit();
+function _deleteCategory(id) {
+    var successMsg = "Your category has been deleted.";
+    var errorMsg = "Your category has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/delete/category/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    _loadCategories();
+                },
+            });
+        }
+    });
 }
 </script>
 @endsection

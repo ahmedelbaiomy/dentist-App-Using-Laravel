@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
-    use HasFactory;
-    public $table = 'invoices';
+    use HasFactory,SoftDeletes;
+    public $table = 'inv_invoices';
 
-    protected $fillable = ['code', 'from', 'to','type','total'];
+    public function user()
+    {
+        return $this->belongsTo(User::class,'doctor_id');
+    }
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class,'patient_id');
+    }
 }

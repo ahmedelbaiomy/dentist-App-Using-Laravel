@@ -20,8 +20,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Patient Lists</h4>
-                <h5 class='text-success'>You have total {{ count($patients) }} Patients.</h5>
+                <h4 class="card-title">Patients List</h4>
                 <div class="table-responsive">
                     <table class="datatable table table-bordered">
                         <thead>
@@ -39,9 +38,9 @@
                         </thead>
                         <tbody>
                             @foreach($patients as $patient)
-                            <tr onClick="window.location.href = 'patient/{{$patient->id}}'"
-                                style="cursor: url(hand.cur), pointer">
-                                <td><span>{{ $patient->name }}</span></td>
+                            <tr>
+                                
+                                <td onClick="window.location.href = '/profile/patient/{{$patient->id}}'"><span>{{ $patient->name }}</span></td>
                                 <td><span>{{ $patient->email }}</span></td>
                                 <td><span>{{ $patient->birthday }}</span></td>
                                 <td><span>{{ $patient->address }}</span></td>
@@ -53,18 +52,18 @@
                                     <span class="tb-status text-warning">Complete</span>
                                     @endif
                                 </td>
+
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm">
-                                        <!-- <button type="button" data-toggle="modal" data-target="#edit_patient_modal"
-                                            data-id="{{ $patient }}" class="btn btn-info">
-                                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
-                                        </button> -->
+                                        <button type="button" class="btn btn-icon btn-sm btn-outline-info mr-1" onClick="window.location.href = '/profile/patient/{{$patient->id}}'">
+                                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('VIEW')!!}
+                                        </button>
                                         <button type="button" data-toggle="modal"
-                                            data-id="{{ $patient }}" class="btn btn-info">
+                                            data-id="{{ $patient }}" class="btn btn-icon btn-sm btn-outline-primary mr-1">
                                             {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
                                         </button>
                                         <button onclick="delete_func('delete_frm_{{ $patient->id }}')" type="button"
-                                            class="btn btn-danger">
+                                            class="btn btn-icon btn-sm btn-outline-danger mr-1">
                                             <form action="{{ route('reception.patient.destroy', $patient->id)}}"
                                                 name="delete_frm_{{ $patient->id }}" id="delete_frm_{{ $patient->id }}"
                                                 method="post">

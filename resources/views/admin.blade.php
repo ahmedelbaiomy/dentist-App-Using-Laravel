@@ -19,7 +19,6 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-0">Dashboard</h4>
-
             </div>
         </div>
     </div>

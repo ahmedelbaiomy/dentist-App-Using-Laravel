@@ -11,4 +11,8 @@ class Doctor extends Model
     public $table = 'doctors';
 
     protected $fillable = ['user_id', 'birthday', 'address', 'phone', 'photo', 'target'];
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Doctor;
 use App\Models\Service;
-use App\models\service_category;
 use App\Models\Scategory;
+use Illuminate\Http\Request;
+use App\Library\Helpers\Helper;
+use App\models\service_category;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Procedureserviceitem;
+use Illuminate\Support\Facades\File;
+use App\Library\Services\DbHelperTools;
+use Illuminate\Support\Facades\Storage;
 
 class ServicesController extends Controller
 {
@@ -125,4 +131,280 @@ class ServicesController extends Controller
         return redirect('/admin/services')->with('success', 'Staff Data is successfully deleted');
     }
 
+    public function sdtServices(Request $request,$category_id)
+    {
+        $data=$meta=[];
+        if($category_id>0){
+            $services = Service::where('category_id',$category_id)->orderByDesc('id')->get();
+        }else{
+            $services = Service::orderByDesc('id')->get(); 
+        }
+        
+        foreach ($services as $d) {
+            $row=array();
+                //<th>Code</th>
+                $row[]='<a style="cursor:pointer;" onclick="_formService('.$d->id.')">'.$d->code.'</a>';
+                //<th>Name</th>
+                $en_name='<p class="mb-0">'.$d->service_name.'</p>';
+                $ar_name='<p class="mb-0">'.$d->service_name_ar.'</p>';
+                $row[]=$en_name.$ar_name;
+                //<th>Price</th>
+                $row[]=$d->price;
+                //<th>Category</th>
+                $en_cat_name='<p class="mb-0">'.$d->category->name.'</p>';
+                $ar_cat_name='<p class="mb-0">'.$d->category->name_ar.'</p>';
+                $row[]=$en_cat_name.$ar_cat_name;
+                //Actions
+                $btn_edit='<button class="btn btn-icon btn-sm btn-outline-primary mr-1" onclick="_formService('.$d->id.')" title="Edit">'.Helper::getSvgIconeByAction('EDIT').'</button>';
+                $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteService('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                $row[]='<p class="mb-0">'.$btn_edit.$btn_delete.'</p>';
+            $data[]=$row;
+        }    
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+    public function formService($service_id){
+        $service=null;
+        if ($service_id > 0) {
+            $service = Service::find ( $service_id );
+        }
+        return view('admin.form.service',compact('service'));
+    }
+    public function storeFormService(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $id = 0;
+        $resultPath='';
+        if ($request->isMethod('post')) {
+            //dd($request->all());
+            $DbHelperTools=new DbHelperTools();
+            $service_id=$DbHelperTools->manageService($request->all());
+            $success = true;
+            $msg = 'Your service have been saved successfully';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
+    }
+    public function deleteService($id){
+        /**
+         * forceDelete
+         */
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id){
+            //delete from database
+            $deletedRows = $DbHelperTools->massDeletes([$id],'service',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }
+        return response()->json(['success'=>$success]);
+    }
+    public function selectCategoriesOptions(){
+        $result=[];
+        $rows=service_category::select('id','name')->get();
+        if(count($rows)>0){
+            foreach($rows as $row){
+                $result[]=['id'=>$row['id'],'name'=>$row['name']];
+            }
+        }
+        return response()->json($result);
+    }
+    public function listCategories(){
+        $categories = service_category::all ();
+        return view('admin.category.list',compact('categories'));
+    }
+
+    public function formCategory($category_id){
+        $category=null;
+        if ($category_id > 0) {
+            $category = service_category::find ( $category_id );
+        }
+        return view('admin.form.category',compact('category'));
+    }
+    public function storeFormCategory(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $id = 0;
+        $iconPath='';
+        if($request->hasFile('file')){
+            $uploadedFile = $request->file ( 'file' );
+            $original_name=time().'_'.$uploadedFile->getClientOriginalName();
+            
+            $path = 'uploads/files/svg/';
+            $filePath='files/svg/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+
+			$iconPath=Storage::disk('public_uploads')->putFileAs ( $filePath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $filePath."{$original_name}" );
+			if(!$exists) {
+				$iconPath=null;
+			}
+        }
+        if ($request->isMethod('post')) {
+            //dd($request->all());
+            $DbHelperTools=new DbHelperTools();
+            $iconPath=($iconPath)?base64_encode('uploads/'.$iconPath):null;
+            $data=array(
+                'id'=>$request->id,
+                'name'=>$request->name,
+                'name_ar'=>$request->name_ar,
+                'path_icon'=>$iconPath,
+                'order_show'=>$request->order_show,
+                'is_active'=>$request->is_active,
+            );
+            $category_id=$DbHelperTools->manageServiceCategorie($data);
+            $success = true;
+            $msg = 'Your category have been saved successfully';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
+    }
+    public function deleteCategory($id){
+        /**
+         * forceDelete
+         */
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id){
+            //delete from database
+            $deletedRows = $DbHelperTools->massDeletes([$id],'category',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }
+        return response()->json(['success'=>$success]);
+    }
+    public function sdtProcedures(Request $request,$patient_id)
+    {
+        $data=$meta=$procedureItems=[];
+        if($patient_id>0){
+            $procedureItems = Procedureserviceitem::where('patient_id',$patient_id)->orderByDesc('id')->get();
+        }
+        
+        foreach ($procedureItems as $d) {
+            $row=array();
+                //<th>Teeth ID</th>
+                $invoice='';
+                if($d->invoice_id>0){
+                    $invoice='<p class="mb-0"><span class="badge badge-light-info">INV#'.$d->invoice->number.'</span></p>';
+                }
+                $doctor='<p class="mb-0"><span class="badge badge-light-primary">Dr : '.$d->doctor->name.'</span></p>';
+                $row[]='<p class="mb-0">'.$d->teeth_id.'</p>'.$invoice.$doctor;
+                //<th>Service Name</th>
+                $tabHelperType=Helper::getcssClassByType($d->type);
+                $type='<span class="badge badge-'.$tabHelperType[0].'">'.$tabHelperType[1].'</span> ';
+                $code='<span class="badge badge-light-info">'.$d->service->code.'</span> ';
+                $row[]=$type.$code.$d->service->service_name;
+                //<th>quantity</th>
+                $row[]=$d->quantity;
+                //<th>rate</th>
+                $row[]=$d->rate.'$';
+                //<th>total</th>
+                $row[]=$d->total.'$';
+                //<th>Note</th>
+                $row[]=$d->note;
+                //Actions
+                $btn_edit='<button class="btn btn-icon btn-sm btn-outline-primary mr-1" onclick="_formProcedureServiceItem('.$d->id.','.$d->teeth_id.')" title="Edit">'.Helper::getSvgIconeByAction('EDIT').'</button>';
+                $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteProcedureServiceItem('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                if($d->invoice_id>0){
+                    $btn_edit=$btn_delete=''; 
+                }
+                $row[]='<p class="mb-0">'.$btn_edit.$btn_delete.'</p>';
+            $data[]=$row;
+        }    
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+    public function formProcedureServiceItem($procedure_service_item_id,$teeth_id,$patient_id,$doctor_id){
+        $item=null;
+        if ($procedure_service_item_id > 0) {
+            $item = Procedureserviceitem::find ( $procedure_service_item_id );
+            if($item){
+                $teeth_id=$item->teeth_id;
+                $patient_id=$item->patient_id;
+                $doctor_id=$item->doctor_id;
+            }
+        }
+        return view('admin.form.procedure-service-item',compact('item','teeth_id','patient_id','doctor_id'));
+    }
+    public function storeFormProcedureServiceItem(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $id = 0;
+        if ($request->isMethod('post')) {
+            //dd($request->all());
+            $DbHelperTools=new DbHelperTools();
+            $data=array(
+                'id'=>$request->id,
+                'patient_id'=>$request->patient_id,
+                'teeth_id'=>$request->teeth_id,
+                'doctor_id'=>$request->doctor_id,
+                'service_id'=>$request->service_id,
+                'quantity'=>$request->quantity,
+                'rate'=>$request->rate,
+                'total'=>$request->total,
+                'note'=>$request->note,
+                'type'=>$request->type,
+                //'invoiced'=>$request->invoiced,
+            );
+            //dd($data);
+            $item_id=$DbHelperTools->manageProcedureServiceItem($data);
+            $success = true;
+            $msg = 'Your item have been saved successfully';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
+    }
+    public function selectServicesOptions($category_id){
+        $result=[];
+        if($category_id>0){
+            $rows=Service::select('id','code','service_name','price')->where('category_id',$category_id)->get();
+        }else{
+           $rows=Service::select('id','code','service_name')->get(); 
+        }
+        
+        if(count($rows)>0){
+            foreach($rows as $row){
+                $result[]=['id'=>$row['id'],'name'=>$row['code'].' - '.$row['service_name'].' - '.$row['price'].'$'];
+            }
+        }
+        return response()->json($result);
+    }
+    public function selectDoctorsOptions($doctor_id){
+        $result=[];
+        if($doctor_id>0){
+            $rows=Doctor::where('user_id',$doctor_id)->get();
+        }else{
+           $rows=Doctor::all(); 
+        }
+        
+        if(count($rows)>0){
+            foreach($rows as $row){
+                $result[]=['id'=>$row['user_id'],'name'=>$row->user->name];
+            }
+        }
+        return response()->json($result);
+    }
+    //admin/get/price/service
+    public function getPriceService($service_id){
+        $price=0;
+        if($service_id>0){
+            $row=Service::select('id','price')->where('id',$service_id)->first();
+            $price=$row['price'];
+        }
+        return response()->json(['price' => $price]);
+    }
 }
