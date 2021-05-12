@@ -1,6 +1,28 @@
 <input type="hidden" id="VIEW_INPUT_PATIENT_ID" value="{{ $patient_id }}">
 @if($viewtype=='overview')
-<p>overview....</p>
+@php
+$birthday = '';
+if($patient){
+$dt = Carbon\Carbon::createFromFormat('Y-m-d',$patient->birthday);
+$birthday = $dt->format('d/m/Y');
+}
+@endphp
+<div class="mt-2">
+    <h6 class="mb-75">Birthday:</h5>
+        <p class="card-text">{{$birthday}}</p>
+</div>
+<div class="mt-2">
+    <h6 class="mb-75">Phone:</h5>
+        <p class="card-text">{{ $patient->phone }}</p>
+</div>
+<div class="mt-2">
+    <h6 class="mb-75">Email:</h5>
+        <p class="card-text">{{ $patient->email }}</p>
+</div>
+<div class="mt-2">
+    <h6 class="mb-50">Address:</h5>
+        <p class="card-text mb-0">{{ $patient->address }}</p>
+</div>
 @endif
 
 @if($viewtype=='procedures')
@@ -505,7 +527,9 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 <div class="card shadow-none bg-transparent border-primary">
     <div class="card-body">
         <div class="row mb-2">
-            <div class="col-md-10"><h4>Patient invoices</h4></div>
+            <div class="col-md-10">
+                <h4>Patient invoices</h4>
+            </div>
             <div class="col-md-2 text-right">
                 <button onclick="_formInvoice({{ $patient_id }},0)"
                     class="btn btn-icon btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('NEW')!!}</button>
@@ -560,6 +584,7 @@ invoices_datatable.DataTable({
 var _reload_invoices_datatable = function() {
     $('#invoices_datatable').DataTable().ajax.reload();
 }
+
 function _formInvoice(patient_id, invoice_id) {
     var modal_id = "modal_form_invoice";
     var modal_content_id = "modal_form_invoice_content";
@@ -614,6 +639,7 @@ $("#FORM_INVOICE").validate({
         return false;
     },
 });
+
 function _loadDatasDoctorsForSelectOptions(select_id, doctor_id, selected_value = 0) {
     $.ajax({
         url: '/admin/select/json/doctors/' + doctor_id,
@@ -634,16 +660,17 @@ function _loadDatasDoctorsForSelectOptions(select_id, doctor_id, selected_value 
     });
 }
 
-function _formPayment(payment_id,invoice_id) {
+function _formPayment(payment_id, invoice_id) {
     var modal_id = "modal_form_payment";
     var modal_content_id = "modal_form_payment_content";
-    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    var spinner =
+        '<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
     var modalTitle = (payment_id > 0) ? 'Edit payment' : 'Add payment';
     $("#PAYMENT_MODAL_TITLE").html(modalTitle);
     $.ajax({
-        url: "/profile/form/payment/" +payment_id+'/'+invoice_id,
+        url: "/profile/form/payment/" + payment_id + '/' + invoice_id,
         type: "GET",
         dataType: "html",
         success: function(html, status) {
@@ -686,33 +713,35 @@ $("#FORM_PAYMENT").validate({
 });
 
 _loadBillingStats();
+
 function _loadBillingStats() {
-    var spinner='<span class="spinner-border spinner-border-sm"></span>';
+    var spinner = '<span class="spinner-border spinner-border-sm"></span>';
     $("#nb_invoices,#total_invoices,#total_paid_invoices,#total_discount").html(spinner);
     var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
     $.ajax({
-        url: "/profile/stats/invoice/"+patient_id,
+        url: "/profile/stats/invoice/" + patient_id,
         type: "GET",
         dataType: "json",
         success: function(res, status) {
             $("#nb_invoices").html(res.nb_invoices);
-            $("#total_invoices").html('$'+res.total_invoices);
-            $("#total_paid_invoices").html('$'+res.total_paid_invoices);
-            $("#total_discount").html('$'+res.total_discount);
+            $("#total_invoices").html('$' + res.total_invoices);
+            $("#total_paid_invoices").html('$' + res.total_paid_invoices);
+            $("#total_discount").html('$' + res.total_discount);
         },
     });
 };
 
-function _formRefund(refund_id,invoice_id) {
+function _formRefund(refund_id, invoice_id) {
     var modal_id = "modal_form_refund";
     var modal_content_id = "modal_form_refund_content";
-    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    var spinner =
+        '<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
     var modalTitle = (refund_id > 0) ? 'Edit refund' : 'Add refund';
     $("#REFUND_MODAL_TITLE").html(modalTitle);
     $.ajax({
-        url: "/profile/form/refund/" +refund_id+'/'+invoice_id,
+        url: "/profile/form/refund/" + refund_id + '/' + invoice_id,
         type: "GET",
         dataType: "html",
         success: function(html, status) {

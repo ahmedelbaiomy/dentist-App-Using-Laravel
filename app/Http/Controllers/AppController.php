@@ -274,12 +274,12 @@ class AppController extends Controller
         return view('profile.patient.procedures',compact('procedures_row_one','procedures_row_two'));
     }
     public function profileConstruct($viewtype,$patient_id){
-        // $note=null;
-        // if ($note_id > 0) {
-        //         $note = note::find ( $note_id );
-        // }
+        $patient=null;
+        if ($patient_id > 0) {
+           $patient = Patient::find ( $patient_id );
+        }
         $categories =service_category::where('is_active',1)->get();
-        return view('profile.construct.view',compact('viewtype','patient_id','categories'));
+        return view('profile.construct.view',compact('viewtype','patient','patient_id','categories'));
     }
     public function sdtInvoices(Request $request,$patient_id)
     {

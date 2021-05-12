@@ -52,28 +52,6 @@ $birthday = $dt->format('d/m/Y');
                         <small class="text-muted"><b>Patient ID</b> : {{ $patient_data[0]->id }}</small>
                     </div>
                 </div>
-
-
-                <div class="mt-2">
-                    <h6 class="mb-75">Birthday:</h5>
-                        <p class="card-text">{{$birthday}}</p>
-                </div>
-                <div class="mt-2">
-                    <h6 class="mb-75">Phone:</h5>
-                        <p class="card-text">{{ $patient_data[0]->phone }}</p>
-                </div>
-                <div class="mt-2">
-                    <h6 class="mb-75">Email:</h5>
-                        <p class="card-text">{{ $patient_data[0]->email }}</p>
-                </div>
-                <div class="mt-2">
-                    <h6 class="mb-50">Address:</h5>
-                        <p class="card-text mb-0">{{ $patient_data[0]->address }}</p>
-                </div>
-
-
-
-
             </div>
         </div>
         <!-- Overview -->
