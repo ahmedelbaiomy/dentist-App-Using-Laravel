@@ -9,7 +9,7 @@ td:hover {background-color:rgba(115,103,240,.12);}
             @foreach($procedures_row_one as $p)
             <td>
                 <a style="cursor:pointer;" onClick="_formProcedureServiceItem(0,{{$p->number}})">
-                    <img style="max-width:56px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
+                    <img style="max-height:196px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
                     <p class="text-center">{{$p->number}}</p>
                 </a>
             </td>
@@ -23,7 +23,7 @@ td:hover {background-color:rgba(115,103,240,.12);}
             <td>
                 <a style="cursor:pointer;" onClick="_formProcedureServiceItem(0,{{$p->number}})">
                     <p class="text-center">{{$p->number}}</p>
-                    <img style="max-width:56px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
+                    <img style="max-height:196px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
                 </a>
             </td>
             @endforeach
