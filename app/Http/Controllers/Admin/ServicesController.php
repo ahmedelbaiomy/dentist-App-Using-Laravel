@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Doctor;
 use App\Models\Service;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Library\Helpers\Helper;
 use App\models\service_category;
@@ -214,7 +215,7 @@ class ServicesController extends Controller
         return response()->json($result);
     }
     public function listCategories(){
-        $categories = service_category::all ();
+        $categories = Category::all ();
         return view('admin.category.list',compact('categories'));
     }
 
