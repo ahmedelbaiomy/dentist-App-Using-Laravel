@@ -2,7 +2,9 @@
 namespace App\Library\Services;
 use Carbon\Carbon;
 use App\Models\note;
+use App\Models\Doctor;
 use App\Models\Invoice;
+use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Storage;
 use App\Models\Schedule;
@@ -205,6 +207,28 @@ class DbHelperTools
             'incomes'=>$incomes,
             'refunds'=>$refunds,
         );
+    }
+    public function getDashboardStats($start_date,$end_date){
+        $appointments=$patients=$doctors=$invoices=0;
+        if($start_date && $end_date){
+            //->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->pluck('id');
+            $appointments = Appointment::whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $doctors = Doctor::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $invoices = Invoice::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+        }else{
+            $appointments = Appointment::count();
+            $patients = Patient::count();
+            $doctors = Doctor::count();
+            $invoices = Invoice::count();
+        }
+        $results = [
+            'appointments' => $appointments,
+            'patients' => $patients,
+            'doctors' => $doctors,
+            'invoices' => $invoices,
+        ];
+        return $results;
     }
     public function manageServiceCategorie($data){
         $id=0;

@@ -20,63 +20,6 @@
 @php
 $dtNow = Carbon\Carbon::now();
 @endphp
-
-<!-- Stats Vertical Card -->
-<div class="row">
-    <div class="col-xl-3 col-md-4 col-sm-6">
-        <div class="card text-center">
-            <div class="card-body">
-                <div class="avatar bg-light-info p-50 mb-1">
-                    <div class="avatar-content">
-                        <i data-feather="calendar" class="font-medium-5"></i>
-                    </div>
-                </div>
-                <h2 class="font-weight-bolder">{{count($appointments)}}</h2>
-                <p class="card-text">Appointments</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-4 col-sm-6">
-        <div class="card text-center">
-            <div class="card-body" onClick="window.location.href = 'patient'" style="cursor: pointer;">
-                <div class="avatar bg-light-warning p-50 mb-1">
-                    <div class="avatar-content">
-                        <i data-feather="user-plus" class="font-medium-5"></i>
-                    </div>
-                </div>
-                <h2 class="font-weight-bolder">{{count($patients)}}</h2>
-                <p class="card-text">New Patients</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-4 col-sm-6">
-        <div class="card text-center">
-            <div class="card-body">
-                <div class="avatar bg-light-danger p-50 mb-1">
-                    <div class="avatar-content">
-                        <i data-feather="thermometer" class="font-medium-5"></i>
-                    </div>
-                </div>
-                <h2 class="font-weight-bolder">{{count($doctors)}}</h2>
-                <p class="card-text">Doctors</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-md-4 col-sm-6">
-        <div class="card text-center">
-            <div class="card-body">
-                <div class="avatar bg-light-primary p-50 mb-1">
-                    <div class="avatar-content">
-                        <i data-feather="users" class="font-medium-5"></i>
-                    </div>
-                </div>
-                <h2 class="font-weight-bolder">230k</h2>
-                <p class="card-text">Incomes</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!--/ Stats Vertical Card -->
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -108,6 +51,8 @@ $dtNow = Carbon\Carbon::now();
                     <div class="col-md-8">
                         <div class="btn-group float-right" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('reset')">Reset</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
                                 onclick="quick_filters('today')">Today</button>
                             <button type="button" class="btn btn-outline-primary btn-sm"
                                 onclick="quick_filters('this_month')">This month</button>
@@ -128,6 +73,7 @@ $dtNow = Carbon\Carbon::now();
                                 <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('last_month')">Last Month</a>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -137,6 +83,62 @@ $dtNow = Carbon\Carbon::now();
         </div>
     </div>
 </div>
+<!-- Stats Vertical Card -->
+<div class="row">
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="avatar bg-light-info p-50 mb-1">
+                    <div class="avatar-content">
+                        <i data-feather="calendar" class="font-medium-5"></i>
+                    </div>
+                </div>
+                <h2 class="font-weight-bolder" id="appointments">{{count($appointments)}}</h2>
+                <p class="card-text">Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="card text-center">
+            <div class="card-body" onClick="window.location.href = 'patient'" style="cursor: pointer;">
+                <div class="avatar bg-light-warning p-50 mb-1">
+                    <div class="avatar-content">
+                        <i data-feather="user-plus" class="font-medium-5"></i>
+                    </div>
+                </div>
+                <h2 class="font-weight-bolder" id="patients">{{count($patients)}}</h2>
+                <p class="card-text">New Patients</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="avatar bg-light-danger p-50 mb-1">
+                    <div class="avatar-content">
+                        <i data-feather="thermometer" class="font-medium-5"></i>
+                    </div>
+                </div>
+                <h2 class="font-weight-bolder" id="doctors">{{count($doctors)}}</h2>
+                <p class="card-text">Doctors</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="avatar bg-light-primary p-50 mb-1">
+                    <div class="avatar-content">
+                        <i data-feather="users" class="font-medium-5"></i>
+                    </div>
+                </div>
+                <h2 class="font-weight-bolder" id="invoices"></h2>
+                <p class="card-text">Invoices</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ Stats Vertical Card -->
 <div class="row">
     <!-- Company Table Card -->
     <div class="col-lg-12 col-12">
@@ -237,6 +239,21 @@ $("#formFilterStats").submit(function(event) {
     event.preventDefault();
     $("#SPINNER").removeClass('d-none');
     var formData = $(this).serializeArray();
+    //ajax dashboard stats
+    $('#appointments, #patients, #doctors, #invoices').html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: formData,
+        url: '/admin/dashboard/stats',
+        success: function(response) {
+            $('#appointments').html(response.appointments);
+            $('#patients').html(response.patients);
+            $('#doctors').html(response.doctors);
+            $('#invoices').html(response.invoices);
+        },
+    });
+    //ajax for datatable doctors
     var table = 'doctors_stats_datatable';
     $.ajax({
         type: "POST",
@@ -259,7 +276,22 @@ $("#formFilterStats").submit(function(event) {
     });
     return false;
 });
-
+_loadDashboardStats();
+function _loadDashboardStats(){
+    $('#appointments, #patients, #doctors, #invoices').html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        //data: formData,
+        url: '/admin/dashboard/stats',
+        success: function(response) {
+            $('#appointments').html(response.appointments);
+            $('#patients').html(response.patients);
+            $('#doctors').html(response.doctors);
+            $('#invoices').html(response.invoices);
+        },
+    });
+}
 
 $(document).ready(function() {
 

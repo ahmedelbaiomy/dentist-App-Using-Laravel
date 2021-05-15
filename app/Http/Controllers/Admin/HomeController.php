@@ -102,6 +102,9 @@ class HomeController extends Controller
                         $end=$end_last_month->format('Y-m-d');
                         //dd($end);
                     }
+                    if($quick_type=='reset'){
+                        $start=$end=null;
+                    }
                 }
         }
         foreach ($doctors as $d) {
@@ -119,5 +122,72 @@ class HomeController extends Controller
             'data' => $data,
         ];
         return response()->json($result);
+    }
+    public function dashboardStats(Request $request){
+        $DbHelperTools=new DbHelperTools();
+        $start=$end=null;
+        if ($request->isMethod('post')) {
+            if ($request->has('filter_range')) {
+                $tab=explode('to',$request->filter_range);
+                if(count($tab)>0){
+                    if(!empty($tab[0]) && !empty($tab[1])){
+                        $start = trim($tab[0]);
+                        $end = trim($tab[1]);
+                    }
+                }
+            }
+            if ($request->has('quick_type')) {
+                $quick_type=$request->quick_type;
+                if($quick_type=='today'){
+                    $dtNow=Carbon::now();
+                    $start=$dtNow->format('Y-m-d');
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='yesterday'){
+                    $yesterday = Carbon::yesterday();
+                    $start=$yesterday->format('Y-m-d');
+                    $end=$yesterday->format('Y-m-d');
+                }
+                if($quick_type=='this_month'){
+                    $this_month = new Carbon('first day of this month');
+                    $start=$this_month->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='this_year'){
+                    $dtNowA=Carbon::now();
+                    $startOfYear = $dtNowA->copy()->startOfYear();
+                    $start=$startOfYear->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='last_7_days'){
+                    $date = Carbon::today()->subDays(7);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_30_days'){
+                    $date = Carbon::today()->subDays(30);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_month'){
+                    $start_last_month = new Carbon('first day of last month');
+                    $end_last_month = new Carbon('last day of last month');
+                    $start=$start_last_month->format('Y-m-d');
+                    $end=$end_last_month->format('Y-m-d');
+                    //dd($end);
+                }
+                if($quick_type=='reset'){
+                    $start=$end=null;
+                }
+            }
+        }
+        $results=$DbHelperTools->getDashboardStats($start,$end);
+        return response()->json($results);
     }
 }
