@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\note;
 use App\Models\User;
 use App\Models\Teeth;
+use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Library\Services\DbHelperTools;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class AppController extends Controller
 {
@@ -323,6 +325,10 @@ class AppController extends Controller
                         <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formInvoice('.$d->patient_id.','.$d->id.')">'.Helper::getSvgIconeByAction('EDIT').' Edit</a>
                         <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formPayment(0,'.$d->id.')">'.Helper::getSvgIconeByAction('DOLLAR').' Add payment</a>
                         <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formRefund(0,'.$d->id.')">'.Helper::getSvgIconeByAction('TRENDING-DOWN').' Add refund</a>
+                        <a class="dropdown-item sort-asc" href="/profile/invoice/'.$d->id.'/preview">'.Helper::getSvgIconeByAction('VIEW').' Preview</a>
+                        <a class="dropdown-item sort-asc" target="_blank" href="/profile/invoice/'.$d->id.'/print">'.Helper::getSvgIconeByAction('PRINT').' Print</a>
+                        <a class="dropdown-item sort-asc" target="_blank" href="/profile/pdf/invoice/'.$d->id.'/stream">'.Helper::getSvgIconeByAction('FILE').' Pdf</a>
+                        <a class="dropdown-item sort-asc" target="_blank" href="/profile/pdf/invoice/'.$d->id.'/download">'.Helper::getSvgIconeByAction('DOWNLOAD').' Download</a>
                     </div>
             </div>';
 
@@ -580,5 +586,46 @@ class AppController extends Controller
             'success' => $success,
             'msg' => $msg,
         ]);
+    }
+    public function previewInvoice($invoice_id,$mode)
+    {
+        $calcul=$items=$refunds=[];
+        $invoice=$doctor=null;
+        if($invoice_id>0){
+            $invoice = Invoice::findOrFail( $invoice_id );
+            if($invoice->doctor_id>0){
+                $doctor = Doctor::where( 'user_id',$invoice->doctor_id )->first();
+            }
+            $DbHelperTools=new DbHelperTools();
+            $calcul=$DbHelperTools->getAmountsInvoice($invoice_id);
+            $items = Procedureserviceitem::where('invoice_id',$invoice_id)->get();
+            //Refunds
+            $refunds = Invoicerefund::where ( 'invoice_id',$invoice_id )->get();
+        }
+        return view('profile.invoice.preview',compact('invoice','doctor','calcul','items','refunds','mode'));
+    }
+    public function generateInvoicePdf($invoice_id,$mode)
+    {
+        $pdf_name='';
+        $calcul=$items=$refunds=[];
+        $invoice=$doctor=null;
+        if($invoice_id>0){
+            $invoice = Invoice::findOrFail( $invoice_id );
+            $pdf_name = $invoice->number;
+            if($invoice->doctor_id>0){
+                $doctor = Doctor::where( 'user_id',$invoice->doctor_id )->first();
+            }
+            $DbHelperTools=new DbHelperTools();
+            $calcul=$DbHelperTools->getAmountsInvoice($invoice_id);
+            $items = Procedureserviceitem::where('invoice_id',$invoice_id)->get();
+            //Refunds
+            $refunds = Invoicerefund::where ( 'invoice_id',$invoice_id )->get();
+        }
+        $pdf=PDF::loadView('profile.invoice.pdf',compact('invoice','doctor','calcul','items','refunds'));
+        if($mode=='stream'){
+            return $pdf->stream($pdf_name.time().'.pdf');
+        }else{
+            return $pdf->download($pdf_name.time().'.pdf');
+        }
     }
 }

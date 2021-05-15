@@ -4,7 +4,6 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
 <link rel="stylesheet"
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet"
@@ -18,45 +17,9 @@
 @endsection
 
 @section('content')
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-
-                <!-- begin custom range -->
-                <div class="row">
-                    <div class="col-md-4">
-                        <!-- <label for="custom-range">Custom Range</label> -->
-                        <input type="text" id="custom-range" class="form-control form-control-sm flatpickr-range"
-                            placeholder="YYYY-MM-DD to YYYY-MM-DD" />
-                    </div>
-                    <div class="col-md-8">
-                        <div class="btn-group float-right" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-outline-primary btn-sm">Today</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm">This month</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm">This year</button>
-                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
-                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                Today : May 6
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="javascript:void(0);">Yesterday</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last 7 Days</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last 30 Days</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- endcustom range -->
-
-            </div>
-        </div>
-    </div>
-</div>
-
+@php
+$dtNow = Carbon\Carbon::now();
+@endphp
 
 <!-- Stats Vertical Card -->
 <div class="row">
@@ -75,7 +38,7 @@
     </div>
     <div class="col-xl-3 col-md-4 col-sm-6">
         <div class="card text-center">
-            <div class="card-body" onClick="window.location.href = 'patient'" style="cursor: url(hand.cur), pointer">
+            <div class="card-body" onClick="window.location.href = 'patient'" style="cursor: pointer;">
                 <div class="avatar bg-light-warning p-50 mb-1">
                     <div class="avatar-content">
                         <i data-feather="user-plus" class="font-medium-5"></i>
@@ -114,21 +77,78 @@
     </div>
 </div>
 <!--/ Stats Vertical Card -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
 
+                <!-- begin custom range -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <!-- doctors_stats_datatable -->
+                        <form id="formFilterStats">
+                            <input type="hidden" value="" name="quick_type" id="INPUT_QUICK">
+                            <div class="input-group mb-1">
+                                <input type="text" class="form-control form-control-sm flatpickr-range"
+                                    id="custom-range" name="filter_range" placeholder=""
+                                    aria-describedby="button-filter" />
+                                <div class="input-group-append" id="button-filter">
+                                    <button class="btn btn-outline-primary btn-sm" type="button"
+                                        onclick="range_filters()"><i data-feather="search"></i> Search</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <div class="spinner-border text-primary d-none" id="SPINNER">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="btn-group float-right" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('today')">Today</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('this_month')">This month</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('this_year')">This year</button>
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Today : {{$dtNow->format('F d')}}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('yesterday')">Yesterday</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('last_7_days')">Last 7 Days</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('last_30_days')">Last 30 Days</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('last_month')">Last Month</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- endcustom range -->
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <!-- Company Table Card -->
     <div class="col-lg-12 col-12">
         <div class="card card-company-table">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table" id="doctors_stats_datatable">
+                    <table class="table table-bordered" id="doctors_stats_datatable">
                         <thead>
                             <tr>
                                 <th>Doctor</th>
                                 <th>Income</th>
                                 <th>Refund</th>
-                                <th>Appointment</th>
-                                <th>Patient</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -159,12 +179,10 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/apex/apexcharts.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
@@ -179,7 +197,7 @@ $.ajaxSetup({
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
 });
-/* nOTES */
+/* stats */
 var dtUrl = '/admin/sdt/doctors/stats';
 var doctors_stats_datatable = $('#doctors_stats_datatable');
 doctors_stats_datatable.DataTable({
@@ -202,6 +220,46 @@ doctors_stats_datatable.DataTable({
 var _reload_doctors_stats_datatable = function() {
     $('#doctors_stats_datatable').DataTable().ajax.reload();
 }
+
+function quick_filters(type) {
+    $('#custom-range').val('');
+    $('#INPUT_QUICK').val(type);
+    $("#formFilterStats").submit();
+}
+
+function range_filters() {
+    $('#INPUT_QUICK').val('');
+    $("#formFilterStats").submit();
+}
+
+//submit form
+$("#formFilterStats").submit(function(event) {
+    event.preventDefault();
+    $("#SPINNER").removeClass('d-none');
+    var formData = $(this).serializeArray();
+    var table = 'doctors_stats_datatable';
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: formData,
+        url: dtUrl,
+        success: function(response) {
+            if (response.data.length == 0) {
+                $('#' + table).dataTable().fnClearTable();
+                return 0;
+            }
+            $('#' + table).dataTable().fnClearTable();
+            $("#" + table).dataTable().fnAddData(response.data, true);
+        },
+        error: function() {
+            $('#' + table).dataTable().fnClearTable();
+        }
+    }).done(function(data) {
+        $("#SPINNER").addClass('d-none');
+    });
+    return false;
+});
+
 
 $(document).ready(function() {
 

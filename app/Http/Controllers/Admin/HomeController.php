@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;
@@ -42,23 +43,76 @@ class HomeController extends Controller
     {
         $DbHelperTools=new DbHelperTools();
         $data=$meta=[];
-        //$doctors = Doctor::orderByDesc('id')->get();
-
         $doctors = Doctor::join('users', 'doctors.user_id', '=', 'users.id')->get(['doctors.*', 'users.name', 'users.email']);
 
+        $start=$end=null;
+        if ($request->isMethod('post')) {
+                if ($request->has('filter_range')) {
+                    $tab=explode('to',$request->filter_range);
+                    if(count($tab)>0){
+                        if(!empty($tab[0]) && !empty($tab[1])){
+                            $start = trim($tab[0]);
+                            $end = trim($tab[1]);
+                        }
+                    }
+                }
+                if ($request->has('quick_type')) {
+                    $quick_type=$request->quick_type;
+                    if($quick_type=='today'){
+                        $dtNow=Carbon::now();
+                        $start=$dtNow->format('Y-m-d');
+                        $end=$dtNow->format('Y-m-d');
+                    }
+                    if($quick_type=='yesterday'){
+                        $yesterday = Carbon::yesterday();
+                        $start=$yesterday->format('Y-m-d');
+                        $end=$yesterday->format('Y-m-d');
+                    }
+                    if($quick_type=='this_month'){
+                        $this_month = new Carbon('first day of this month');
+                        $start=$this_month->format('Y-m-d');
+                        $dtNow=Carbon::now();
+                        $end=$dtNow->format('Y-m-d');
+                    }
+                    if($quick_type=='this_year'){
+                        $dtNowA=Carbon::now();
+                        $startOfYear = $dtNowA->copy()->startOfYear();
+                        $start=$startOfYear->format('Y-m-d');
+                        $dtNow=Carbon::now();
+                        $end=$dtNow->format('Y-m-d');
+                    }
+                    if($quick_type=='last_7_days'){
+                        $date = Carbon::today()->subDays(7);
+                        $start=$date->format('Y-m-d');
+                        $dtNow=Carbon::now();
+                        $end=$dtNow->format('Y-m-d');
+                        //dd($start);
+                    }
+                    if($quick_type=='last_30_days'){
+                        $date = Carbon::today()->subDays(30);
+                        $start=$date->format('Y-m-d');
+                        $dtNow=Carbon::now();
+                        $end=$dtNow->format('Y-m-d');
+                        //dd($start);
+                    }
+                    if($quick_type=='last_month'){
+                        $start_last_month = new Carbon('first day of last month');
+                        $end_last_month = new Carbon('last day of last month');
+                        $start=$start_last_month->format('Y-m-d');
+                        $end=$end_last_month->format('Y-m-d');
+                        //dd($end);
+                    }
+                }
+        }
         foreach ($doctors as $d) {
-            $stats=$DbHelperTools->getStatsByDoctors($d->id);
+            $stats=$DbHelperTools->getStatsByDoctors($d->user_id,$start,$end);
             $row=array();
             //th>Doctor</th>
             $row[]='<div class="d-flex align-items-center"><div><div class="font-weight-bolder">'.$d->name.'</div><div class="font-small-2 text-muted">'.$d->email.'</div></div></div>';
             //<th>Income</th>
-            $row[]='$'.$stats['incomes'];
+            $row[]='<span class="badge badge-light-success">'.number_format($stats['incomes'],2).'$</span>';
             //<th>Refund</th>
-            $row[]='$'.$stats['refunds'];
-            //<th>Appointment</th>
-            $row[]='';
-            //<th>Patient</th>
-            $row[]='';
+            $row[]='<span class="badge badge-light-danger">'.number_format($stats['refunds'],2).'$</span>';
             $data[]=$row;
         }    
         $result = [

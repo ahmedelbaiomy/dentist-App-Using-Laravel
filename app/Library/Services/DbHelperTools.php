@@ -182,8 +182,25 @@ class DbHelperTools
         }
         return $id;
     }
-    public function getStatsByDoctors($doctor_id){
+    public function getStatsByDoctors($doctor_user_id,$start_date,$end_date){
         $incomes=$refunds=0;
+        if($doctor_user_id>0){
+                if($start_date && $end_date){
+                    //$start = Carbon::createFromFormat('Y-m-d',$start_date);
+                    //$end = Carbon::createFromFormat('Y-m-d',$end_date);
+                    $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->pluck('id');
+                }else{
+                    $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->pluck('id');
+                }
+                if(count($ids)>0){
+                    foreach($ids as $invoice_id){
+                        $calc=$this->getAmountsInvoice($invoice_id);
+                        $incomes=$incomes+$calc['nnf_total'];
+                        $refunds=$refunds+$calc['total_refund'];
+                    }
+                }
+            
+        }
         return array(
             'incomes'=>$incomes,
             'refunds'=>$refunds,

@@ -35,8 +35,8 @@ $percent = '('.$discount_amount.'%)';
                     <p class="mb-0">{{$item->note}}</p>
                 </td>
                 <td class="text-right pt-7">{{$item->quantity}}</td>
-                <td class="text-right pt-7">{{number_format($item->rate,2)}} €</td>
-                <td class="text-success pr-0 pt-7 text-right">{{number_format($item->total,2)}} €</td>
+                <td class="text-right pt-7">{{number_format($item->rate,2)}} $</td>
+                <td class="text-success pr-0 pt-7 text-right">{{number_format($item->total,2)}} $</td>
                 <th>
                     <button type="button" class="btn btn-sm btn-clean btn-icon"
                         onclick="_formEstimateItem({{$item->id}},{{$item->estimate_id}})" title="Edition"><i

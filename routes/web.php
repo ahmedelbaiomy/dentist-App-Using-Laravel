@@ -61,9 +61,10 @@ Route::post('/profile/sdt/services/to/invoice/{invoice_id}', [App\Http\Controlle
 Route::get('/profile/form/payment/{payment_id}/{invoice_id}', [App\Http\Controllers\AppController::class, 'formPayment']);
 Route::post('/profile/form/payment', [App\Http\Controllers\AppController::class, 'storeFormPayment']);
 Route::get('/profile/stats/invoice/{patient_id}', [App\Http\Controllers\AppController::class, 'getPatientStatsInvoice']);
-
 Route::get('/profile/form/refund/{refund_id}/{invoice_id}', [App\Http\Controllers\AppController::class, 'formRefund']);
 Route::post('/profile/form/refund', [App\Http\Controllers\AppController::class, 'storeFormRefund']);
+Route::get('/profile/invoice/{invoice_id}/{mode}', [App\Http\Controllers\AppController::class, 'previewInvoice']);
+Route::get('/profile/pdf/invoice/{invoice_id}/{mode}', [App\Http\Controllers\AppController::class, 'generateInvoicePdf']);
 
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
