@@ -36,7 +36,7 @@
 
         <form id="LOGIN_FORM" class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
           @csrf
-          {!!  GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
+          {!!  \TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
           <div class="form-group">
             <label for="login-username" class="form-label">{{ __('Username') }}</label>
             <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Username" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
@@ -108,5 +108,5 @@
 @endsection
 
 @section('page-script')
-{!!  GoogleReCaptchaV3::init() !!}
+{!!  \TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::init() !!}
 @endsection
