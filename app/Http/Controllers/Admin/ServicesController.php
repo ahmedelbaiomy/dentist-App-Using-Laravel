@@ -206,7 +206,7 @@ class ServicesController extends Controller
     }
     public function selectCategoriesOptions(){
         $result=[];
-        $rows=service_category::select('id','name')->get();
+        $rows=Category::select('id','name')->get();
         if(count($rows)>0){
             foreach($rows as $row){
                 $result[]=['id'=>$row['id'],'name'=>$row['name']];
@@ -222,7 +222,7 @@ class ServicesController extends Controller
     public function formCategory($category_id){
         $category=null;
         if ($category_id > 0) {
-            $category = service_category::find ( $category_id );
+            $category = Category::find ( $category_id );
         }
         return view('admin.form.category',compact('category'));
     }
