@@ -6,6 +6,7 @@ use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Models\Storage;
 use App\Models\Schedule;
 use App\Models\Helpindex;
@@ -585,5 +586,14 @@ class DbHelperTools
       $code=$id+1;
       $code = 'RF'.sprintf('%04d', $code);  
       return $code;
+  }
+  public function getSetting($type,$name){
+        $setting = Setting::select('value')->where( [['type',$type],['name',$name]] )->first();
+        $value=$setting->value;
+        return $value;
+  }
+  public function updateSetting($type,$name,$value){
+    $rs=Setting::where( [['type',$type],['name',$name]] )->update(['value' => $value]);
+    return $rs;
   } 
 }

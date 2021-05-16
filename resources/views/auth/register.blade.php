@@ -13,9 +13,23 @@
     <!-- Register v1 -->
     <div class="card mb-0">
       <div class="card-body">
+        @php
+        $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
+        $show_logo_in_signup_page=\App\Library\Helpers\Helper::getSetting('app','show_logo_in_signup_page');
+        if($show_logo_in_signup_page=='yes'){
+          $site_logo=\App\Library\Helpers\Helper::getSetting('app','site_logo');
+          $logo=$defaultLogos['logo'];
+          if(isset($site_logo) && !empty($site_logo)){
+              $logo=$site_logo;
+          }
+        }
+        @endphp
+
+        @if($show_logo_in_signup_page=='yes')
         <a href="javascript:void(0);" class="brand-logo">
-        <img src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo dentinizer">
+         <img style="max-height:99px;" src="{{asset($logo)}}" alt="logo">
         </a>
+        @endif
 
          <h4 class="card-title mb-1">Create New Appointment Account</h4>
         <!--<p class="card-text mb-2">Make your app management easy and fun!</p> -->

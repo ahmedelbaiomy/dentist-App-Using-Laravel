@@ -13,10 +13,23 @@
     <!-- Login v1 -->
     <div class="card mb-0">
       <div class="card-body">
-        <a href="javascript:void(0);" class="brand-logo">
-         <img src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo dentinizer">
-        </a>
+        @php
+        $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
+        $show_logo_in_signin_page=\App\Library\Helpers\Helper::getSetting('app','show_logo_in_signin_page');
+        if($show_logo_in_signin_page=='yes'){
+          $site_logo=\App\Library\Helpers\Helper::getSetting('app','site_logo');
+          $logo=$defaultLogos['logo'];
+          if(isset($site_logo) && !empty($site_logo)){
+              $logo=$site_logo;
+          }
+        }
+        @endphp
 
+        @if($show_logo_in_signin_page=='yes')
+        <a href="javascript:void(0);" class="brand-logo">
+         <img style="max-height:99px;" src="{{asset($logo)}}" alt="logo">
+        </a>
+        @endif
         <!-- <h4 class="card-title mb-1">Welcome to Vuexy! 👋</h4>
         <p class="card-text mb-2">Please sign-in to your account and start the adventure</p> -->
 

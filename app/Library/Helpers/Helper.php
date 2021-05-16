@@ -1,8 +1,22 @@
 <?php
 namespace App\Library\Helpers;
+
+use App\Models\Setting;
   
 class Helper
 {
+    public static function getDefaultLogos(){
+        $default_logo='new-assets/logo/logo-dark.png';
+        $default_sidebar_logo='new-assets/logo/logo-v.png';
+        $default_favicon='/new-assets/logo/favicon.png';
+        return ['logo'=>$default_logo,'sidebar_logo'=>$default_sidebar_logo,'favicon'=>$default_favicon];
+    }
+    public static function getSetting($type,$name)
+    {
+        $setting = Setting::select('value')->where( [['type',$type],['name',$name]] )->first();
+        $value=$setting->value;
+        return $value;
+    }
     public static function getcssClassByType($type)
     {
         $cssClass = '';

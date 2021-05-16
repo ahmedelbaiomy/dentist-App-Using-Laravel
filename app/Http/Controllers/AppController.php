@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use Carbon\Carbon;
 use App\Models\note;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Teeth;
 use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\Invoicerefund;
 use App\Models\Invoicepayment;
@@ -21,7 +23,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Library\Services\DbHelperTools;
 use Illuminate\Support\Facades\Storage;
-use PDF;
 
 class AppController extends Controller
 {
@@ -627,5 +628,106 @@ class AppController extends Controller
         }else{
             return $pdf->download($pdf_name.time().'.pdf');
         }
+    }
+    public function settingsGeneral()
+    {
+        $DbHelperTools=new DbHelperTools();
+        //app_title
+        $app_title=$DbHelperTools->getSetting('app','app_title');
+        //site_logo
+        $defaultLogos=Helper::getDefaultLogos();
+        $default_site_logo=$defaultLogos['logo'];
+        $site_logo=$DbHelperTools->getSetting('app','site_logo');
+        //favicon
+        $default_favicon=$defaultLogos['favicon'];
+        $favicon=$DbHelperTools->getSetting('app','favicon');
+        //sidebar_logo
+        $default_sidebar_logo=$defaultLogos['sidebar_logo'];
+        $sidebar_logo=$DbHelperTools->getSetting('app','sidebar_logo');
+        //show_logo_in_signin_page
+        $show_logo_in_signin_page=$DbHelperTools->getSetting('app','show_logo_in_signin_page');
+        //show_logo_in_signup_page
+        $show_logo_in_signup_page=$DbHelperTools->getSetting('app','show_logo_in_signup_page');
+        return view('admin.settings.general',compact('app_title','site_logo','default_site_logo','favicon','default_favicon','sidebar_logo','default_sidebar_logo','show_logo_in_signin_page','show_logo_in_signup_page'));
+    }
+    public function storeGeneralSetting(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $id = 0;
+        $siteLogoPath=$sideBarLogoPath=$siteFaviconPath='';
+        if($request->hasFile('site_logo')){
+            $uploadedFile = $request->file ( 'site_logo' );
+            $original_name=time().'_logo_'.$uploadedFile->getClientOriginalName();
+            //dd($original_name);
+            
+            $path = 'uploads/files/settings/';
+            $filePath='files/settings/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+			$siteLogoPath=Storage::disk('public_uploads')->putFileAs ( $filePath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $filePath."{$original_name}" );
+			if(!$exists) {
+				$siteLogoPath=null;
+			}
+        }
+        if($request->hasFile('favicon')){
+            $uploadedFile = $request->file ( 'favicon' );
+            $original_name=time().'_favicon_'.$uploadedFile->getClientOriginalName();
+            //dd($original_name);
+            
+            $path = 'uploads/files/settings/';
+            $filePath='files/settings/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+			$siteFaviconPath=Storage::disk('public_uploads')->putFileAs ( $filePath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $filePath."{$original_name}" );
+			if(!$exists) {
+				$siteFaviconPath=null;
+			}
+        }
+        //sidebar_logo
+        if($request->hasFile('sidebar_logo')){
+            $uploadedFile = $request->file ( 'sidebar_logo' );
+            $original_name=time().'_sidebar_logo_'.$uploadedFile->getClientOriginalName();
+            //dd($original_name);
+            
+            $path = 'uploads/files/settings/';
+            $filePath='files/settings/';
+            if(!File::exists($path)) {
+                File::makeDirectory($path, 0755, true, true);
+            }
+			$sideBarLogoPath=Storage::disk('public_uploads')->putFileAs ( $filePath, $uploadedFile, $original_name );
+			$exists = Storage::disk ( 'public_uploads' )->exists ( $filePath."{$original_name}" );
+			if(!$exists) {
+				$sideBarLogoPath=null;
+			}
+        }
+        if ($request->isMethod('post')) {
+            $DbHelperTools=new DbHelperTools();
+            $rs=$DbHelperTools->updateSetting('app','app_title',$request->app_title);
+            if(isset($siteLogoPath) && !empty($siteLogoPath)){
+                $siteLogoPath=(isset($siteLogoPath) && !empty($siteLogoPath))?'uploads/'.$siteLogoPath:$siteLogoPath;
+                $rs=$DbHelperTools->updateSetting('app','site_logo',$siteLogoPath);
+            }
+            if(isset($sideBarLogoPath) && !empty($sideBarLogoPath)){
+                $sideBarLogoPath=(isset($sideBarLogoPath) && !empty($sideBarLogoPath))?'uploads/'.$sideBarLogoPath:$sideBarLogoPath;
+                $rs=$DbHelperTools->updateSetting('app','sidebar_logo',$sideBarLogoPath);
+            }
+            if(isset($siteFaviconPath) && !empty($siteFaviconPath)){
+                $siteFaviconPath=(isset($siteFaviconPath) && !empty($siteFaviconPath))?'uploads/'.$siteFaviconPath:$siteFaviconPath;
+                $rs=$DbHelperTools->updateSetting('app','favicon',$siteFaviconPath);
+            }
+            $rs=$DbHelperTools->updateSetting('app','show_logo_in_signin_page',$request->show_logo_in_signin_page);
+            $rs=$DbHelperTools->updateSetting('app','show_logo_in_signup_page',$request->show_logo_in_signup_page);
+            //dd($request->all());
+            $success = true;
+            $msg = 'You have successfully update settings.';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
     }
 }

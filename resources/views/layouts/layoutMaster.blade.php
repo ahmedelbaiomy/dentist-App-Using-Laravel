@@ -1,3 +1,12 @@
+@php
+$defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
+$app_title=\App\Library\Helpers\Helper::getSetting('app','app_title');
+$site_favicon=\App\Library\Helpers\Helper::getSetting('app','favicon');
+$favicon=$defaultLogos['favicon'];
+if(isset($site_favicon) && !empty($site_favicon)){
+$favicon=$site_favicon;
+}
+@endphp
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 
@@ -7,8 +16,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') - Dentinizer</title>
-    <link rel="shortcut icon" type="image/png" href="{{asset('new-assets/logo/favicon.png')}}">
+    <title>@yield('title') - {{$app_title}}</title>
+    <link rel="shortcut icon" type="image/png" href="{{asset($favicon)}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
         rel="stylesheet">
 

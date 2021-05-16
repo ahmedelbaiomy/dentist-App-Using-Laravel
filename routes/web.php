@@ -75,6 +75,11 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     Route::get('admin/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.home');
     Route::post('/admin/dashboard/stats', [App\Http\Controllers\Admin\HomeController::class, 'dashboardStats']);
     
+    Route::prefix('admin/settings')->group(function () {
+        Route::get('/general', [App\Http\Controllers\AppController::class, 'settingsGeneral'])->name('admin.settings.general');
+        Route::post('/general', [App\Http\Controllers\AppController::class, 'storeGeneralSetting']);
+    });
+
     Route::prefix('admin/sdt')->group(function () {
         Route::post('/doctors/stats', [App\Http\Controllers\Admin\HomeController::class, 'sdtDoctorStats']);
         Route::post('/services/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtServices']);
