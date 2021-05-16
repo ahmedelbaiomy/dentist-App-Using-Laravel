@@ -15,9 +15,9 @@
       <div class="card-body">
         @php
         $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
-        $show_logo_in_signup_page=\App\Library\Helpers\Helper::getSetting('app','show_logo_in_signup_page');
+        $show_logo_in_signup_page=config('global.show_logo_in_signup_page');
         if($show_logo_in_signup_page=='yes'){
-          $site_logo=\App\Library\Helpers\Helper::getSetting('app','site_logo');
+          $site_logo=config('global.site_logo');
           $logo=$defaultLogos['logo'];
           if(isset($site_logo) && !empty($site_logo)){
               $logo=$site_logo;
@@ -34,9 +34,9 @@
          <h4 class="card-title mb-1">Create New Appointment Account</h4>
         <!--<p class="card-text mb-2">Make your app management easy and fun!</p> -->
 
-        <form class="auth-register-form mt-2" method="POST" action="{{ route('register') }}">
+        <form class="auth-register-form mt-2" method="POST" action="{{ route('custom.register') }}">
           @csrf
-
+          {!!  GoogleReCaptchaV3::renderField('register_id','register_action') !!}
           <div class="form-group">
             <label for="register-name" class="form-label">{{ __('Name') }}</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" id="register-name" name="name" placeholder="john doe" aria-describedby="register-name" tabindex="1" autofocus value="{{ old('name') }}" />
@@ -141,4 +141,7 @@
     <!-- /Register v1 -->
   </div>
 </div>
+@endsection
+@section('page-script')
+{!!  GoogleReCaptchaV3::init() !!}
 @endsection

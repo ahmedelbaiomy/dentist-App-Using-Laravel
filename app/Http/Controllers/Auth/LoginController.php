@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Auth;
+use TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3;
+use TimeHunter\LaravelGoogleReCaptchaV3\Validations\GoogleReCaptchaV3ValidationRule;
 
 class LoginController extends Controller
 {
@@ -41,29 +43,32 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {  
-        $inputVal = $request->all();
-   
-        $this->validate($request, [
-            'username' => 'required|string',
-            'password' => 'required',
-        ]);
-   
-        if(auth()->attempt(array('username' => $inputVal['username'], 'password' => $inputVal['password']))){
-            if (auth()->user()->user_type == "admin")
-                return redirect()->route('admin.home');
-            else if (auth()->user()->user_type == "doctor" && auth()->user()->state == 1 ) 
-                return redirect()->route('doctor.home');
-            else if (auth()->user()->user_type == "reception" && auth()->user()->state == 1 ) 
-                return redirect()->route('reception.home');
-            else if (auth()->user()->state == 0 ){
-                Auth::logout();
-                return redirect()->route('login')
-                ->with('error','Account Still suspensed.');
+    { 
+        $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
+        //dd($responseRecaptcha);
+        if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
+            $inputVal = $request->all();
+            $this->validate($request, [
+                'username' => 'required|string',
+                'password' => 'required',
+            ]);
+            if(auth()->attempt(array('username' => $inputVal['username'], 'password' => $inputVal['password']))){
+                if (auth()->user()->user_type == "admin")
+                    return redirect()->route('admin.home');
+                else if (auth()->user()->user_type == "doctor" && auth()->user()->state == 1 ) 
+                    return redirect()->route('doctor.home');
+                else if (auth()->user()->user_type == "reception" && auth()->user()->state == 1 ) 
+                    return redirect()->route('reception.home');
+                else if (auth()->user()->state == 0 ){
+                    Auth::logout();
+                    return redirect()->route('login')
+                    ->with('error','Account Still suspensed.');
+                }
+            }else{
+                return redirect()->route('login')->with('error','Email & Password are incorrect.');
             }
         }else{
-            return redirect()->route('login')
-                ->with('error','Email & Password are incorrect.');
+            return redirect()->route('login')->with('error','ReCaptcha Error');
         }     
     }
 

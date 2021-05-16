@@ -1,7 +1,7 @@
 @php
 $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
-$app_title=\App\Library\Helpers\Helper::getSetting('app','app_title');
-$site_favicon=\App\Library\Helpers\Helper::getSetting('app','favicon');
+$app_title=config('global.app_title');
+$site_favicon=config('global.favicon');
 $favicon=$defaultLogos['favicon'];
 if(isset($site_favicon) && !empty($site_favicon)){
 $favicon=$site_favicon;

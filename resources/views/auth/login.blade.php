@@ -8,6 +8,7 @@
 @endsection
 
 @section('content')
+
 <div class="auth-wrapper auth-v1 px-2">
   <div class="auth-inner py-2">
     <!-- Login v1 -->
@@ -15,9 +16,9 @@
       <div class="card-body">
         @php
         $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
-        $show_logo_in_signin_page=\App\Library\Helpers\Helper::getSetting('app','show_logo_in_signin_page');
+        $show_logo_in_signin_page=config('global.show_logo_in_signin_page');
         if($show_logo_in_signin_page=='yes'){
-          $site_logo=\App\Library\Helpers\Helper::getSetting('app','site_logo');
+          $site_logo=config('global.site_logo');
           $logo=$defaultLogos['logo'];
           if(isset($site_logo) && !empty($site_logo)){
               $logo=$site_logo;
@@ -33,8 +34,9 @@
         <!-- <h4 class="card-title mb-1">Welcome to Vuexy! 👋</h4>
         <p class="card-text mb-2">Please sign-in to your account and start the adventure</p> -->
 
-        <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
+        <form id="LOGIN_FORM" class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
           @csrf
+          {!!  GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
           <div class="form-group">
             <label for="login-username" class="form-label">{{ __('Username') }}</label>
             <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Username" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
@@ -67,7 +69,7 @@
               <label class="custom-control-label" for="remember-me"> Remember Me </label>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block" tabindex="4">Sign in</button>
+          <button type="submit" id="SUBMIT_LOGIN_FORM" class="btn btn-primary btn-block" tabindex="4">Sign in</button>
         </form>
 
         <p class="text-center mt-2">
@@ -103,4 +105,8 @@
     <!-- /Login v1 -->
   </div>
 </div>
+@endsection
+
+@section('page-script')
+{!!  GoogleReCaptchaV3::init() !!}
 @endsection

@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Storage;
+use App\Models\Category;
 use App\Models\Schedule;
 use App\Models\Helpindex;
 use App\Models\Appointment;
@@ -140,9 +141,9 @@ class DbHelperTools
             }
         }elseif($type=='category'){
             if($force_delete==1){
-                $deletedRows = service_category::whereIn('id', $ids)->forceDelete();
+                $deletedRows = Category::whereIn('id', $ids)->forceDelete();
               }else{
-                $deletedRows = service_category::whereIn('id', $ids)->delete();
+                $deletedRows = Category::whereIn('id', $ids)->delete();
             }
         }
         return $deletedRows;
@@ -234,12 +235,12 @@ class DbHelperTools
     public function manageServiceCategorie($data){
         $id=0;
         if (count($data)>0){
-            $row = new service_category();
+            $row = new Category();
             $id=(isset($data['id']))?$data['id']:0;
             if ($id > 0) {
-                $row = service_category::find ( $id );
+                $row = Category::find ( $id );
                 if(!$row){
-                    $row = new service_category();
+                    $row = new Category();
                   }        
             }
             

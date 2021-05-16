@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Auth;
+use App\Models\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3;
+use TimeHunter\LaravelGoogleReCaptchaV3\Validations\GoogleReCaptchaV3ValidationRule;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -50,12 +53,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data,[
-            'name'     => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
-            //'email'  => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8','confirmed'],
-        ]);
+            return Validator::make($data,[
+                'name'     => ['required', 'string', 'max:255'],
+                'username' => ['required', 'string', 'max:255'],
+                //'email'  => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8','confirmed'],
+            ]);
     }
 
     /**
@@ -74,5 +77,33 @@ class RegisterController extends Controller
             'state' => 0,
         ]);
        
+    }
+
+    public function customRegisterUser(Request $request)
+    {
+        $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
+        //dd($responseRecaptcha);
+        if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
+            $validate = \Validator::make($request->all(), [
+                'name' 		=> 'required',
+                'username'	 	=> 'required|max:255',
+                'password' 	=> 'required|confirmed|max:255'
+            ]);
+            if( $validate->fails()){
+                return redirect()
+                ->back()
+                ->withErrors($validate);
+            }
+            $user_create = User::create([
+                'name'      => $request->name,
+                'username'  => $request->username,
+                'password'   => Hash::make($request->password),
+                'user_type' => 'none',
+                'state' => 0,
+            ]);
+            return redirect('/register')->with('success', 'Successfully registered');
+        }else{
+            return redirect()->route('register')->with('error','ReCaptcha Error');
+        }
     }
 }

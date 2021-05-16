@@ -260,4 +260,5 @@ Route::group(['middleware' => ['auth', 'is_reception']], function () {
     Route::post('reception/form/appointment', [App\Http\Controllers\Reception\HomeController::class, 'storeFormAppointment']);
 
 });
-
+//custom register store
+Route::post('custom/register', [App\Http\Controllers\Auth\RegisterController::class, 'customRegisterUser'])->name('custom.register');
