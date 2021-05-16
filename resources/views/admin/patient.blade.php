@@ -4,9 +4,13 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
 @endsection
 
 @section('page-style')
@@ -22,7 +26,7 @@
             <div class="card-body">
                 <h4 class="card-title">Patients List</h4>
                 <div class="table-responsive">
-                    <table class="datatable table table-bordered">
+                    <table id="patients_datatable" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -31,7 +35,7 @@
                                 <th>Address</th>
                                 <th>Phone</th>
                                 <th>Status</th>
-                                <th class="tb-tnx-action">
+                                <th>
                                     Action
                                 </th>
                             </tr>
@@ -216,12 +220,13 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
 @endsection
 @section('page-script')
 <script>
@@ -229,8 +234,8 @@ function delete_func(val) {
     document.getElementById(val).submit();
 }
 $(document).ready(function() {
-    var table = $('.datatable').DataTable();
-    $(".datepicker").da
+    var table = $('#patients_datatable').DataTable();
+    //$(".datepicker").da
 
     $('.datepicker').pickadate({
         format: 'yyyy-mm-dd',

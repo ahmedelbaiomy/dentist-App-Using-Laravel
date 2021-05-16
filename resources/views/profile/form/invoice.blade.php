@@ -168,6 +168,9 @@ function _formDiscount(invoice_id) {
         complete: function(result, status) {}
     });
 }
+function annulateDiscount(){
+    $('#BLOCK_DISCOUNT').html('');
+}
 //modal_add_items_to_invoice
 function _addItemsToInvoice(invoice_id) {
     var modal_id = "modal_add_items_to_invoice";

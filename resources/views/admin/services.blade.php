@@ -9,6 +9,9 @@
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet"
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('new-assets/js/jcarousel/custom_jcarousel.css') }}">
+
 @endsection
 
 @section('page-style')
@@ -18,10 +21,9 @@
 
 @section('content')
 
-
-<div class="row match-height">
-    <!-- Employee Task Card -->
-    <div class="col-lg-3">
+<div class="row">
+<!-- Employee Task Card -->
+<div class="col-md-12">
         <div class="card card-employee-task">
             <div class="card-header">
                 <h4 class="card-title">Categories</h4>
@@ -42,12 +44,15 @@
         </div>
     </div>
     <!--/ Employee Task Card -->
-    <div class="col-lg-9">
+</div>
+
+<div class="row match-height">
+    <div class="col-md-12">
         <!-- begin card -->
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Services <span id="spinner_reload_services"></span></h4>
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="todoActions"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i data-feather="more-vertical" class="font-medium-2 text-body"></i>
@@ -56,7 +61,9 @@
                         <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_formService(0)"><i data-feather="plus"></i> New</a>
                         <a class="dropdown-item sort-asc" href="javascript:void(0)" onclick="_reload_services_datatable()"><i data-feather="refresh-ccw"></i> Reload</a>
                     </div>
-                </div>
+                </div> -->
+                <button style="float:right;" type="button" data-toggle="tooltip" data-placement="top" title="Add new service" onclick="_formService(0)" class="btn btn-icon btn-outline-primary btn-sm mr-1"><i data-feather="plus"></i></button>
+                <button style="float:right;" type="button" data-toggle="tooltip" data-placement="top" title="Reload" onclick="_reload_services_datatable()" class="btn btn-icon btn-outline-primary btn-sm mr-1"><i data-feather="refresh-ccw"></i></button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -100,6 +107,9 @@
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
 
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+
+<script src="{{ asset('new-assets/js/jcarousel/jcarousel.min.js') }}"></script>
+
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>

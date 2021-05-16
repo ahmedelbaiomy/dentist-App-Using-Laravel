@@ -620,7 +620,9 @@ $("#FORM_INVOICE").validate({
             success: function(result) {
                 if (result.success) {
                     _showResponseMessage("success", result.msg);
-                    $("#modal_form_invoice").modal("hide");
+                    //$("#modal_form_invoice").modal("hide");
+                    var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
+                    _formInvoice(patient_id, result.invoice_id);
                 } else {
                     _showResponseMessage("error", result.msg);
                 }
@@ -634,6 +636,7 @@ $("#FORM_INVOICE").validate({
             complete: function(resultat, statut) {
                 $("#SPAN_SAVE_INVOICE").removeClass("spinner-border spinner-border-sm");
                 _reload_invoices_datatable();
+                _loadBillingStats();
             },
         });
         return false;

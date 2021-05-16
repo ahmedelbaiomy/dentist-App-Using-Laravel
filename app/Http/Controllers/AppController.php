@@ -358,7 +358,7 @@ class AppController extends Controller
     public function storeFormInvoice(Request $request) {
 		$success = false;
         $msg = 'Oops, something went wrong !';
-        $id = 0;
+        $invoice_id = 0;
         if ($request->isMethod('post')) {
             $DbHelperTools=new DbHelperTools();
             //dd($request->bill_date);
@@ -381,13 +381,14 @@ class AppController extends Controller
                 'cancelled_by'=>null,
             );
             //dd($data);
-            $note_id=$DbHelperTools->manageInvoice($data);
+            $invoice_id=$DbHelperTools->manageInvoice($data);
             $success = true;
             $msg = 'Your invoice has been saved successfully';
         }         
         return response ()->json ( [ 
                 'success' => $success,
-                'msg' => $msg 
+                'msg' => $msg,
+                'invoice_id' => $invoice_id 
         ] );
     }
     public function getInvoiceItems($invoice_id){
