@@ -15,6 +15,7 @@
     <div class="card mb-0">
       <div class="card-body">
         @php
+        use TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3;
         $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
         $show_logo_in_signin_page=config('global.show_logo_in_signin_page');
         if($show_logo_in_signin_page=='yes'){
@@ -36,7 +37,7 @@
 
         <form id="LOGIN_FORM" class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
           @csrf
-          {!!  \TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
+          {!!  GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
           <div class="form-group">
             <label for="login-username" class="form-label">{{ __('Username') }}</label>
             <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Username" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
@@ -108,5 +109,5 @@
 @endsection
 
 @section('page-script')
-{!!  \TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::init() !!}
+{!!  GoogleReCaptchaV3::init() !!}
 @endsection
