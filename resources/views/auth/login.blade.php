@@ -15,7 +15,6 @@
     <div class="card mb-0">
       <div class="card-body">
         @php
-        use TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3;
         $defaultLogos=\App\Library\Helpers\Helper::getDefaultLogos();
         $show_logo_in_signin_page=config('global.show_logo_in_signin_page');
         if($show_logo_in_signin_page=='yes'){
