@@ -74,8 +74,8 @@ $dtNow = Carbon\Carbon::now();
                                     onclick="quick_filters('this_month')">This month</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('last_month')">Last Month</a>
-                                <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('this_year')">This year</a>
+                                <!-- <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('this_year')">This year</a> -->
                             </div>
 
                         </div>
@@ -84,9 +84,16 @@ $dtNow = Carbon\Carbon::now();
                 </div>
                 <!-- endcustom range -->
 
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="font-weight-bolder">Selected filter date : <span class="badge badge-light-primary" id="current_filter_date"></span></p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+    
 </div>
 <!-- FILTER FORM -->
 
@@ -320,11 +327,13 @@ $(document).ready(function() {
 });
 
 $('#select_doctors').on('change', function() {
+    _update_current_selected_filter_date();
     $("#formFilterStats").submit();
 });
 
 function quick_filters(type) {
     $('#INPUT_QUICK').val(type);
+    var selected_filter=type; 
     if (type != 'reset') {
         $('#custom-range').val('');
     } else {
@@ -332,11 +341,41 @@ function quick_filters(type) {
         var filter_range = '{{$start_custom_range}} to {{$end_custom_range}}';
         $('#custom-range').val(filter_range);
     }
+    _update_current_selected_filter_date();
     $("#formFilterStats").submit();
+}
+
+function _update_current_selected_filter_date(){
+    $('#current_filter_date').html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
+    var current=$('#custom-range').val();
+    var type=$('#INPUT_QUICK').val();
+    if(type && type!="reset"){
+        current=type;
+        if(type=='today'){
+            current='Today';
+        }
+        if(type=='yesterday'){
+            current='Yesterday';
+        }
+        if(type=='last_7_days'){
+            current='Last 7 days';
+        }
+        if(type=='last_30_days'){
+            current='Last 30 days';
+        }
+        if(type=='this_month'){
+            current='This month';
+        }
+        if(type=='last_month'){
+            current='Last month';
+        }
+    }
+    $('#current_filter_date').html(current);
 }
 
 function range_filters() {
     $('#INPUT_QUICK').val('');
+    _update_current_selected_filter_date();
     $("#formFilterStats").submit();
 }
 //submit form
@@ -426,14 +465,8 @@ var columnChartEl = document.querySelector('#finances-column-chart'),
             bar: {
                 columnWidth: '15%',
                 colors: {
-                    backgroundBarColors: [
-                        chartColors.column.bg,
-                        chartColors.column.bg,
-                        chartColors.column.bg,
-                        chartColors.column.bg,
-                        chartColors.column.bg
-                    ],
-                    backgroundBarRadius: 10
+                    backgroundBarColors: [],
+                    backgroundBarRadius: 0
                 }
             }
         },
@@ -488,6 +521,7 @@ function _loadDatasDoctorsForSelectOptions(select_id, doctor_id, selected_value 
         if (selected_value != 0 && selected_value != '') {
             $('#' + select_id + ' option[value="' + selected_value + '"]').attr('selected', 'selected');
         }
+        _update_current_selected_filter_date();
         _loadDashboardStats();
         _loadFinancialsDataChart(0);
         _loadAppointmentsDataChart(0);
@@ -601,14 +635,15 @@ var columnChartAppointment = document.querySelector('#appointments-column-chart'
             bar: {
                 columnWidth: '15%',
                 colors: {
-                    backgroundBarColors: [
+                    /* backgroundBarColors: [
                         appointmentChartColors.column.bg,
                         appointmentChartColors.column.bg,
                         appointmentChartColors.column.bg,
                         appointmentChartColors.column.bg,
                         appointmentChartColors.column.bg
-                    ],
-                    backgroundBarRadius: 10
+                    ], */
+                    backgroundBarColors: [],
+                    backgroundBarRadius: 0
                 }
             }
         },
