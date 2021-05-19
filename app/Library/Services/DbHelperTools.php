@@ -232,6 +232,7 @@ class DbHelperTools
         ];
         return $results;
     }
+    
     public function manageServiceCategorie($data){
         $id=0;
         if (count($data)>0){
@@ -525,6 +526,7 @@ class DbHelperTools
         'total_paid'=>number_format($total_paid,2),
         'nnf_total_paid'=>$total_paid,
         'total_refund'=>$total_refund,
+        'nnf_tax_amount'=>$tax_amount,
     );
   }
   public function calculateDiscount($amout_to_discount,$discount_amount_type,$invoice_discount_amount){
@@ -596,5 +598,70 @@ class DbHelperTools
   public function updateSetting($type,$name,$value){
     $rs=Setting::where( [['type',$type],['name',$name]] )->update(['value' => $value]);
     return $rs;
-  } 
+  }
+  public function getReportStats($doctor_user_id,$start_date,$end_date){
+    $appointments=$patients=$doctors=$invoices=0;
+    if($start_date && $end_date){
+        if($doctor_user_id>0){
+            $appointments = Appointment::where('doctor_id',$doctor_user_id)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $procedures = 0;
+            $invoices = Invoice::where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+        }else{
+            $appointments = Appointment::whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $procedures = Doctor::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $invoices = Invoice::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+        }
+    }else{
+        if($doctor_user_id>0){
+            $appointments = Appointment::where('doctor_id',$doctor_user_id)->count();
+            $patients = Patient::count();
+            $procedures = 0;
+            $invoices = Invoice::where('doctor_id',$doctor_user_id)->count();
+        }else{
+            $appointments = Appointment::count();
+            $patients = Patient::count();
+            $procedures = Doctor::count();
+            $invoices = Invoice::count();
+        }
+    }
+    $results = [
+        'payments' => 0,
+        'appointments' => $appointments,
+        'procedures' => $procedures,
+        'invoices' => $invoices,
+        'bookings' => 0,
+        'patients' => $patients,
+    ];
+    return $results;
+}
+  public function getStatsForReports($doctor_user_id,$start_date,$end_date){
+    $total_amount_invoices=$total_amount_payed_invoices=$total_amount_discount=$total_tax_amount=0;
+    if($doctor_user_id>0){
+            if($start_date && $end_date){
+                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get('id');
+            }else{
+                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->get('id');
+            }
+    }else{
+        $ids = Invoice::select('id')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
+    }
+    if(count($ids)>0){
+        foreach($ids as $invoice){
+            //dd($invoice_id);
+            $calcul=$this->getAmountsInvoice($invoice->id);
+            $total_amount_invoices=$total_amount_invoices+$calcul['nnf_total'];
+            $total_amount_payed_invoices=$total_amount_payed_invoices+$calcul['nnf_total_paid'];
+            $total_amount_discount=$total_amount_discount+$calcul['nnf_discount_amount'];
+            $total_tax_amount=$total_tax_amount+$calcul['nnf_tax_amount'];
+        }
+    }
+    return array(
+        'total_amount_invoices'=>$total_amount_invoices,
+        'total_amount_payed_invoices'=>$total_amount_payed_invoices,
+        'total_amount_discount'=>$total_amount_discount,
+        'total_tax_amount'=>$total_tax_amount,
+    );
+  }
 }

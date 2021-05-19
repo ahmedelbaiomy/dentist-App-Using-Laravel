@@ -11,6 +11,7 @@ use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Setting;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Models\Invoicerefund;
 use App\Models\Invoicepayment;
@@ -730,5 +731,180 @@ class AppController extends Controller
                 'success' => $success,
                 'msg' => $msg 
         ] );
+    }
+    public function reports(){
+        return view('admin.reports.index');
+    }
+    public function reportsStats(Request $request){
+        $DbHelperTools=new DbHelperTools();
+        $start=$end=null;
+        $doctor_id=0;
+        if ($request->isMethod('post')) {
+            if ($request->has('doctor_id')) {
+                $doctor_id=$request->doctor_id;
+            }
+            if ($request->has('filter_range')) {
+                $tab=explode('to',$request->filter_range);
+                if(count($tab)>0){
+                    if(!empty($tab[0]) && !empty($tab[1])){
+                        $start = trim($tab[0]);
+                        $end = trim($tab[1]);
+                    }
+                }
+            }
+            if ($request->has('quick_type')) {
+                $quick_type=$request->quick_type;
+                if($quick_type=='today'){
+                    $dtNow=Carbon::now();
+                    $start=$dtNow->format('Y-m-d');
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='yesterday'){
+                    $yesterday = Carbon::yesterday();
+                    $start=$yesterday->format('Y-m-d');
+                    $end=$yesterday->format('Y-m-d');
+                }
+                if($quick_type=='this_month'){
+                    $this_month = new Carbon('first day of this month');
+                    $start=$this_month->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='this_year'){
+                    $dtNowA=Carbon::now();
+                    $startOfYear = $dtNowA->copy()->startOfYear();
+                    $start=$startOfYear->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='last_7_days'){
+                    $date = Carbon::today()->subDays(7);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_30_days'){
+                    $date = Carbon::today()->subDays(30);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_month'){
+                    $start_last_month = new Carbon('first day of last month');
+                    $end_last_month = new Carbon('last day of last month');
+                    $start=$start_last_month->format('Y-m-d');
+                    $end=$end_last_month->format('Y-m-d');
+                    //dd($end);
+                }
+            }
+        }
+        $results=$DbHelperTools->getReportStats($doctor_id,$start,$end);
+        return response()->json($results);
+    }
+    public function getJsonFinancesApexChart(Request $request,$type_data){
+        /* 
+        $type_data==0 ==> all datas
+        $type_data==1 ==> show only production
+        $type_data==2 ==> show only collection
+        */
+        $DbHelperTools=new DbHelperTools();
+        //dd($request->all());
+        $doctor_id=0;
+        $start=$end=null;
+        if ($request->isMethod('post')) {
+            if ($request->has('doctor_id')) {
+                $doctor_id=$request->doctor_id;
+            }
+            if ($request->has('filter_range')) {
+                $tab=explode('to',$request->filter_range);
+                if(count($tab)>0){
+                    if(!empty($tab[0]) && !empty($tab[1])){
+                        $start = trim($tab[0]);
+                        $end = trim($tab[1]);
+                    }
+                }
+            }
+            if ($request->has('quick_type')) {
+                $quick_type=$request->quick_type;
+                if($quick_type=='today'){
+                    $dtNow=Carbon::now();
+                    $start=$dtNow->format('Y-m-d');
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='yesterday'){
+                    $yesterday = Carbon::yesterday();
+                    $start=$yesterday->format('Y-m-d');
+                    $end=$yesterday->format('Y-m-d');
+                }
+                if($quick_type=='this_month'){
+                    $this_month = new Carbon('first day of this month');
+                    $start=$this_month->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='this_year'){
+                    $dtNowA=Carbon::now();
+                    $startOfYear = $dtNowA->copy()->startOfYear();
+                    $start=$startOfYear->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='last_7_days'){
+                    $date = Carbon::today()->subDays(7);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_30_days'){
+                    $date = Carbon::today()->subDays(30);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_month'){
+                    $start_last_month = new Carbon('first day of last month');
+                    $end_last_month = new Carbon('last day of last month');
+                    $start=$start_last_month->format('Y-m-d');
+                    $end=$end_last_month->format('Y-m-d');
+                    //dd($end);
+                }
+            }
+        }
+        $periods = CarbonPeriod::create($start, $end);
+        // Iterate over the period
+        $production_datas=$collection_datas=[];
+        foreach ($periods as $date) {
+            $calcul=$DbHelperTools->getStatsForReports($doctor_id,$date->format('Y-m-d'),$date->format('Y-m-d'));
+            if($type_data==0 || $type_data==1){
+                $p_row=array();
+                $p_row['x']=$date->format('m/d');
+                $p_row['y']=$calcul['total_amount_invoices'];
+                $production_datas[]=$p_row;
+            }
+            //
+            if($type_data==0 || $type_data==2){
+                $c_row=array();
+                $c_row['x']=$date->format('m/d');
+                $c_row['y']=$calcul['total_amount_payed_invoices'];
+                $collection_datas[]=$c_row;
+            }
+        }
+        //global stats
+        $calcul=$DbHelperTools->getStatsForReports($doctor_id,$start, $end);
+        $stats=[
+            'production'=>number_format($calcul['total_amount_invoices'],2).'$',
+            'collection'=>number_format($calcul['total_amount_payed_invoices'],2).'$',
+            'discounts'=>number_format($calcul['total_amount_discount'],2).'$',
+            'taxes'=>number_format($calcul['total_tax_amount'],2).'$',
+        ];
+        return response ()->json ([ 
+            'production' => $production_datas,
+            'collection' => $collection_datas,
+            'stats' => $stats,
+        ]);
     }
 }
