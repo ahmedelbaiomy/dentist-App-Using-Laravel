@@ -177,7 +177,7 @@ $dtNow = Carbon\Carbon::now();
 
 <!-- Row finances Chart Starts -->
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-12">
         <div class="card">
             <div
                 class="card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start">
@@ -200,7 +200,7 @@ $dtNow = Carbon\Carbon::now();
                 </div>
             </div>
             <div class="card-body">
-                <div id="column-chart"></div>
+                <div id="finances-column-chart"></div>
                 <!-- finance stats -->
                 <div class="row">
                     <div class="col-md-3">
@@ -381,7 +381,7 @@ var chartColors = {
         bg: '#f8d3ff'
     },
 };
-var columnChartEl = document.querySelector('#column-chart'),
+var columnChartEl = document.querySelector('#finances-column-chart'),
     columnChartConfig = {
         chart: {
             height: 400,
