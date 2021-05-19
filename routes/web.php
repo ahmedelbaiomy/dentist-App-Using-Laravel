@@ -78,7 +78,8 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     Route::get('admin/reports', [App\Http\Controllers\AppController::class, 'reports'])->name('admin.reports');
     Route::post('/admin/reports/stats', [App\Http\Controllers\AppController::class, 'reportsStats']);
     //getJsonFinancesApexChart
-    Route::post('admin/reports/json/finances/stats/{type_data}', [App\Http\Controllers\AppController::class, 'getJsonFinancesApexChart']);
+    Route::post('/admin/reports/json/finances/stats/{type_data}', [App\Http\Controllers\AppController::class, 'getJsonFinancesApexChart']);
+    Route::post('/admin/reports/json/appointments/stats/{type_data}', [App\Http\Controllers\AppController::class, 'getJsonAppointmentsApexChart']);
     
     Route::prefix('admin/settings')->group(function () {
         Route::get('/general', [App\Http\Controllers\AppController::class, 'settingsGeneral'])->name('admin.settings.general');

@@ -907,4 +907,133 @@ class AppController extends Controller
             'stats' => $stats,
         ]);
     }
+    public function getJsonAppointmentsApexChart(Request $request,$type_data){
+        /* 
+        $type_data==0 ==> all datas
+        $type_data==1 ==> show only booked
+        $type_data==2 ==> show only confirmed
+        $type_data==3 ==> show only canceled
+        $type_data==4 ==> show only attended
+        */
+        $DbHelperTools=new DbHelperTools();
+        //dd($request->all());
+        $doctor_id=0;
+        $start=$end=null;
+        if ($request->isMethod('post')) {
+            if ($request->has('doctor_id')) {
+                $doctor_id=$request->doctor_id;
+            }
+            if ($request->has('filter_range')) {
+                $tab=explode('to',$request->filter_range);
+                if(count($tab)>0){
+                    if(!empty($tab[0]) && !empty($tab[1])){
+                        $start = trim($tab[0]);
+                        $end = trim($tab[1]);
+                    }
+                }
+            }
+            if ($request->has('quick_type')) {
+                $quick_type=$request->quick_type;
+                if($quick_type=='today'){
+                    $dtNow=Carbon::now();
+                    $start=$dtNow->format('Y-m-d');
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='yesterday'){
+                    $yesterday = Carbon::yesterday();
+                    $start=$yesterday->format('Y-m-d');
+                    $end=$yesterday->format('Y-m-d');
+                }
+                if($quick_type=='this_month'){
+                    $this_month = new Carbon('first day of this month');
+                    $start=$this_month->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='this_year'){
+                    $dtNowA=Carbon::now();
+                    $startOfYear = $dtNowA->copy()->startOfYear();
+                    $start=$startOfYear->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                }
+                if($quick_type=='last_7_days'){
+                    $date = Carbon::today()->subDays(7);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_30_days'){
+                    $date = Carbon::today()->subDays(30);
+                    $start=$date->format('Y-m-d');
+                    $dtNow=Carbon::now();
+                    $end=$dtNow->format('Y-m-d');
+                    //dd($start);
+                }
+                if($quick_type=='last_month'){
+                    $start_last_month = new Carbon('first day of last month');
+                    $end_last_month = new Carbon('last day of last month');
+                    $start=$start_last_month->format('Y-m-d');
+                    $end=$end_last_month->format('Y-m-d');
+                    //dd($end);
+                }
+            }
+        }
+        $periods = CarbonPeriod::create($start, $end);
+        // Iterate over the period
+        $booked_datas=$confirmed_datas=$canceled_datas=$attended_datas=[];
+        foreach ($periods as $date) {
+            $calcul=$DbHelperTools->getAppointmentsStatsForReports($doctor_id,$date->format('Y-m-d'),$date->format('Y-m-d'));
+            //booked
+            if($type_data==0 || $type_data==1){
+                $p_row=array();
+                $p_row['x']=$date->format('m/d');
+                $p_row['y']=$calcul['nb_booked'];
+                $booked_datas[]=$p_row;
+            }
+            //confirmed
+            if($type_data==0 || $type_data==2){
+                $c_row=array();
+                $c_row['x']=$date->format('m/d');
+                $c_row['y']=$calcul['nb_confirmed'];
+                $confirmed_datas[]=$c_row;
+            }
+            //canceled
+            if($type_data==0 || $type_data==3){
+                $c_row=array();
+                $c_row['x']=$date->format('m/d');
+                $c_row['y']=$calcul['nb_canceled'];
+                $canceled_datas[]=$c_row;
+            }
+            //attended
+            if($type_data==0 || $type_data==4){
+                $c_row=array();
+                $c_row['x']=$date->format('m/d');
+                $c_row['y']=$calcul['nb_attended'];
+                $attended_datas[]=$c_row;
+            }
+        }
+        //global stats
+        $calcul=$DbHelperTools->getAppointmentsStatsForReports($doctor_id,$start,$end);
+        $sum=$calcul['nb_booked']+$calcul['nb_confirmed']+$calcul['nb_canceled']+$calcul['nb_attended'];
+        $percent=0;
+        if($sum>0){
+            $percent=($calcul['nb_canceled']/$sum)*100;
+        }
+        $stats=[
+            'nb_booked'=>$calcul['nb_booked'],
+            'nb_confirmed'=>$calcul['nb_confirmed'],
+            'nb_canceled'=>$calcul['nb_canceled'],
+            'percent_canceled'=>number_format($percent,2),
+            'nb_attended'=>$calcul['nb_attended'],
+        ];
+        return response ()->json ([ 
+            'booked' => $booked_datas,
+            'confirmed' => $confirmed_datas,
+            'canceled' => $canceled_datas,
+            'attended' => $attended_datas,
+            'stats' => $stats,
+        ]);
+    }
 }

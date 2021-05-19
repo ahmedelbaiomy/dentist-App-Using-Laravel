@@ -96,12 +96,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-info p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="eye" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="payments">0</h2>
+                <h4 class="font-weight-bolder" id="payments">0</h4>
                 <p class="card-text">Payments</p>
             </div>
         </div>
@@ -109,12 +104,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-warning p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="message-square" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="appointments">0</h2>
+                <h4 class="font-weight-bolder" id="appointments">0</h4>
                 <p class="card-text">Appointments</p>
             </div>
         </div>
@@ -122,12 +112,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-danger p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="shopping-bag" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="procedures">0</h2>
+                <h4 class="font-weight-bolder" id="procedures">0</h4>
                 <p class="card-text">Procedures</p>
             </div>
         </div>
@@ -135,12 +120,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-primary p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="heart" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="invoices">0</h2>
+                <h4 class="font-weight-bolder" id="invoices">0</h4>
                 <p class="card-text">Invoices</p>
             </div>
         </div>
@@ -148,12 +128,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-success p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="award" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="bookings">0</h2>
+                <h4 class="font-weight-bolder" id="bookings">0</h4>
                 <p class="card-text">Bookings</p>
             </div>
         </div>
@@ -161,12 +136,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-xl-2 col-md-4 col-sm-6">
         <div class="card text-center">
             <div class="card-body">
-                <!-- <div class="avatar bg-light-danger p-50 mb-1">
-            <div class="avatar-content">
-              <i data-feather="truck" class="font-medium-5"></i>
-            </div>
-          </div> -->
-                <h2 class="font-weight-bolder" id="patients">0</h2>
+                <h4 class="font-weight-bolder" id="patients">0</h4>
                 <p class="card-text">Patients</p>
             </div>
         </div>
@@ -206,7 +176,7 @@ $dtNow = Carbon\Carbon::now();
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h2 class="font-weight-bolder" id="chart_stats_production">0</h2>
+                                <h4 class="font-weight-bolder" id="chart_stats_production">0</h4>
                                 <p class="card-text">Production</p>
                             </div>
                         </div>
@@ -214,7 +184,7 @@ $dtNow = Carbon\Carbon::now();
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h2 class="font-weight-bolder" id="chart_stats_collection">0</h2>
+                                <h4 class="font-weight-bolder" id="chart_stats_collection">0</h4>
                                 <p class="card-text">Collection</p>
                             </div>
                         </div>
@@ -222,7 +192,7 @@ $dtNow = Carbon\Carbon::now();
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h2 class="font-weight-bolder" id="chart_stats_discounts">0</h2>
+                                <h4 class="font-weight-bolder" id="chart_stats_discounts">0</h4>
                                 <p class="card-text">Discounts</p>
                             </div>
                         </div>
@@ -230,7 +200,7 @@ $dtNow = Carbon\Carbon::now();
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h2 class="font-weight-bolder" id="chart_stats_taxes">0</h2>
+                                <h4 class="font-weight-bolder" id="chart_stats_taxes">0</h4>
                                 <p class="card-text">Taxes</p>
                             </div>
                         </div>
@@ -242,6 +212,84 @@ $dtNow = Carbon\Carbon::now();
     </div>
 </div>
 <!-- Row finances Chart Starts -->
+
+<!-- Row appointments Chart Starts -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div
+                class="card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start">
+                <div>
+                    <h4 class="card-title mb-1">Appointments</h4>
+                    <span class="cursor-pointer mr-1">
+                        <!-- <span class="bullet bullet-primary align-middle bullet-sm">&nbsp;</span> -->
+                        <span class="align-middle cursor-pointer" onclick="_loadAppointmentsDataChart(0);">All</span>
+                    </span>
+                    <span class="cursor-pointer mr-1">
+                        <span class="bullet align-middle bullet-sm" style="background-color: #7367f0">&nbsp;</span>
+                        <span class="align-middle cursor-pointer"
+                            onclick="_loadAppointmentsDataChart(1);">Booked</span>
+                    </span>
+                    <span class="cursor-pointer mr-1">
+                        <span class="bullet bullet-sm align-middle" style="background-color: #00cfe8">&nbsp;</span>
+                        <span class="align-middle cursor-pointer"
+                            onclick="_loadAppointmentsDataChart(2);">Confirmed</span>
+                    </span>
+                    <span class="cursor-pointer mr-1">
+                        <span class="bullet bullet-sm align-middle" style="background-color: #ea5455">&nbsp;</span>
+                        <span class="align-middle cursor-pointer"
+                            onclick="_loadAppointmentsDataChart(3);">Canceled</span>
+                    </span>
+                    <span class="cursor-pointer mr-1">
+                        <span class="bullet bullet-sm align-middle" style="background-color: #ff9f43">&nbsp;</span>
+                        <span class="align-middle cursor-pointer"
+                            onclick="_loadAppointmentsDataChart(4);">Attended</span>
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="appointments-column-chart"></div>
+                <!-- finance stats -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_booked">0</h4>
+                                <p class="card-text">Booked</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_confirmed">0</h4>
+                                <p class="card-text">Confirmed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" style="color:#ea5455;" id="chart_stats_canceled">0</h4>
+                                <p class="card-text" style="color:#ea5455;">Canceled</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_attended">0</h4>
+                                <p class="card-text">Attended</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row appointments Chart Starts -->
 
 @endsection
 
@@ -321,26 +369,8 @@ $("#formFilterStats").submit(function(event) {
     }).done(function(data) {
         $("#SPINNER").addClass('d-none');
     });
-    //ajax apex
-    /* $.ajax({
-        type: "POST",
-        dataType: 'json',
-        data: formData,
-        url: '/admin/reports/json/finances/stats/0', //type_data==0 all
-        success: function(response) {
-            columnChart.updateSeries([{
-                    name: 'Production',
-                    data: response.production
-                },
-                {
-                    name: 'Collection',
-                    data: response.collection
-                }
-            ])
-        },
-    }); */
-    //
     _loadFinancialsDataChart(0);
+    _loadAppointmentsDataChart(0);
     return false;
 });
 
@@ -378,9 +408,10 @@ var chartColors = {
     column: {
         series1: '#7367f0',
         series2: '#28c76f',
-        bg: '#f8d3ff'
+        bg: '#f1effd'
     },
 };
+//Finances chart
 var columnChartEl = document.querySelector('#finances-column-chart'),
     columnChartConfig = {
         chart: {
@@ -459,6 +490,7 @@ function _loadDatasDoctorsForSelectOptions(select_id, doctor_id, selected_value 
         }
         _loadDashboardStats();
         _loadFinancialsDataChart(0);
+        _loadAppointmentsDataChart(0);
     });
 }
 
@@ -498,6 +530,117 @@ function _loadFinancialsDataChart(type_data) {
             $('#chart_stats_taxes').html(response.stats.taxes);
         },
     });
+}
+function _loadAppointmentsDataChart(type_data) {
+    $('#chart_stats_booked, #chart_stats_confirmed, #chart_stats_canceled, #chart_stats_attended').html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
+    var doctor_id = $('#select_doctors').val();
+    var filter_range = $('#custom-range').val();
+    var quick_type = $('#INPUT_QUICK').val();
+    if (filter_range == '') {
+        filter_range = '{{$start_custom_range}} to {{$end_custom_range}}';
+    }
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: {
+            quick_type: quick_type,
+            filter_range: filter_range,
+            doctor_id: doctor_id
+        },
+        url: '/admin/reports/json/appointments/stats/' + type_data,
+        success: function(response) {
+            columnChartAppointment.updateSeries([
+                {
+                    name: 'Booked',
+                    data: response.booked
+                },
+                {
+                    name: 'Confirmed',
+                    data: response.confirmed
+                },
+                {
+                    name: 'Canceled',
+                    data: response.canceled
+                },
+                {
+                    name: 'Attended',
+                    data: response.attended
+                }
+            ]);
+            //chart stats
+            $('#chart_stats_booked').html(response.stats.nb_booked);
+            $('#chart_stats_confirmed').html(response.stats.nb_confirmed);
+            $('#chart_stats_canceled').html(response.stats.nb_canceled+' ('+response.stats.percent_canceled+'%)');
+            $('#chart_stats_attended').html(response.stats.nb_attended);
+        },
+    });
+}
+
+
+//Appointments chart
+var appointmentChartColors = {
+    column: {
+        booked: '#7367f0',
+        confirmed: '#00cfe8',
+        canceled: '#ea5455',
+        attended: '#ff9f43',
+        bg: '#e7fafc'
+    },
+};
+var columnChartAppointment = document.querySelector('#appointments-column-chart'),
+    columnChartConfig = {
+        chart: {
+            height: 400,
+            type: 'bar',
+            stacked: true,
+            toolbar: {
+                show: false
+            }
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '15%',
+                colors: {
+                    backgroundBarColors: [
+                        appointmentChartColors.column.bg,
+                        appointmentChartColors.column.bg,
+                        appointmentChartColors.column.bg,
+                        appointmentChartColors.column.bg,
+                        appointmentChartColors.column.bg
+                    ],
+                    backgroundBarRadius: 10
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        legend: {
+            show: false
+        },
+        colors: [appointmentChartColors.column.booked, appointmentChartColors.column.confirmed, appointmentChartColors.column.canceled, appointmentChartColors.column.attended],
+        stroke: {
+            show: true,
+            colors: ['transparent']
+        },
+        grid: {
+            xaxis: {
+                lines: {
+                    show: true
+                }
+            }
+        },
+        series: [],
+        noData: {
+            text: 'Loading...'
+        },
+        fill: {
+            opacity: 1
+        },
+    };
+if (typeof columnChartAppointment !== undefined && columnChartAppointment !== null) {
+    var columnChartAppointment = new ApexCharts(columnChartAppointment, columnChartConfig);
+    columnChartAppointment.render();
 }
 </script>
 @endsection

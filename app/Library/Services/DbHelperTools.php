@@ -600,38 +600,58 @@ class DbHelperTools
     return $rs;
   }
   public function getReportStats($doctor_user_id,$start_date,$end_date){
-    $appointments=$patients=$doctors=$invoices=0;
+    $appointments=$patients=$doctors=$invoices=$bookings=$payments=$procedures=0;
     if($start_date && $end_date){
         if($doctor_user_id>0){
             $appointments = Appointment::where('doctor_id',$doctor_user_id)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
-            $procedures = 0;
+            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $invoices = Invoice::where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $bookings = Appointment::where([['status',1],['doctor_id',$doctor_user_id]])->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            
+            $ids_invoices = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
+            if(count($ids_invoices)>0){
+                $payments = Invoicepayment::whereIn ('invoice_id',$ids_invoices)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            }
+            
         }else{
             $appointments = Appointment::whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
-            $procedures = Doctor::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $procedures = Procedureserviceitem::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $invoices = Invoice::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $bookings = Appointment::where('status',1)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            
+            $ids_invoices = Invoice::select('id')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
+            if(count($ids_invoices)>0){
+                $payments = Invoicepayment::whereIn ('invoice_id',$ids_invoices)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            }    
         }
     }else{
         if($doctor_user_id>0){
             $appointments = Appointment::where('doctor_id',$doctor_user_id)->count();
             $patients = Patient::count();
-            $procedures = 0;
+            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->count();
             $invoices = Invoice::where('doctor_id',$doctor_user_id)->count();
+            $bookings = Appointment::where([['status',1],['doctor_id',$doctor_user_id]])->count();
+            $ids_invoices = Invoice::select('id')->where('doctor_id',$doctor_user_id)->get();
+            if(count($ids_invoices)>0){
+                $payments = Invoicepayment::whereIn ('invoice_id',$ids_invoices)->count();
+            }
         }else{
             $appointments = Appointment::count();
             $patients = Patient::count();
-            $procedures = Doctor::count();
+            $procedures = Procedureserviceitem::count();
             $invoices = Invoice::count();
+            $bookings = Appointment::where('status',1)->count();
+            $payments = Invoicepayment::count();
         }
     }
     $results = [
-        'payments' => 0,
+        'payments' => $payments,
         'appointments' => $appointments,
         'procedures' => $procedures,
         'invoices' => $invoices,
-        'bookings' => 0,
+        'bookings' => $bookings,
         'patients' => $patients,
     ];
     return $results;
@@ -640,12 +660,16 @@ class DbHelperTools
     $total_amount_invoices=$total_amount_payed_invoices=$total_amount_discount=$total_tax_amount=0;
     if($doctor_user_id>0){
             if($start_date && $end_date){
-                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get('id');
+                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
             }else{
-                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->get('id');
+                $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->get();
             }
     }else{
-        $ids = Invoice::select('id')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
+        if($start_date && $end_date){
+            $ids = Invoice::select('id')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
+        }else{
+            $ids = Invoice::select('id')->get();
+        }    
     }
     if(count($ids)>0){
         foreach($ids as $invoice){
@@ -663,5 +687,30 @@ class DbHelperTools
         'total_amount_discount'=>$total_amount_discount,
         'total_tax_amount'=>$total_tax_amount,
     );
+  }
+  public function getAppointmentsStatsForReports($doctor_user_id,$start_date,$end_date){
+    return array(
+        'nb_booked'=>$this->getNbAppointmentsByStatus(1,$doctor_user_id,$start_date,$end_date),
+        'nb_confirmed'=>$this->getNbAppointmentsByStatus(2,$doctor_user_id,$start_date,$end_date),
+        'nb_canceled'=>$this->getNbAppointmentsByStatus(3,$doctor_user_id,$start_date,$end_date),
+        'nb_attended'=>$this->getNbAppointmentsByStatus(4,$doctor_user_id,$start_date,$end_date),
+    );
+  }
+  public function getNbAppointmentsByStatus($status,$doctor_user_id,$start_date,$end_date){
+    $nb=0;
+    if($doctor_user_id>0){
+        if($start_date && $end_date){
+            $nb=Appointment::select('id')->where([['status',$status],['doctor_id',$doctor_user_id]])->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+        }else{
+            $nb=Appointment::select('id')->where([['status',$status],['doctor_id',$doctor_user_id]])->count();
+        }
+    }else{
+        if($start_date && $end_date){
+            $nb=Appointment::select('id')->where('status',$status)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+        }else{
+            $nb=Appointment::select('id')->where('status',$status)->count();
+        }
+    }
+    return $nb;
   }
 }
