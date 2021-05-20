@@ -44,7 +44,7 @@
                             @foreach($patients as $patient)
                             <tr>
                                 
-                                <td onClick="window.location.href = '/profile/patient/{{$patient->id}}'"><span>{{ $patient->name }}</span></td>
+                                <td><span onClick="window.location.href = '/profile/patient/{{$patient->id}}'">{{ $patient->name }}</span></td>
                                 <td><span>{{ $patient->email }}</span></td>
                                 <td><span>{{ $patient->birthday }}</span></td>
                                 <td><span>{{ $patient->address }}</span></td>
@@ -234,7 +234,7 @@ function delete_func(val) {
     document.getElementById(val).submit();
 }
 $(document).ready(function() {
-    var table = $('#patients_datatable').DataTable();
+    var table = $('#patients_datatable').DataTable({responsive: true,});
     //$(".datepicker").da
 
     $('.datepicker').pickadate({

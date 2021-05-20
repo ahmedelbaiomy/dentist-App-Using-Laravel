@@ -713,4 +713,15 @@ class DbHelperTools
     }
     return $nb;
   }
+  public function checkPatientIfIsNewOrUsual($patient_user_id){
+    $response='';
+    if($patient_user_id){
+        $response='new';
+        $nb_invoice = Invoice::where('patient_id',$patient_user_id)->count();
+        if($nb_invoice>0){
+            $response='usual';
+        }
+    }
+    return $response;
+  }
 }

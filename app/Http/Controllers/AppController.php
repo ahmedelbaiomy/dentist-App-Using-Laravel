@@ -12,6 +12,7 @@ use App\Models\Invoice;
 use App\Models\Patient;
 use App\Models\Setting;
 use Carbon\CarbonPeriod;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Invoicerefund;
 use App\Models\Invoicepayment;
@@ -1035,5 +1036,42 @@ class AppController extends Controller
             'attended' => $attended_datas,
             'stats' => $stats,
         ]);
+    }
+    public function generateDailyDoctorReportPdf($doctor_id,$mode)
+    {
+        $pdf_name='daily';
+        $appointments=[];
+        $states_array=[];
+        $doctor=null;
+        $max_rows=8;
+        $nb_empty_rows=0;
+        if($doctor_id>0){
+            $DbHelperTools=new DbHelperTools();
+            $doctor=User::select('name')->where('id',$doctor_id)->first();
+            $appointments = Appointment::where('doctor_id',$doctor_id)->get();
+            //$appointments = Appointment::all();
+            if(count($appointments)>0){
+                foreach($appointments as $apt){
+                    $state=$DbHelperTools->checkPatientIfIsNewOrUsual($apt->patient->id);
+                    $states_array[$apt->patient->id]=$state;
+                }
+            }
+            
+        }
+        
+        if(count($appointments)<=$max_rows){
+            $nb_empty_rows=$max_rows-count($appointments);
+        }
+
+        $pdf=PDF::loadView('pdf.report.daily-doctor-report',compact('appointments','doctor','states_array','nb_empty_rows'),[], 
+        [ 
+          'title' => 'Certificate', 
+          'format' => 'A4-L',
+          'orientation' => 'L'
+        ]);
+        if($mode==1){
+            return $pdf->stream($pdf_name.time().'.pdf');
+        }
+        return $pdf->download($pdf_name.time().'.pdf');
     }
 }

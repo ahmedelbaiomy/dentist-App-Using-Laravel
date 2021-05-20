@@ -65,6 +65,8 @@ Route::get('/profile/form/refund/{refund_id}/{invoice_id}', [App\Http\Controller
 Route::post('/profile/form/refund', [App\Http\Controllers\AppController::class, 'storeFormRefund']);
 Route::get('/profile/invoice/{invoice_id}/{mode}', [App\Http\Controllers\AppController::class, 'previewInvoice']);
 Route::get('/profile/pdf/invoice/{invoice_id}/{mode}', [App\Http\Controllers\AppController::class, 'generateInvoicePdf']);
+//Daily doctors report
+Route::get('/report/pdf/doctor/daily/{doctor_id}/{mode}', [App\Http\Controllers\AppController::class, 'generateDailyDoctorReportPdf']);
 
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
