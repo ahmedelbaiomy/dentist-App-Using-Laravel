@@ -25,9 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            Log::info('Working backup every time');
-        })->everyMinute();
+        $schedule
+            ->command('backup:run')->everyMinute()
+            ->onFailure(function () {
+                Log::info('Error backup');
+            })
+            ->onSuccess(function () {
+                Log::info('Success backup');
+        });
     }
 
     /**
