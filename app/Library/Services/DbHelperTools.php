@@ -19,6 +19,7 @@ use App\Models\Patientstorage;
 use App\Models\service_category;
 use Illuminate\Support\Facades\DB;
 use App\Models\Procedureserviceitem;
+use Spatie\Activitylog\Models\Activity;
   
 class DbHelperTools
 {
@@ -114,6 +115,28 @@ class DbHelperTools
         return $times;
     }
     public function massDeletes($ids,$type,$force_delete){
+        $deletedRows = 1;
+        if($type=='schedule'){
+            $s = Schedule::findOrFail($ids[0]);
+            $s->delete();
+        }elseif($type=='note'){
+            $note = note::findOrFail($ids[0]);
+            $note->delete();
+        }elseif($type=='patientstorage'){
+            $ps = Patientstorage::findOrFail($ids[0]);
+            $ps->delete();
+        }elseif($type=='service'){
+            $service = Service::findOrFail($ids[0]);
+            $service->delete();
+        }elseif($type=='category'){
+            $cat = Category::findOrFail($ids[0]);
+            $cat->delete();
+        }elseif($type=='log'){
+            Activity::whereIn('id', $ids)->delete();
+        }
+        return $deletedRows;
+    }
+    /* public function massDeletes($ids,$type,$force_delete){
         $deletedRows = 0;
         if($type=='schedule'){
           if($force_delete==1){
@@ -145,9 +168,11 @@ class DbHelperTools
               }else{
                 $deletedRows = Category::whereIn('id', $ids)->delete();
             }
+        }elseif($type=='log'){
+            $deletedRows = Activity::whereIn('id', $ids)->delete();
         }
         return $deletedRows;
-    }
+    } */
     public function checkNearstAvalabilityTime($doctor_id,$start_date,$iCount){
         $tentativeMaxLimit = 10;
         $day = strtoupper(Carbon::createFromFormat('Y-m-d',$start_date)->format('l'));

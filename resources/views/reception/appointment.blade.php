@@ -4,8 +4,10 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" /> -->
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
 @endsection
@@ -54,11 +56,18 @@
                         <tbody>
                             @foreach(json_decode($appointments) as $appointment)
                             <tr>
-                                <td onClick="window.location.href = 'patientprofile/{{$appointment->patient_id}}/{{$appointment->doctor_id}}'"
+                                <!-- <td onClick="window.location.href = 'patientprofile/{{$appointment->patient_id}}/{{$appointment->doctor_id}}'"
                                     style="cursor:pointer">
                                     <span>{{ $appointment->p_email }}</span>
                                 </td>
                                 <td onClick="window.location.href = 'patientprofile/{{$appointment->patient_id}}/{{$appointment->doctor_id}}'"
+                                    style="cursor:pointer">
+                                    <span>{{ $appointment->d_email }}</span>
+                                </td> -->
+                                <td style="cursor:pointer">
+                                    <span onClick="window.location.href = '/profile/patient/{{$appointment->patient_id}}'">{{ $appointment->p_email }}</span>
+                                </td>
+                                <td onClick="window.location.href = '/profile/patient/{{$appointment->patient_id}}'"
                                     style="cursor:pointer">
                                     <span>{{ $appointment->d_email }}</span>
                                 </td>
@@ -143,12 +152,10 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous"></script> -->
 <script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
@@ -160,7 +167,9 @@
 <script>
 
 $(document).ready(function() {
-    var table = $('.datatable').DataTable();
+    var table = $('.datatable').DataTable({
+        responsive: true
+    });
     
 });
 

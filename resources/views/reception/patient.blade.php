@@ -4,7 +4,10 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
 @endsection
@@ -24,16 +27,16 @@
                 <h5 class='text-success'>You have total {{ count($patients) }} Patients.</h5>
 
                 <div class="row mb-2">    
-                    <div class="col-md-5">
+                    <div class="col-md-8">
                         
                     </div>
 
-                    <div class="col-md-5 text-right">
+                    <!-- <div class="col-md-5 text-right">
                         <a href="#" id="new_modal_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_invoice_modal"><span><i data-feather="plus"></i> Create Quick Invoice</span></a>
-                    </div>  
+                    </div> -->  
 
-                    <div class="col-md-2 text-right">
-                        <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_patient_modal"><i data-feather="plus"></i></a>
+                    <div class="col-md-4 text-right">
+                        <a href="#" id="new_service_btn" class="btn btn-icon btn-outline-primary" data-toggle="modal" data-target="#add_patient_modal"><i data-feather="plus"></i></a>
                     </div> 
                 </div>
 
@@ -56,12 +59,12 @@
                             <tbody>
                             @foreach($patients as $patient)
                                 <tr>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->name }}</span></td>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->ar_name }}</span></td>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->birthday }}</span></td>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->address }}</span></td>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->phone }}</span></td>
-                                        <td onClick = "window.location.href = 'patient/{{$patient->id}}'" style="cursor: pointer">
+                                        <td style="cursor: pointer"><span onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" >{{ $patient->name }}</span></td>
+                                        <td onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->ar_name }}</span></td>
+                                        <td onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->birthday }}</span></td>
+                                        <td onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->address }}</span></td>
+                                        <td onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" style="cursor: pointer"><span>{{ $patient->phone }}</span></td>
+                                        <td onClick = "window.location.href = '/profile/patient/{{$patient->id}}'" style="cursor: pointer">
                                             @if($patient->state == 0)
                                                 <span class="tb-status text-success">Open</span>
                                             @elseif($patient->state == 1)
@@ -321,12 +324,10 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
 <script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
@@ -383,7 +384,9 @@
 
 <script>
 $(document).ready(function(){
-    var table = $('.datatable').DataTable();
+    var table = $('.datatable').DataTable({
+        responsive:true
+    });
     
     $("#patient_save_btn").click(function(e){
         e.preventDefault();

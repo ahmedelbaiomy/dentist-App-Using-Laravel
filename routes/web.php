@@ -25,6 +25,8 @@ Route::get('/home', function () {
     return redirect('/login');
 });
 
+
+
 Route::prefix('backup')->group(function () {
     Route::prefix('data')->group(function () {
         Route::get('/import', [App\Http\Controllers\BackupController::class, 'import']);
@@ -73,6 +75,10 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 	Route::get('/', function () {
     	return redirect('admin/home');
 	});
+    //logs
+    Route::get('/admin/logs', [App\Http\Controllers\AppController::class, 'logs'])->name('admin.logs');
+    Route::post('/admin/sdt/logs', [App\Http\Controllers\AppController::class, 'sdtLogs']);
+    Route::delete('/admin/delete/log/{log_id}', [App\Http\Controllers\AppController::class, 'deleteLog']);
 
     Route::get('admin/home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin.home');
     Route::post('/admin/dashboard/stats', [App\Http\Controllers\Admin\HomeController::class, 'dashboardStats']);

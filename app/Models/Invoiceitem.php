@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoiceitem extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,LogsActivity;
     public $table = 'inv_invoice_payments';
+
+    protected static $logName = 'Invoice item';
+    protected static $logAttributes = ['*'];
 }

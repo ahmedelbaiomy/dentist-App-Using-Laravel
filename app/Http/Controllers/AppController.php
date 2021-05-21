@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Library\Services\DbHelperTools;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Models\Activity;
 
 class AppController extends Controller
 {
@@ -1073,5 +1074,57 @@ class AppController extends Controller
             return $pdf->stream($pdf_name.time().'.pdf');
         }
         return $pdf->download($pdf_name.time().'.pdf');
+    }
+    public function logs()
+    {
+        return view('activitylog.logs');
+    }
+    public function sdtLogs(Request $request)
+    {
+        //$tools=new PublicTools();
+        $dtRequests = $request->all();
+        $data=$meta=[];
+        $cssArray=array(
+            'created'=>'success',
+            'updated'=>'warning',
+            'deleted'=>'danger',
+        );
+        $datas=Activity::orderByDesc('id')->get();
+        foreach ($datas as $d) {
+            $row=array();
+            $cssClass=$cssArray[$d->description];
+            //<th>Date</th>
+            $row[]='<span class="badge badge-light-'.$cssClass.'">'.$d->created_at->format('Y/m/d H:i').'</span>';
+            //<th>Who</th>
+            $row[]=$d->causer->name;
+            //<th>Activity</th>
+            $row[]='<span class="badge badge-light-'.$cssClass.'">'.$d->log_name.'</span> number <span class="badge badge-light-'.$cssClass.'">'.$d->subject_id.'</span> has been <span class="badge badge-light-'.$cssClass.'">'.$d->description.'</span> by <span class="badge badge-light-'.$cssClass.'">'.$d->causer->name.'</span>';
+            //<th>Actions</th>
+            $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deleteLog('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+            $row[]=$btn_delete;
+            $data[]=$row;
+        }
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+    public function deleteLog($id){
+        /**
+         * forceDelete
+         */
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id>0){
+            //delete from database
+            $deletedRows = $DbHelperTools->massDeletes([$id],'log',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }else{
+            $deletedRows =Activity::truncate();
+            $success = true;
+        }
+        return response()->json(['success'=>$success]);
     }
 }

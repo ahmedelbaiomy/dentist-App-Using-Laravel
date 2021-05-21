@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 12, 2021 at 03:32 PM
+-- Generation Time: May 20, 2021 at 10:27 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -39,10 +39,12 @@ CREATE TABLE `appointments` (
 INSERT INTO `appointments` (`id`, `patient_id`, `doctor_id`, `start_time`, `duration`, `comments`, `status`, `created_at`, `updated_at`) VALUES
 (1, 2, 8, '2021-04-11 09:00:00', 60, 'nnn', 1, '2021-04-10 20:39:35', '2021-04-10 20:39:35'),
 (2, 2, 2, '2021-04-20 10:00:00', 60, NULL, 1, '2021-04-16 23:30:33', '2021-04-10 20:40:25'),
-(4, 1, 13, '2021-04-11 17:00:00', 60, NULL, 1, '2021-04-24 12:44:28', '2021-04-10 20:41:30'),
+(4, 1, 13, '2021-05-15 19:59:43', 60, NULL, 4, '2021-05-19 18:59:48', '2021-04-10 20:41:30'),
 (5, 2, 2, '2021-04-20 11:30:00', 60, NULL, 1, '2021-04-16 23:31:33', '2021-04-10 20:40:25'),
-(6, 2, 2, '2021-04-20 12:30:00', 60, NULL, 1, '2021-04-16 23:32:00', '2021-04-10 20:40:25'),
-(7, 1, 2, '2021-04-20 13:00:00', 15, 'this is a test', 2, '2021-04-17 01:39:56', '2021-04-17 04:39:56');
+(6, 2, 2, '2021-05-16 12:30:00', 60, NULL, 1, '2021-05-19 18:55:03', '2021-04-10 20:40:25'),
+(7, 1, 2, '2021-04-20 13:00:00', 15, 'this is a test', 2, '2021-04-17 01:39:56', '2021-04-17 04:39:56'),
+(8, 1, 2, '2021-05-17 13:00:00', 15, 'this is a test', 2, '2021-04-17 01:39:56', '2021-04-17 04:39:56'),
+(9, 1, 2, '2021-05-18 13:00:00', 15, 'this is a test', 3, '2021-05-19 18:54:41', '2021-04-17 04:39:56');
 
 -- --------------------------------------------------------
 
@@ -101,9 +103,9 @@ CREATE TABLE `doctors` (
 --
 
 INSERT INTO `doctors` (`id`, `birthday`, `address`, `phone`, `photo`, `target`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, NULL, NULL, '1000.00', 2, '2021-02-13 02:38:22', '2021-02-12 23:38:22'),
-(3, NULL, NULL, NULL, NULL, '800.00', 8, '2021-04-19 17:18:22', '2021-04-19 20:18:22'),
-(4, NULL, NULL, NULL, NULL, '1200.00', 6, '2021-02-22 00:45:56', '2021-05-11 00:09:20');
+(1, NULL, 'Office 149, 450 South Brand Brooklyn', '+12 (876) 543 2198', NULL, '1000.00', 2, '2021-02-13 02:38:22', '2021-02-12 23:38:22'),
+(3, NULL, 'qscqcsqsc', NULL, NULL, '800.00', 8, '2021-04-19 17:18:22', '2021-04-19 20:18:22'),
+(4, NULL, 'scsccqcsqsc', NULL, NULL, '1200.00', 6, '2021-02-22 00:45:56', '2021-05-11 00:09:20');
 
 -- --------------------------------------------------------
 
@@ -183,7 +185,7 @@ CREATE TABLE `help_indexes` (
 --
 
 INSERT INTO `help_indexes` (`id`, `index`, `type`, `index_date`, `created_at`, `updated_at`) VALUES
-(1, 10, 'INVOICE', '2021-05-10 15:29:38', '2021-05-10 15:29:38', '2021-05-12 03:28:30');
+(1, 12, 'INVOICE', '2021-05-10 15:29:38', '2021-05-10 15:29:38', '2021-05-16 22:45:46');
 
 -- --------------------------------------------------------
 
@@ -295,9 +297,11 @@ CREATE TABLE `inv_invoices` (
 --
 
 INSERT INTO `inv_invoices` (`id`, `number`, `doctor_id`, `patient_id`, `bill_date`, `due_date`, `note`, `tax_percentage`, `discount_amount`, `discount_amount_type`, `discount_type`, `status`, `cancelled_at`, `cancelled_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, '2021050008', 2, 3, '2021-05-10', '2021-06-10', 'this is a test', 20.00, 20.00, 'percentage', 'before_tax', 'partial_paid', NULL, NULL, NULL, '2021-05-10 19:01:03', '2021-05-11 20:47:39'),
+(1, '2021050008', 2, 3, '2021-05-10', '2021-06-10', 'this is a test', 20.00, 20.00, 'percentage', 'before_tax', 'partial_paid', NULL, NULL, NULL, '2021-04-08 18:01:03', '2021-05-11 20:47:39'),
 (2, '2021050009', 2, 3, '2021-05-11', '2021-06-11', 'this is a test for doctor kevin', 5.00, 10.00, 'percentage', 'before_tax', 'paid', NULL, NULL, NULL, '2021-05-11 03:24:03', '2021-05-11 20:33:00'),
-(3, '2021050010', 2, 3, '2021-05-13', '2021-06-10', 'note ....', 10.00, 100.00, 'fixed_amount', 'before_tax', 'paid', NULL, NULL, NULL, '2021-05-12 03:28:30', '2021-05-12 03:39:28');
+(3, '2021050010', 2, 3, '2021-05-13', '2021-06-10', 'note ....', 10.00, 100.00, 'fixed_amount', 'before_tax', 'paid', NULL, NULL, NULL, '2021-05-12 03:28:30', '2021-05-12 03:39:28'),
+(4, '2021050011', 2, 1, '2021-05-15', '2021-06-15', 'this is a test', NULL, NULL, 'percentage', 'before_tax', 'draft', NULL, NULL, NULL, '2021-05-15 15:32:47', '2021-05-15 15:33:16'),
+(5, '2021050012', 2, 3, '2021-05-16', '2021-06-16', 'this is a test', NULL, NULL, 'percentage', 'before_tax', 'draft', NULL, NULL, NULL, '2021-05-16 22:45:46', '2021-05-16 22:45:46');
 
 -- --------------------------------------------------------
 
@@ -382,7 +386,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (47, '2021_05_08_213315_create_inv_invoice_payments_table', 7),
 (48, '2021_05_08_213333_create_inv_invoice_refunds_table', 7),
 (49, '2021_05_11_030144_create_doctors_table', 8),
-(50, '2021_05_09_185255_create_tooths_table', 9);
+(50, '2021_05_09_185255_create_tooths_table', 9),
+(51, '2021_05_15_202820_create_settings_table', 10);
 
 -- --------------------------------------------------------
 
@@ -587,7 +592,9 @@ INSERT INTO `pr_procedure_service_items` (`id`, `quantity`, `rate`, `total`, `no
 (9, 1.00, 200.00, 200.00, NULL, 69, 16, 8, 3, 'existing', NULL, NULL, '2021-05-11 03:15:54', '2021-05-11 03:15:54'),
 (10, 3.00, 200.00, 600.00, 'this is test', 1, 13, 2, 3, 'completed', 3, NULL, '2021-05-12 03:17:38', '2021-05-12 03:30:45'),
 (11, 1.00, 100.00, 100.00, NULL, 23, 21, 2, 3, 'completed', 3, NULL, '2021-05-12 03:24:53', '2021-05-12 03:30:45'),
-(12, 1.00, 250.00, 250.00, NULL, 26, 14, 2, 3, 'completed', 3, NULL, '2021-05-12 03:25:42', '2021-05-12 03:30:45');
+(12, 1.00, 250.00, 250.00, NULL, 26, 14, 2, 3, 'completed', 3, NULL, '2021-05-12 03:25:42', '2021-05-12 03:30:45'),
+(13, 1.00, 200.00, 200.00, NULL, 1, 44, 2, 1, 'completed', 4, NULL, '2021-05-15 15:32:29', '2021-05-15 15:33:10'),
+(14, 1.00, 200.00, 200.00, 'ok', 1, 16, 2, 3, 'completed', 5, NULL, '2021-05-16 22:46:20', '2021-05-16 22:46:33');
 
 -- --------------------------------------------------------
 
@@ -611,38 +618,38 @@ CREATE TABLE `pr_tooths` (
 --
 
 INSERT INTO `pr_tooths` (`id`, `number`, `sort`, `image`, `type`, `row_number`, `created_at`, `updated_at`) VALUES
-(1, 18, 1, 'assets/tooth_images/18.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(2, 17, 2, 'assets/tooth_images/17.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(3, 16, 3, 'assets/tooth_images/16.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(4, 15, 4, 'assets/tooth_images/15.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(5, 13, 6, 'assets/tooth_images/13.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(6, 12, 7, 'assets/tooth_images/12.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(7, 11, 8, 'assets/tooth_images/11.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(8, 21, 9, 'assets/tooth_images/11.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(9, 22, 10, 'assets/tooth_images/12.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(10, 23, 11, 'assets/tooth_images/13.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(11, 24, 12, 'assets/tooth_images/14.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(12, 25, 13, 'assets/tooth_images/15.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(13, 26, 14, 'assets/tooth_images/13.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(14, 27, 15, 'assets/tooth_images/14.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(15, 28, 16, 'assets/tooth_images/15.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(16, 14, 5, 'assets/tooth_images/14.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(17, 48, 1, 'assets/tooth_images/48.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(18, 47, 2, 'assets/tooth_images/47.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(19, 46, 3, 'assets/tooth_images/46.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(20, 45, 4, 'assets/tooth_images/45.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(21, 44, 5, 'assets/tooth_images/44.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(22, 43, 6, 'assets/tooth_images/43.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(23, 42, 7, 'assets/tooth_images/42.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(24, 41, 8, 'assets/tooth_images/41.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(25, 31, 9, 'assets/tooth_images/41.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(26, 32, 10, 'assets/tooth_images/32.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(27, 33, 11, 'assets/tooth_images/33.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(28, 34, 12, 'assets/tooth_images/34.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(29, 35, 13, 'assets/tooth_images/35.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(30, 36, 14, 'assets/tooth_images/36.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(31, 37, 15, 'assets/tooth_images/37.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
-(32, 38, 16, 'assets/tooth_images/38.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03');
+(1, 18, 1, 'tooth_images/18.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(2, 17, 2, 'tooth_images/17.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(3, 16, 3, 'tooth_images/16.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(4, 15, 4, 'tooth_images/15.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(5, 13, 6, 'tooth_images/13.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(6, 12, 7, 'tooth_images/12.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(7, 11, 8, 'tooth_images/11.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(8, 21, 9, 'tooth_images/21.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(9, 22, 10, 'tooth_images/22.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(10, 23, 11, 'tooth_images/23.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(11, 24, 12, 'tooth_images/24.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(12, 25, 13, 'tooth_images/25.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(13, 26, 14, 'tooth_images/26.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(14, 27, 15, 'tooth_images/27.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(15, 28, 16, 'tooth_images/28.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(16, 14, 5, 'tooth_images/14.svg', 'adult', 1, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(17, 48, 1, 'tooth_images/48.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(18, 47, 2, 'tooth_images/47.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(19, 46, 3, 'tooth_images/46.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(20, 45, 4, 'tooth_images/45.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(21, 44, 5, 'tooth_images/44.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(22, 43, 6, 'tooth_images/43.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(23, 42, 7, 'tooth_images/42.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(24, 41, 8, 'tooth_images/41.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(25, 31, 9, 'tooth_images/31.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(26, 32, 10, 'tooth_images/32.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(27, 33, 11, 'tooth_images/33.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(28, 34, 12, 'tooth_images/34.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(29, 35, 13, 'tooth_images/35.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(30, 36, 14, 'tooth_images/36.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(31, 37, 15, 'tooth_images/37.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03'),
+(32, 38, 16, 'tooth_images/38.svg', 'adult', 2, '2021-05-09 16:00:03', '2021-05-09 16:00:03');
 
 -- --------------------------------------------------------
 
@@ -1060,7 +1067,37 @@ INSERT INTO `service_categories` (`id`, `name`, `name_ar`, `path_icon`, `order_s
 (6, 'Oral Surgery ', 'جراحة الفم', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODg2NzBfZXh0LnN2Zw==', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (7, 'Orthodontics', 'تقويم الأسنان', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODg3MDhfb3J0aG8uc3Zn', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (8, 'Derma', 'جلديه', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA1ODQwMjRfaW1wLnN2Zw==', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
-(9, 'category 1', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA3Nzc4OTBfZGlhZy5zdmc=', 1, 1, NULL, '2021-05-12 03:10:28', '2021-05-12 03:04:50', '2021-05-12 03:10:28');
+(9, 'category 1', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA3Nzc4OTBfZGlhZy5zdmc=', 1, 1, NULL, '2021-05-12 03:10:28', '2021-05-12 03:04:50', '2021-05-12 03:10:28'),
+(10, 'test', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI3OTFfZXh0LnN2Zw==', 1, 0, NULL, NULL, '2021-05-17 00:06:31', '2021-05-17 00:06:31'),
+(11, 'test2', 'طب أسنان الأطفال', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI4OThfYW5hc3Quc3Zn', 1, 0, NULL, NULL, '2021-05-17 00:08:18', '2021-05-17 00:08:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `set_settings`
+--
+
+CREATE TABLE `set_settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `set_settings`
+--
+
+INSERT INTO `set_settings` (`id`, `name`, `value`, `type`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'app_title', 'Dentinizer App v 2', 'app', NULL, '2021-05-15 17:33:53', '2021-05-16 02:50:00'),
+(2, 'site_logo', 'uploads/files/settings//1621123856_logo_logo_vertical.jpeg', 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:10:56'),
+(3, 'favicon', 'uploads/files/settings//1621123856_favicon_logo_empty.jpeg', 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:10:56'),
+(4, 'show_logo_in_signin_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-16 02:50:00'),
+(5, 'show_logo_in_signup_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-16 02:50:00'),
+(6, 'sidebar_logo', NULL, 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:50:00');
 
 -- --------------------------------------------------------
 
@@ -1099,7 +1136,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `user_type`, `state`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin', 'admin@gmail.com', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, 'jvanN2E3tVGBmbptXofySF2XDivhSfN7fcobKiISMSdZKaepYGVgZ72QvlZY', '2021-02-11 02:46:17', '2021-04-19 20:44:58'),
+(1, 'Admin', 'admin', 'admin@gmail.com', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, 'FrHSbvrwdqD0gR4mVG7HS5jTh9H9XDPf2Rt4ZDnTFFKI40m8SIhk4eZIQiXn', '2021-02-11 02:46:17', '2021-04-19 20:44:58'),
 (2, 'Doctor Kevin', 'admin1', 'doctor1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
 (3, 'Reception Dol', 'admin2', 'reception1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 1, NULL, '2021-02-11 03:55:47', '2021-02-12 10:31:03'),
 (6, 'Other2 Dol', 'admin4', 'other2@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-12 10:34:58', '2021-02-22 01:45:29'),
@@ -1109,7 +1146,8 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `pa
 (10, 'mohamed25', 'admin25', NULL, NULL, '$2y$10$FKVcrbMnRWkDPwmceqflx.OgWMSdpDNufyOAiJBJswys75lczVg56', 'admin', 1, NULL, '2021-03-15 03:26:08', '2021-03-15 03:26:08'),
 (11, 'hidaoui', 'hidaoui.mouhssin@gmail.com', NULL, NULL, '$2y$10$4p5I5D3IZYo3pXze6A2pr.I7qMC0cCzwFllIpZdtBeWLp8aEZQvca', 'none', 1, NULL, '2021-04-18 17:25:44', '2021-04-19 20:48:13'),
 (12, 'mouhssin', 'hidaoui1', NULL, NULL, '$2y$10$60VMvvqvDJaRSK2AMrkRYutzQtvUvOS424Snyfxma3xrc0Cl0mqjm', 'none', 0, NULL, '2021-04-18 17:41:12', '2021-04-18 17:41:12'),
-(13, 'Doctor John', 'admin', 'doctorjohn@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28');
+(13, 'Doctor John', 'admin', 'doctorjohn@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
+(14, 'mouhssin', 'hidaoui', NULL, NULL, '$2y$10$TPNT8YjlTt0fQzvr1QvRBueCiC9wbGK5TtxQHb2ebwKMsYKEp.aia', 'none', 0, NULL, '2021-05-16 16:44:39', '2021-05-16 16:44:39');
 
 --
 -- Indexes for dumped tables
@@ -1273,6 +1311,12 @@ ALTER TABLE `service_categories`
   ADD KEY `service_categories_parent_id_foreign` (`parent_id`);
 
 --
+-- Indexes for table `set_settings`
+--
+ALTER TABLE `set_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `storages`
 --
 ALTER TABLE `storages`
@@ -1292,7 +1336,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `clinics`
@@ -1346,7 +1390,7 @@ ALTER TABLE `invoice_lists`
 -- AUTO_INCREMENT for table `inv_invoices`
 --
 ALTER TABLE `inv_invoices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `inv_invoice_payments`
@@ -1364,7 +1408,7 @@ ALTER TABLE `inv_invoice_refunds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1406,7 +1450,7 @@ ALTER TABLE `patient_storage`
 -- AUTO_INCREMENT for table `pr_procedure_service_items`
 --
 ALTER TABLE `pr_procedure_service_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `pr_tooths`
@@ -1424,7 +1468,13 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `service_categories`
 --
 ALTER TABLE `service_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `set_settings`
+--
+ALTER TABLE `set_settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `storages`
@@ -1436,7 +1486,7 @@ ALTER TABLE `storages`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

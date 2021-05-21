@@ -49,7 +49,9 @@ if(isset($sidebar_logo) && !empty($sidebar_logo)){
                         <!-- <li class="{{ Route::currentRouteName() === 'admin.schedules' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.schedules') }}"><i data-feather="clock"></i><span class="menu-item" data-i18n="Schedule Timings">Schedule Timings</span></a>
                         </li> -->
                     </ul>
-                </li>   
+                </li>
+
+                <li class=" nav-item {{ Route::currentRouteName() === 'admin.logs' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.logs') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Activities logs">Logs</span></a></li>   
 
                 @elseif(Auth::user()->user_type == "doctor")
                 <li class=" nav-item {{ Route::currentRouteName() === 'doctor.home' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('doctor.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>

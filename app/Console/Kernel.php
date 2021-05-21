@@ -38,4 +38,15 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+    protected function schedule(Schedule $schedule)
+    {
+
+        $schedule->call(function () {
+
+            // your schedule code
+            Log::info('Working backup every time');
+            
+        })->everyMinute();
+
+    }
 }

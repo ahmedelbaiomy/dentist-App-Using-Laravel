@@ -17,6 +17,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "laraveldaily/laravel-invoices": "^2.0",
+        "spatie/laravel-activitylog": "^3.17",
+        "spatie/laravel-backup": "^6.16",
         "timehunter/laravel-google-recaptcha-v3": "~2.4.3"
     },
     "require-dev": {
