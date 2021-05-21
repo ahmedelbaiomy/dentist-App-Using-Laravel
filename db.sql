@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 20, 2021 at 10:27 PM
+-- Generation Time: May 21, 2021 at 11:10 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -13,6 +13,38 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_dentiziner`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity_log`
+--
+
+CREATE TABLE `activity_log` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `log_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `causer_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `causer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `properties` json DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `activity_log`
+--
+
+INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `subject_id`, `causer_type`, `causer_id`, `properties`, `created_at`, `updated_at`) VALUES
+(1, 'Service category', 'created', 'App\\Models\\Category', 14, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 14, \"name\": \"test\", \"name_ar\": \"العلاج التحفظي\", \"is_active\": 1, \"parent_id\": null, \"path_icon\": null, \"created_at\": \"2021-05-21T20:00:01.000000Z\", \"deleted_at\": null, \"order_show\": 1, \"updated_at\": \"2021-05-21T20:00:01.000000Z\"}}', '2021-05-21 22:00:01', '2021-05-21 22:00:01'),
+(2, 'Service category', 'deleted', 'App\\Models\\Category', 12, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 12, \"name\": \"test\", \"name_ar\": \"العلاج التحفظي\", \"is_active\": 1, \"parent_id\": null, \"path_icon\": null, \"created_at\": \"2021-05-21T17:53:25.000000Z\", \"deleted_at\": \"2021-05-21T20:00:10.000000Z\", \"order_show\": 1, \"updated_at\": \"2021-05-21T20:00:10.000000Z\"}}', '2021-05-21 22:00:10', '2021-05-21 22:00:10'),
+(3, 'Service', 'created', 'App\\Models\\Service', 359, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 359, \"code\": \"DH0001\", \"note\": \"test\", \"price\": 1, \"created_at\": \"2021-05-21T20:02:15.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-21T20:02:15.000000Z\", \"category_id\": 2, \"service_name\": \"my test\", \"service_name_ar\": \"الفحص ألسريري\"}}', '2021-05-21 22:02:15', '2021-05-21 22:02:15'),
+(4, 'Service', 'deleted', 'App\\Models\\Service', 359, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 359, \"code\": \"DH0001\", \"note\": \"test\", \"price\": 1, \"created_at\": \"2021-05-21T20:02:15.000000Z\", \"deleted_at\": \"2021-05-21T20:02:20.000000Z\", \"updated_at\": \"2021-05-21T20:02:20.000000Z\", \"category_id\": 2, \"service_name\": \"my test\", \"service_name_ar\": \"الفحص ألسريري\"}}', '2021-05-21 22:02:20', '2021-05-21 22:02:20'),
+(5, 'Doctor', 'updated', 'App\\Models\\Doctor', 3, 'App\\Models\\User', 1, '{\"old\": {\"id\": 3, \"phone\": null, \"photo\": null, \"target\": \"800.00\", \"address\": \"qscqcsqsc\", \"user_id\": 8, \"birthday\": null, \"created_at\": \"2021-04-19T14:18:22.000000Z\", \"updated_at\": \"2021-04-19T17:18:22.000000Z\"}, \"attributes\": {\"id\": 3, \"phone\": null, \"photo\": null, \"target\": \"500.00\", \"address\": \"qscqcsqsc\", \"user_id\": 8, \"birthday\": null, \"created_at\": \"2021-04-19T14:18:22.000000Z\", \"updated_at\": \"2021-05-21T20:16:34.000000Z\"}}', '2021-05-21 22:16:34', '2021-05-21 22:16:34'),
+(6, 'Clinic', 'updated', 'App\\Models\\Clinic', 2, 'App\\Models\\User', 1, '{\"old\": {\"id\": 2, \"apr\": \"130.00\", \"aug\": \"170.00\", \"dec\": \"300.00\", \"feb\": \"110.00\", \"jan\": \"100.00\", \"jul\": \"160.00\", \"jun\": \"150.00\", \"mar\": \"120.00\", \"may\": \"140.00\", \"nov\": \"200.00\", \"oct\": \"190.00\", \"sep\": \"180.00\", \"year\": 2021, \"created_at\": \"2021-02-23T08:05:40.000000Z\", \"updated_at\": \"2021-02-23T08:05:40.000000Z\"}, \"attributes\": {\"id\": 2, \"apr\": \"130.00\", \"aug\": \"170.00\", \"dec\": \"300.00\", \"feb\": \"110.00\", \"jan\": \"110.00\", \"jul\": \"160.00\", \"jun\": \"150.00\", \"mar\": \"120.00\", \"may\": \"140.00\", \"nov\": \"200.00\", \"oct\": \"190.00\", \"sep\": \"180.00\", \"year\": 2021, \"created_at\": \"2021-05-21T18:17:36.000000Z\", \"updated_at\": \"2021-05-21T20:17:36.000000Z\"}}', '2021-05-21 22:17:36', '2021-05-21 22:17:36'),
+(7, 'Office time', 'updated', 'App\\Models\\Officetime', 11, 'App\\Models\\User', 1, '{\"old\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 5, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-03-12T13:24:01.000000Z\"}, \"attributes\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 6, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-05-21T20:18:08.000000Z\"}}', '2021-05-21 22:18:08', '2021-05-21 22:18:08');
 
 -- --------------------------------------------------------
 
@@ -44,7 +76,8 @@ INSERT INTO `appointments` (`id`, `patient_id`, `doctor_id`, `start_time`, `dura
 (6, 2, 2, '2021-05-16 12:30:00', 60, NULL, 1, '2021-05-19 18:55:03', '2021-04-10 20:40:25'),
 (7, 1, 2, '2021-04-20 13:00:00', 15, 'this is a test', 2, '2021-04-17 01:39:56', '2021-04-17 04:39:56'),
 (8, 1, 2, '2021-05-17 13:00:00', 15, 'this is a test', 2, '2021-04-17 01:39:56', '2021-04-17 04:39:56'),
-(9, 1, 2, '2021-05-18 13:00:00', 15, 'this is a test', 3, '2021-05-19 18:54:41', '2021-04-17 04:39:56');
+(9, 1, 2, '2021-05-18 13:00:00', 15, 'this is a test', 3, '2021-05-19 18:54:41', '2021-04-17 04:39:56'),
+(10, 1, 2, '2021-05-24 12:00:00', 15, 'my appointment', 1, '2021-05-20 23:47:30', '2021-05-20 23:47:30');
 
 -- --------------------------------------------------------
 
@@ -76,7 +109,7 @@ CREATE TABLE `clinics` (
 --
 
 INSERT INTO `clinics` (`id`, `year`, `jan`, `feb`, `mar`, `apr`, `may`, `jun`, `jul`, `aug`, `sep`, `oct`, `nov`, `dec`, `created_at`, `updated_at`) VALUES
-(2, 2021, '100.00', '110.00', '120.00', '130.00', '140.00', '150.00', '160.00', '170.00', '180.00', '190.00', '200.00', '300.00', '2021-02-23 10:05:40', '2021-02-23 10:05:40'),
+(2, 2021, '110.00', '110.00', '120.00', '130.00', '140.00', '150.00', '160.00', '170.00', '180.00', '190.00', '200.00', '300.00', '2021-05-21 20:17:36', '2021-05-21 22:17:36'),
 (5, 2022, '200.00', '210.00', '220.00', '230.00', '240.00', '250.00', '260.00', '270.00', '280.00', '290.00', '300.00', '310.00', '2021-02-22 08:16:45', '2021-02-22 08:16:45'),
 (7, 2023, '310.00', '320.00', '110.00', '120.00', '120.00', '140.00', '150.00', '130.00', '160.00', '170.00', '123.00', '222.00', '2021-02-22 11:53:28', '2021-02-22 11:53:28');
 
@@ -104,7 +137,7 @@ CREATE TABLE `doctors` (
 
 INSERT INTO `doctors` (`id`, `birthday`, `address`, `phone`, `photo`, `target`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, NULL, 'Office 149, 450 South Brand Brooklyn', '+12 (876) 543 2198', NULL, '1000.00', 2, '2021-02-13 02:38:22', '2021-02-12 23:38:22'),
-(3, NULL, 'qscqcsqsc', NULL, NULL, '800.00', 8, '2021-04-19 17:18:22', '2021-04-19 20:18:22'),
+(3, NULL, 'qscqcsqsc', NULL, NULL, '500.00', 8, '2021-04-19 17:18:22', '2021-05-21 22:16:34'),
 (4, NULL, 'scsccqcsqsc', NULL, NULL, '1200.00', 6, '2021-02-22 00:45:56', '2021-05-11 00:09:20');
 
 -- --------------------------------------------------------
@@ -301,7 +334,7 @@ INSERT INTO `inv_invoices` (`id`, `number`, `doctor_id`, `patient_id`, `bill_dat
 (2, '2021050009', 2, 3, '2021-05-11', '2021-06-11', 'this is a test for doctor kevin', 5.00, 10.00, 'percentage', 'before_tax', 'paid', NULL, NULL, NULL, '2021-05-11 03:24:03', '2021-05-11 20:33:00'),
 (3, '2021050010', 2, 3, '2021-05-13', '2021-06-10', 'note ....', 10.00, 100.00, 'fixed_amount', 'before_tax', 'paid', NULL, NULL, NULL, '2021-05-12 03:28:30', '2021-05-12 03:39:28'),
 (4, '2021050011', 2, 1, '2021-05-15', '2021-06-15', 'this is a test', NULL, NULL, 'percentage', 'before_tax', 'draft', NULL, NULL, NULL, '2021-05-15 15:32:47', '2021-05-15 15:33:16'),
-(5, '2021050012', 2, 3, '2021-05-16', '2021-06-16', 'this is a test', NULL, NULL, 'percentage', 'before_tax', 'draft', NULL, NULL, NULL, '2021-05-16 22:45:46', '2021-05-16 22:45:46');
+(5, '2021050012', 2, 3, '2021-05-16', '2021-06-16', 'this is a test', 10.00, NULL, 'percentage', 'before_tax', 'draft', NULL, NULL, NULL, '2021-05-16 22:45:46', '2021-05-21 20:13:24');
 
 -- --------------------------------------------------------
 
@@ -387,7 +420,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (48, '2021_05_08_213333_create_inv_invoice_refunds_table', 7),
 (49, '2021_05_11_030144_create_doctors_table', 8),
 (50, '2021_05_09_185255_create_tooths_table', 9),
-(51, '2021_05_15_202820_create_settings_table', 10);
+(51, '2021_05_15_202820_create_settings_table', 10),
+(52, '2021_05_21_002612_create_activity_log_table', 11);
 
 -- --------------------------------------------------------
 
@@ -443,7 +477,7 @@ INSERT INTO `officetimes` (`id`, `user_id`, `day`, `from`, `to`, `created_at`, `
 (8, 5, 2, 17, 23, '2021-03-09 13:26:35', '2021-03-09 13:26:35'),
 (9, 2, 4, 5, 12, '2021-03-11 01:02:43', '2021-03-11 01:02:43'),
 (10, 8, 4, 7, 13, '2021-03-11 01:09:41', '2021-04-19 20:27:58'),
-(11, 5, 6, 11, 22, '2021-03-12 15:24:01', '2021-03-12 15:24:01'),
+(11, 6, 6, 11, 22, '2021-03-12 15:24:01', '2021-05-21 22:18:08'),
 (12, 5, 2, 1, 2, '2021-04-19 20:29:30', '2021-04-19 20:29:30'),
 (13, 2, 1, 5, 10, '2021-04-19 20:30:11', '2021-04-19 20:30:11'),
 (14, 2, 0, 2, 6, '2021-04-19 20:31:24', '2021-04-19 20:31:24');
@@ -675,7 +709,7 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `code`, `service_name`, `service_name_ar`, `price`, `note`, `category_id`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'DN1001', 'Clinical Examination   ', 'الفحص ألسريري ', 200.00, '', 1, NULL, '2021-05-08 17:13:57', '2021-05-08 17:13:57'),
+(1, 'DN1001', 'Clinical Examination', 'الفحص ألسريري', 200.00, 'test', 1, NULL, '2021-05-08 17:13:57', '2021-05-21 19:56:27'),
 (2, 'DN1002', 'Emergency Exam ', 'فحص الطوارئ ', 300.00, '', 1, NULL, '2021-05-08 17:13:57', '2021-05-08 17:13:57'),
 (3, 'DN1003', 'Recall Examination ', 'فحص المتابعة', 180.00, '', 1, NULL, '2021-05-08 17:13:57', '2021-05-08 17:13:57'),
 (4, 'DN1004', 'Consultant Consultation ', 'استشارة الاستشاري', 300.00, '', 1, NULL, '2021-05-08 17:13:57', '2021-05-08 17:13:57'),
@@ -1033,7 +1067,8 @@ INSERT INTO `services` (`id`, `code`, `service_name`, `service_name_ar`, `price`
 (355, 'SV0061', 'Neutrition    12', 'تغذيه   12', 2950.00, '', 8, NULL, '2021-05-08 17:13:58', '2021-05-08 17:13:58'),
 (356, 'SV0062', 'Consulation ( consultant )', 'كشفيه الاستشاري', 400.00, '', 8, NULL, '2021-05-08 17:13:58', '2021-05-08 17:13:58'),
 (357, 'SV0063', 'Consultation senior registrar ', 'كشفيه النائب الاول', 300.00, '', 8, NULL, '2021-05-08 17:13:58', '2021-05-08 17:13:58'),
-(358, 'HD001', 'this is test', 'الفحص ألسريري', 1.00, 'test', 9, '2021-05-12 03:10:05', '2021-05-12 03:09:37', '2021-05-12 03:10:05');
+(358, 'HD001', 'this is test', 'الفحص ألسريري', 1.00, 'test', 9, '2021-05-12 03:10:05', '2021-05-12 03:09:37', '2021-05-12 03:10:05'),
+(359, 'DH0001', 'my test', 'الفحص ألسريري', 1.00, 'test', 2, '2021-05-21 22:02:20', '2021-05-21 22:02:15', '2021-05-21 22:02:20');
 
 -- --------------------------------------------------------
 
@@ -1059,7 +1094,7 @@ CREATE TABLE `service_categories` (
 --
 
 INSERT INTO `service_categories` (`id`, `name`, `name_ar`, `path_icon`, `order_show`, `is_active`, `parent_id`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'Diagnosis and oral care', 'التشخيص والرعاية عن طريق الفم', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODgxNzVfZGlhZy5zdmc=', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:17:40'),
+(1, 'Diagnosis and oral care', 'التشخيص والرعاية عن طريق الفم', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODgxNzVfZGlhZy5zdmc=', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-21 19:53:10'),
 (2, 'Restorative Treatment (Operative)', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODgxODdfd2F0Y2guc3Zn', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (3, 'Restorative Treatment (Endodontic)', 'علاج الجذور', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA1ODM5NTJfcmN0LnN2Zw==', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (4, 'Pedodontics', 'طب أسنان الأطفال', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA1ODM5NjJfYW5hc3Quc3Zn', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
@@ -1068,8 +1103,11 @@ INSERT INTO `service_categories` (`id`, `name`, `name_ar`, `path_icon`, `order_s
 (7, 'Orthodontics', 'تقويم الأسنان', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA0ODg3MDhfb3J0aG8uc3Zn', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (8, 'Derma', 'جلديه', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA1ODQwMjRfaW1wLnN2Zw==', 1, 1, NULL, NULL, '2021-05-08 17:13:06', '2021-05-10 17:07:15'),
 (9, 'category 1', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjA3Nzc4OTBfZGlhZy5zdmc=', 1, 1, NULL, '2021-05-12 03:10:28', '2021-05-12 03:04:50', '2021-05-12 03:10:28'),
-(10, 'test', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI3OTFfZXh0LnN2Zw==', 1, 0, NULL, NULL, '2021-05-17 00:06:31', '2021-05-17 00:06:31'),
-(11, 'test2', 'طب أسنان الأطفال', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI4OThfYW5hc3Quc3Zn', 1, 0, NULL, NULL, '2021-05-17 00:08:18', '2021-05-17 00:08:18');
+(10, 'test', 'العلاج التحفظي', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI3OTFfZXh0LnN2Zw==', 1, 0, NULL, '2021-05-21 20:06:49', '2021-05-17 00:06:31', '2021-05-21 20:06:49'),
+(11, 'test2', 'طب أسنان الأطفال', 'dXBsb2Fkcy9maWxlcy9zdmcvLzE2MjEyMDI4OThfYW5hc3Quc3Zn', 1, 0, NULL, '2021-05-21 20:08:00', '2021-05-17 00:08:18', '2021-05-21 20:08:00'),
+(12, 'test', 'العلاج التحفظي', NULL, 1, 1, NULL, '2021-05-21 22:00:10', '2021-05-21 19:53:25', '2021-05-21 22:00:10'),
+(13, 'test', 'العلاج التحفظي', NULL, 1, 1, NULL, NULL, '2021-05-21 20:07:52', '2021-05-21 20:07:52'),
+(14, 'test', 'العلاج التحفظي', NULL, 1, 1, NULL, NULL, '2021-05-21 22:00:01', '2021-05-21 22:00:01');
 
 -- --------------------------------------------------------
 
@@ -1092,11 +1130,11 @@ CREATE TABLE `set_settings` (
 --
 
 INSERT INTO `set_settings` (`id`, `name`, `value`, `type`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'app_title', 'Dentinizer App v 2', 'app', NULL, '2021-05-15 17:33:53', '2021-05-16 02:50:00'),
+(1, 'app_title', 'Dentinizer App', 'app', NULL, '2021-05-15 17:33:53', '2021-05-21 22:16:56'),
 (2, 'site_logo', 'uploads/files/settings//1621123856_logo_logo_vertical.jpeg', 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:10:56'),
 (3, 'favicon', 'uploads/files/settings//1621123856_favicon_logo_empty.jpeg', 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:10:56'),
-(4, 'show_logo_in_signin_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-16 02:50:00'),
-(5, 'show_logo_in_signup_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-16 02:50:00'),
+(4, 'show_logo_in_signin_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-21 22:16:56'),
+(5, 'show_logo_in_signup_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-21 22:16:56'),
 (6, 'sidebar_logo', NULL, 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:50:00');
 
 -- --------------------------------------------------------
@@ -1152,6 +1190,15 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `pa
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subject` (`subject_type`,`subject_id`),
+  ADD KEY `causer` (`causer_type`,`causer_id`),
+  ADD KEY `activity_log_log_name_index` (`log_name`);
 
 --
 -- Indexes for table `appointments`
@@ -1333,10 +1380,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `clinics`
@@ -1408,7 +1461,7 @@ ALTER TABLE `inv_invoice_refunds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1462,13 +1515,13 @@ ALTER TABLE `pr_tooths`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=359;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
 
 --
 -- AUTO_INCREMENT for table `service_categories`
 --
 ALTER TABLE `service_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `set_settings`

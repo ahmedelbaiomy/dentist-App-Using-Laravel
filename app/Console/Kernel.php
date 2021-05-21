@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            Log::info('Working backup every time');
+        })->everyMinute();
     }
 
     /**
@@ -37,16 +39,5 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
-    }
-    protected function schedule(Schedule $schedule)
-    {
-
-        $schedule->call(function () {
-
-            // your schedule code
-            Log::info('Working backup every time');
-            
-        })->everyMinute();
-
     }
 }
