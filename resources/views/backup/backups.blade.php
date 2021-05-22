@@ -25,21 +25,59 @@
                 <div class="row">
                     <div class="col-md-12 clearfix">
                         <a id="create-new-backup-button" href="{{ url('/admin/backup/create') }}"
-                            class="btn btn-outline-primary btn-sm" style="margin-bottom:2em;"><i data-feather="plus"></i> 
+                            class="btn btn-outline-primary btn-sm" style="margin-bottom:2em;"><i
+                                data-feather="plus"></i>
                             Create New Backup
                         </a>
                     </div>
+
+
+                    <div class="col-md-12">
+                        @if ( Session::has('success') )
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                            {{ Session::get('success') }}
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
+
+                        @if ( Session::has('update') )
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                            {{ Session::get('update') }}
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
+
+                        @if ( Session::has('delete') )
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                            {{ Session::get('delete') }}
+                            </div>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @endif
+                    </div>
+
                     <div class="col-md-12">
                         @if (count($backups))
 
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                <th>File Name</th>
-                                <th>File Size</th>
-                                <th>Created Date</th>
-                                <th>Created Age</th>
-                                <th>Action</th>
+                                    <th>File Name</th>
+                                    <th>File Size</th>
+                                    <th>Created Date</th>
+                                    <th>Created Age</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,9 +93,11 @@
                                     </td>
                                     <td class="text-right">
                                         <a class="btn btn-outline-primary btn-sm"
-                                            href="{{ url('admin/backup/download/'.$backup['file_name']) }}"><i data-feather="download"></i> Download</a>
+                                            href="{{ url('admin/backup/download/'.$backup['file_name']) }}"><i
+                                                data-feather="download"></i> Download</a>
                                         <a class="btn btn-outline-danger btn-sm" data-button-type="delete"
-                                            href="{{ url('admin/backup/delete/'.$backup['file_name']) }}"><i data-feather="trash"></i>
+                                            href="{{ url('admin/backup/delete/'.$backup['file_name']) }}"><i
+                                                data-feather="trash"></i>
                                             Delete</a>
                                     </td>
                                 </tr>

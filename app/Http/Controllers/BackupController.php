@@ -110,7 +110,7 @@ class BackupController extends Controller
     {
         try {
             // start the backup process
-            Artisan::call('backup:run --only-files');
+            Artisan::call('backup:run --only-db');
             $output = Artisan::output();
             // log the results
             Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
@@ -121,6 +121,22 @@ class BackupController extends Controller
             Flash::error($e->getMessage());
             return redirect()->back();
         }
+
+
+        try {
+            /* only database backup*/
+           Artisan::call('backup:run --only-db');
+            /* all backup */
+            /* Artisan::call('backup:run'); */
+            $output = Artisan::output();
+            Log::info("Backpack\BackupManager -- new backup started \r\n" . $output);
+            session()->flash('success', 'Successfully created backup!');
+            return redirect()->back();
+            } catch (Exception $e) {
+                    session()->flash('danger', $e->getMessage());
+                    return redirect()->back();
+            }
+
     }
 
     /**
@@ -147,6 +163,7 @@ class BackupController extends Controller
         $disk = Storage::disk('local');
         if ($disk->exists('appointment' . '/' . $file_name)) {
             $disk->delete('appointment' . '/' . $file_name);
+            session()->flash('delete', 'Successfully deleted backup!');
             return redirect()->back();
         } else {
             abort(404, "The backup file doesn't exist.");
