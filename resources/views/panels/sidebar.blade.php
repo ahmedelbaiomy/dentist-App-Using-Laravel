@@ -39,8 +39,8 @@ if(isset($sidebar_logo) && !empty($sidebar_logo)){
                 <li class=" nav-item {{ Route::currentRouteName() === 'admin.patient' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.patient') }}"><i data-feather="user-x"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
                 <li class=" nav-item {{ Route::currentRouteName() === 'admin.reports' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.reports') }}"><i data-feather="bar-chart-2"></i><span class="menu-title text-truncate" data-i18n="Reports">Reports</span></a></li>
                 <li class=" nav-item {{ Route::currentRouteName() === 'admin.appointment' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.appointment') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate" data-i18n="Appointments">Appointments</span></a></li>
-                <li class=" nav-item {{ Route::currentRouteName() === 'admin.officetime' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.officetime') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Office Time">Office Time</span></a></li>
-                <li class=" nav-item {{ Route::currentRouteName() === 'admin.clinic' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.clinic') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Clinic">Clinic</span></a></li>
+                <li class=" nav-item {{ Route::currentRouteName() === 'admin.officetime' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.officetime') }}"><i data-feather="clock"></i><span class="menu-title text-truncate" data-i18n="Office Time">Office Time</span></a></li>
+                <li class=" nav-item {{ Route::currentRouteName() === 'admin.clinic' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.clinic') }}"><i data-feather="activity"></i><span class="menu-title text-truncate" data-i18n="Clinic">Clinic</span></a></li>
                 
                 <li class=" nav-item "><a class="d-flex align-items-center" href="#"><i data-feather="settings"></i><span class="menu-title text-truncate" data-i18n="Settings">Settings</span></a>
                     <ul class="menu-content">
@@ -51,7 +51,8 @@ if(isset($sidebar_logo) && !empty($sidebar_logo)){
                     </ul>
                 </li>
 
-                <li class=" nav-item {{ Route::currentRouteName() === 'admin.logs' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.logs') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Activities logs">Logs</span></a></li>   
+                <li class=" nav-item {{ Route::currentRouteName() === 'admin.logs' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.logs') }}"><i data-feather="archive"></i><span class="menu-title text-truncate" data-i18n="Activities logs">Logs</span></a></li>   
+                <li class=" nav-item {{ Route::currentRouteName() === 'admin.backup' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.backup') }}"><i data-feather="hard-drive"></i><span class="menu-title text-truncate" data-i18n="Backup">Backup</span></a></li>   
 
                 @elseif(Auth::user()->user_type == "doctor")
                 <li class=" nav-item {{ Route::currentRouteName() === 'doctor.home' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('doctor.home') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a></li>

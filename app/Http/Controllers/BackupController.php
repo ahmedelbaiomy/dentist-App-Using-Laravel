@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Log;
+use Alert;
+use Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+//new
 use Illuminate\Support\Facades\File;
 use App\Library\Services\DbHelperTools;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
 
 class BackupController extends Controller
@@ -71,5 +76,80 @@ class BackupController extends Controller
             $DbHelperTools->manageService($data);
         }
         return true;
+    }
+    public function index()
+    {
+        //$disk = Storage::disk(config('laravel-backup.backup.destination.disks')[0]);
+        $disk = Storage::disk('local');
+        
+
+        //$files = $disk->files(config('laravel-backup.backup.name'));
+        $files = $disk->files('Appointment');
+        
+        $backups = [];
+        // make an array of backup files, with their filesize and creation date
+        foreach ($files as $k => $f) {
+            // only take the zip files into account
+            if (substr($f, -4) == '.zip' && $disk->exists($f)) {
+                $backups[] = [
+                    'file_path' => $f,
+                    //'file_name' => str_replace(config('laravel-backup.backup.name') . '/', '', $f),
+                    'file_name' => str_replace('Appointment/', '', $f),
+                    'file_size' => $disk->size($f),
+                    'last_modified' => $disk->lastModified($f),
+                ];
+            }
+        }
+        // reverse the backups, so the newest one would be on top
+        $backups = array_reverse($backups);
+        //dd($backups);
+
+        return view("backup.backups")->with(compact('backups'));
+    }
+    public function create()
+    {
+        try {
+            // start the backup process
+            Artisan::call('backup:run --only-files');
+            $output = Artisan::output();
+            // log the results
+            Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
+            // return the results as a response to the ajax call
+            //Alert::success('New backup created');
+            return redirect()->back();
+        } catch (Exception $e) {
+            Flash::error($e->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Downloads a backup zip file.
+     *
+     * TODO: make it work no matter the flysystem driver (S3 Bucket, etc).
+     */
+    public function download($file_name)
+    {
+        $file = 'Appointment/' . $file_name;
+        $disk = Storage::disk('local');
+        if ($disk->exists($file)) {
+            return response()->download(storage_path("app/{$file}"));
+        } else {
+            abort(404, "The backup file doesn't exist.");
+        }
+    }
+
+    /**
+     * Deletes a backup file.
+     */
+    public function delete($file_name)
+    {
+        $disk = Storage::disk('local');
+        if ($disk->exists('appointment' . '/' . $file_name)) {
+            $disk->delete('appointment' . '/' . $file_name);
+            return redirect()->back();
+        } else {
+            abort(404, "The backup file doesn't exist.");
+        }
     }
 }
