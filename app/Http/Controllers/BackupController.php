@@ -109,21 +109,6 @@ class BackupController extends Controller
     public function create()
     {
         try {
-            // start the backup process
-            Artisan::call('backup:run --only-db');
-            $output = Artisan::output();
-            // log the results
-            Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
-            // return the results as a response to the ajax call
-            //Alert::success('New backup created');
-            return redirect()->back();
-        } catch (Exception $e) {
-            Flash::error($e->getMessage());
-            return redirect()->back();
-        }
-
-
-        try {
             /* only database backup*/
            Artisan::call('backup:run --only-db');
             /* all backup */
@@ -136,7 +121,6 @@ class BackupController extends Controller
                     session()->flash('danger', $e->getMessage());
                     return redirect()->back();
             }
-
     }
 
     /**
