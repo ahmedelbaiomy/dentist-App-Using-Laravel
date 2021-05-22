@@ -144,13 +144,16 @@ class BackupController extends Controller
      */
     public function delete($file_name)
     {
+        $success = false;
         $disk = Storage::disk('local');
         if ($disk->exists('appointment' . '/' . $file_name)) {
             $disk->delete('appointment' . '/' . $file_name);
-            session()->flash('delete', 'Successfully deleted backup!');
-            return redirect()->back();
+            //session()->flash('delete', 'Successfully deleted backup!');
+            //return redirect()->back();
+            $success = true;
         } else {
             abort(404, "The backup file doesn't exist.");
         }
+        return response()->json(['success'=>$success]);
     }
 }

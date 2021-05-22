@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
     Route::get('/admin/backup', [App\Http\Controllers\BackupController::class, 'index'])->name('admin.backup');
     Route::get('/admin/backup/create', [App\Http\Controllers\BackupController::class, 'create']);
     Route::get('/admin/backup/download/{file_name}', [App\Http\Controllers\BackupController::class, 'download']);
-    Route::get('/admin/backup/delete/{file_name}', [App\Http\Controllers\BackupController::class, 'delete']);
+    Route::delete('/admin/backup/delete/{file_name}', [App\Http\Controllers\BackupController::class, 'delete']);
 
     //logs
     Route::get('/admin/logs', [App\Http\Controllers\AppController::class, 'logs'])->name('admin.logs');

@@ -103,10 +103,10 @@
                                             <a class="btn btn-outline-primary btn-sm"
                                                 href="{{ url('admin/backup/download/'.$backup['file_name']) }}"><i
                                                     data-feather="download"></i> Download</a>
-                                            <a class="btn btn-outline-danger btn-sm" data-button-type="delete"
-                                                href="{{ url('admin/backup/delete/'.$backup['file_name']) }}"><i
+                                            <button class="btn btn-outline-danger btn-sm" onclick="_deleteBackup('{{$backup['file_name']}}')"
+                                                type="button"><i
                                                     data-feather="trash"></i>
-                                                Delete</a>
+                                                Delete</button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -147,5 +147,50 @@ table.DataTable({
     pageLength: 25,
 });
 @endif
+
+function _deleteBackup(file_name) {
+    var successMsg = "Successfully deleted backup!";
+    var errorMsg = "File has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete this file?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/backup/delete/" + file_name,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    //_reload_dt_logs();
+                    location.reload();
+                },
+            });
+        }
+    });
+}
 </script>
 @endsection
