@@ -110,7 +110,7 @@
                     <div class="form-group">
                         <label for="patients">Subject <span class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="subject"
-                            value="{{ ($request)?$request->subject:'Medical Equipment Request' }}" required />
+                            value="{{ ($request)?$request->subject:'Request for Medical Supplies' }}" required />
                     </div>
                 </div>
             </div>

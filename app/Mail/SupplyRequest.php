@@ -35,6 +35,6 @@ class SupplyRequest extends Mailable
     {
         $app_title=config('global.app_title');
         $app_email_from=config('global.app_email_from');
-        return $this->from($app_email_from, $app_title)->view('request.emails.request');
+        return $this->from($app_email_from, $app_title)->subject($this->request->subject)->view('request.emails.request');
     }
 }
