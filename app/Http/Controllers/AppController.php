@@ -229,6 +229,7 @@ class AppController extends Controller
                 'title'=>$request->title,
                 'description'=>$request->description,
                 'url'=>(isset($resultPath))?base64_encode($resultPath):null,
+                'user_id'=>auth()->user()->id,
             );
             $storage_id=$DbHelperTools->managePatientStorage($data);
             $success = true;
@@ -255,6 +256,8 @@ class AppController extends Controller
             $row=array();
                 //ID
                 $row[]='#FILE-'.$d->id;
+                //By
+                $row[]='<p class="mb-0"><span class="badge badge-light-primary">By : '.$d->user->name.'</span></p>';
                 //<th>Title</th>
                 $row[]=$d->title;
                 //<th>Description</th>

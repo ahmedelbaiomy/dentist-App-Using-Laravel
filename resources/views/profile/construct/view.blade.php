@@ -804,6 +804,7 @@ $("#FORM_REFUND").validate({
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>By</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Attachment</th>

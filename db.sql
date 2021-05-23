@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 21, 2021 at 11:10 PM
+-- Generation Time: May 23, 2021 at 04:42 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -44,7 +44,61 @@ INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `su
 (4, 'Service', 'deleted', 'App\\Models\\Service', 359, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 359, \"code\": \"DH0001\", \"note\": \"test\", \"price\": 1, \"created_at\": \"2021-05-21T20:02:15.000000Z\", \"deleted_at\": \"2021-05-21T20:02:20.000000Z\", \"updated_at\": \"2021-05-21T20:02:20.000000Z\", \"category_id\": 2, \"service_name\": \"my test\", \"service_name_ar\": \"الفحص ألسريري\"}}', '2021-05-21 22:02:20', '2021-05-21 22:02:20'),
 (5, 'Doctor', 'updated', 'App\\Models\\Doctor', 3, 'App\\Models\\User', 1, '{\"old\": {\"id\": 3, \"phone\": null, \"photo\": null, \"target\": \"800.00\", \"address\": \"qscqcsqsc\", \"user_id\": 8, \"birthday\": null, \"created_at\": \"2021-04-19T14:18:22.000000Z\", \"updated_at\": \"2021-04-19T17:18:22.000000Z\"}, \"attributes\": {\"id\": 3, \"phone\": null, \"photo\": null, \"target\": \"500.00\", \"address\": \"qscqcsqsc\", \"user_id\": 8, \"birthday\": null, \"created_at\": \"2021-04-19T14:18:22.000000Z\", \"updated_at\": \"2021-05-21T20:16:34.000000Z\"}}', '2021-05-21 22:16:34', '2021-05-21 22:16:34'),
 (6, 'Clinic', 'updated', 'App\\Models\\Clinic', 2, 'App\\Models\\User', 1, '{\"old\": {\"id\": 2, \"apr\": \"130.00\", \"aug\": \"170.00\", \"dec\": \"300.00\", \"feb\": \"110.00\", \"jan\": \"100.00\", \"jul\": \"160.00\", \"jun\": \"150.00\", \"mar\": \"120.00\", \"may\": \"140.00\", \"nov\": \"200.00\", \"oct\": \"190.00\", \"sep\": \"180.00\", \"year\": 2021, \"created_at\": \"2021-02-23T08:05:40.000000Z\", \"updated_at\": \"2021-02-23T08:05:40.000000Z\"}, \"attributes\": {\"id\": 2, \"apr\": \"130.00\", \"aug\": \"170.00\", \"dec\": \"300.00\", \"feb\": \"110.00\", \"jan\": \"110.00\", \"jul\": \"160.00\", \"jun\": \"150.00\", \"mar\": \"120.00\", \"may\": \"140.00\", \"nov\": \"200.00\", \"oct\": \"190.00\", \"sep\": \"180.00\", \"year\": 2021, \"created_at\": \"2021-05-21T18:17:36.000000Z\", \"updated_at\": \"2021-05-21T20:17:36.000000Z\"}}', '2021-05-21 22:17:36', '2021-05-21 22:17:36'),
-(7, 'Office time', 'updated', 'App\\Models\\Officetime', 11, 'App\\Models\\User', 1, '{\"old\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 5, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-03-12T13:24:01.000000Z\"}, \"attributes\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 6, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-05-21T20:18:08.000000Z\"}}', '2021-05-21 22:18:08', '2021-05-21 22:18:08');
+(7, 'Office time', 'updated', 'App\\Models\\Officetime', 11, 'App\\Models\\User', 1, '{\"old\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 5, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-03-12T13:24:01.000000Z\"}, \"attributes\": {\"id\": 11, \"to\": 22, \"day\": 6, \"from\": 11, \"user_id\": 6, \"created_at\": \"2021-03-12T13:24:01.000000Z\", \"updated_at\": \"2021-05-21T20:18:08.000000Z\"}}', '2021-05-21 22:18:08', '2021-05-21 22:18:08'),
+(8, 'Request', 'created', 'App\\Models\\Sprequest', 3, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 3, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"subject test\", \"user_id\": 1, \"created_at\": \"2021-05-22T19:37:36.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-22T19:37:36.000000Z\"}}', '2021-05-22 21:37:36', '2021-05-22 21:37:36'),
+(9, 'Request', 'created', 'App\\Models\\Sprequest', 4, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 4, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"subject test\", \"user_id\": 1, \"created_at\": \"2021-05-23T08:39:36.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T08:39:36.000000Z\"}}', '2021-05-23 10:39:36', '2021-05-23 10:39:36'),
+(10, 'Request', 'created', 'App\\Models\\Sprequest', 5, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 5, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"subject test\", \"user_id\": 1, \"created_at\": \"2021-05-23T08:40:17.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T08:40:17.000000Z\"}}', '2021-05-23 10:40:17', '2021-05-23 10:40:17'),
+(11, 'Request', 'created', 'App\\Models\\Sprequest', 6, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 6, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"subject test\", \"user_id\": 1, \"created_at\": \"2021-05-23T08:40:38.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T08:40:38.000000Z\"}}', '2021-05-23 10:40:38', '2021-05-23 10:40:38'),
+(12, 'Request', 'created', 'App\\Models\\Sprequest', 1, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 1, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T10:20:04.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T10:20:04.000000Z\"}}', '2021-05-23 12:20:04', '2021-05-23 12:20:04'),
+(13, 'Request', 'created', 'App\\Models\\Sprequest', 2, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 2, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T10:24:56.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T10:24:56.000000Z\"}}', '2021-05-23 12:24:56', '2021-05-23 12:24:56'),
+(14, 'Request', 'created', 'App\\Models\\Sprequest', 3, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 3, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T10:25:53.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T10:25:53.000000Z\"}}', '2021-05-23 12:25:53', '2021-05-23 12:25:53'),
+(15, 'Request item', 'created', 'App\\Models\\Sprequestitem', 2, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 2, \"rate\": 25, \"total\": 125, \"quantity\": 5, \"created_at\": \"2021-05-23T10:25:53.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 3, \"updated_at\": \"2021-05-23T10:25:53.000000Z\", \"description\": \"this is a test\", \"product_name\": \"product 2\"}}', '2021-05-23 12:25:53', '2021-05-23 12:25:53'),
+(16, 'Request item', 'created', 'App\\Models\\Sprequestitem', 3, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 3, \"rate\": 15.5, \"total\": 1240, \"quantity\": 80, \"created_at\": \"2021-05-23T10:25:53.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 3, \"updated_at\": \"2021-05-23T10:25:53.000000Z\", \"description\": \"this is a test\", \"product_name\": \"product 1\"}}', '2021-05-23 12:25:53', '2021-05-23 12:25:53'),
+(17, 'Request', 'created', 'App\\Models\\Sprequest', 4, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 4, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:36:55.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T12:36:55.000000Z\"}}', '2021-05-23 14:36:55', '2021-05-23 14:36:55'),
+(18, 'Request item', 'created', 'App\\Models\\Sprequestitem', 4, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 4, \"rate\": 15.5, \"total\": 4650, \"quantity\": 300, \"created_at\": \"2021-05-23T12:36:55.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 4, \"updated_at\": \"2021-05-23T12:36:55.000000Z\", \"description\": \"this is a test p1\", \"product_name\": \"product 1\"}}', '2021-05-23 14:36:55', '2021-05-23 14:36:55'),
+(19, 'Request item', 'created', 'App\\Models\\Sprequestitem', 5, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 5, \"rate\": 25, \"total\": 1000, \"quantity\": 40, \"created_at\": \"2021-05-23T12:36:55.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 4, \"updated_at\": \"2021-05-23T12:36:55.000000Z\", \"description\": \"test\", \"product_name\": \"product 2\"}}', '2021-05-23 14:36:55', '2021-05-23 14:36:55'),
+(20, 'Request', 'created', 'App\\Models\\Sprequest', 5, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 5, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:38:04.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T12:38:04.000000Z\"}}', '2021-05-23 14:38:04', '2021-05-23 14:38:04'),
+(21, 'Request item', 'created', 'App\\Models\\Sprequestitem', 6, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 6, \"rate\": 15.5, \"total\": 4650, \"quantity\": 300, \"created_at\": \"2021-05-23T12:38:04.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 5, \"updated_at\": \"2021-05-23T12:38:04.000000Z\", \"description\": \"this is a test p1\", \"product_name\": \"product 1\"}}', '2021-05-23 14:38:04', '2021-05-23 14:38:04'),
+(22, 'Request item', 'created', 'App\\Models\\Sprequestitem', 7, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 7, \"rate\": 25, \"total\": 1000, \"quantity\": 40, \"created_at\": \"2021-05-23T12:38:04.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 5, \"updated_at\": \"2021-05-23T12:38:04.000000Z\", \"description\": \"test\", \"product_name\": \"product 2\"}}', '2021-05-23 14:38:04', '2021-05-23 14:38:04'),
+(23, 'Request', 'created', 'App\\Models\\Sprequest', 6, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 6, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:39:13.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T12:39:13.000000Z\"}}', '2021-05-23 14:39:13', '2021-05-23 14:39:13'),
+(24, 'Request item', 'created', 'App\\Models\\Sprequestitem', 8, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 8, \"rate\": 15.5, \"total\": 4650, \"quantity\": 300, \"created_at\": \"2021-05-23T12:39:13.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 6, \"updated_at\": \"2021-05-23T12:39:13.000000Z\", \"description\": \"this is a test p1\", \"product_name\": \"product 1\"}}', '2021-05-23 14:39:13', '2021-05-23 14:39:13'),
+(25, 'Request item', 'created', 'App\\Models\\Sprequestitem', 9, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 9, \"rate\": 25, \"total\": 1000, \"quantity\": 40, \"created_at\": \"2021-05-23T12:39:13.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 6, \"updated_at\": \"2021-05-23T12:39:13.000000Z\", \"description\": \"test\", \"product_name\": \"product 2\"}}', '2021-05-23 14:39:13', '2021-05-23 14:39:13'),
+(26, 'Request', 'created', 'App\\Models\\Sprequest', 7, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 7, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:37:58.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:37:58.000000Z\"}}', '2021-05-23 15:37:58', '2021-05-23 15:37:58'),
+(27, 'Request item', 'created', 'App\\Models\\Sprequestitem', 10, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 10, \"rate\": 15.5, \"total\": 3100, \"quantity\": 200, \"created_at\": \"2021-05-23T13:37:58.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 7, \"updated_at\": \"2021-05-23T13:37:58.000000Z\", \"description\": \"ok\", \"product_name\": \"product 1\"}}', '2021-05-23 15:37:58', '2021-05-23 15:37:58'),
+(28, 'Request item', 'created', 'App\\Models\\Sprequestitem', 11, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 11, \"rate\": 25, \"total\": 10000, \"quantity\": 400, \"created_at\": \"2021-05-23T13:37:58.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 7, \"updated_at\": \"2021-05-23T13:37:58.000000Z\", \"description\": \"ok\", \"product_name\": \"product 2\"}}', '2021-05-23 15:37:58', '2021-05-23 15:37:58'),
+(29, 'Request', 'created', 'App\\Models\\Sprequest', 8, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 8, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"This is my custom test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:40:19.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:40:19.000000Z\"}}', '2021-05-23 15:40:19', '2021-05-23 15:40:19'),
+(30, 'Request item', 'created', 'App\\Models\\Sprequestitem', 12, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 12, \"rate\": 15.5, \"total\": 930, \"quantity\": 60, \"created_at\": \"2021-05-23T13:40:19.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 8, \"updated_at\": \"2021-05-23T13:40:19.000000Z\", \"description\": \"this is a test\", \"product_name\": \"product 1\"}}', '2021-05-23 15:40:19', '2021-05-23 15:40:19'),
+(31, 'Request item', 'created', 'App\\Models\\Sprequestitem', 13, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 13, \"rate\": 25, \"total\": 1900, \"quantity\": 76, \"created_at\": \"2021-05-23T13:40:19.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 8, \"updated_at\": \"2021-05-23T13:40:19.000000Z\", \"description\": \"this is a test\", \"product_name\": \"product 2\"}}', '2021-05-23 15:40:19', '2021-05-23 15:40:19'),
+(32, 'Request', 'created', 'App\\Models\\Sprequest', 9, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 9, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:42:44.000000Z\"}}', '2021-05-23 15:42:44', '2021-05-23 15:42:44'),
+(33, 'Request item', 'created', 'App\\Models\\Sprequestitem', 14, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 14, \"rate\": 25, \"total\": 2250, \"quantity\": 90, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 9, \"updated_at\": \"2021-05-23T13:42:44.000000Z\", \"description\": \"this a test\", \"product_name\": \"product 2\"}}', '2021-05-23 15:42:44', '2021-05-23 15:42:44'),
+(34, 'Request item', 'created', 'App\\Models\\Sprequestitem', 15, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 15, \"rate\": 25, \"total\": 7250, \"quantity\": 290, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 9, \"updated_at\": \"2021-05-23T13:42:44.000000Z\", \"description\": \"test\", \"product_name\": \"product 2\"}}', '2021-05-23 15:42:44', '2021-05-23 15:42:44'),
+(35, 'Request', 'updated', 'App\\Models\\Sprequest', 9, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 9, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:42:44.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 9, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a test\", \"sent_at\": \"2021-05-23 16:42:46\", \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:42:46.000000Z\"}}', '2021-05-23 15:42:46', '2021-05-23 15:42:46'),
+(36, 'Request', 'deleted', 'App\\Models\\Sprequest', 3, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 3, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T10:25:53.000000Z\", \"deleted_at\": \"2021-05-23T13:56:06.000000Z\", \"updated_at\": \"2021-05-23T13:56:06.000000Z\"}}', '2021-05-23 15:56:06', '2021-05-23 15:56:06'),
+(37, 'Request', 'deleted', 'App\\Models\\Sprequest', 4, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 4, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:36:55.000000Z\", \"deleted_at\": \"2021-05-23T13:56:12.000000Z\", \"updated_at\": \"2021-05-23T13:56:12.000000Z\"}}', '2021-05-23 15:56:12', '2021-05-23 15:56:12'),
+(38, 'Request', 'deleted', 'App\\Models\\Sprequest', 5, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 5, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:38:04.000000Z\", \"deleted_at\": \"2021-05-23T13:56:16.000000Z\", \"updated_at\": \"2021-05-23T13:56:16.000000Z\"}}', '2021-05-23 15:56:16', '2021-05-23 15:56:16'),
+(39, 'Request', 'deleted', 'App\\Models\\Sprequest', 6, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 6, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T12:39:13.000000Z\", \"deleted_at\": \"2021-05-23T13:56:20.000000Z\", \"updated_at\": \"2021-05-23T13:56:20.000000Z\"}}', '2021-05-23 15:56:20', '2021-05-23 15:56:20'),
+(40, 'Request', 'deleted', 'App\\Models\\Sprequest', 7, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 7, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": null, \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:37:58.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:37:58.000000Z\"}}', '2021-05-23 15:57:07', '2021-05-23 15:57:07'),
+(41, 'Request', 'deleted', 'App\\Models\\Sprequest', 8, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 8, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"This is my custom test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:40:19.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:40:19.000000Z\"}}', '2021-05-23 15:57:36', '2021-05-23 15:57:36'),
+(42, 'Request', 'deleted', 'App\\Models\\Sprequest', 9, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 9, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a test\", \"sent_at\": \"2021-05-23 16:42:46\", \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:42:44.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:42:46.000000Z\"}}', '2021-05-23 15:57:40', '2021-05-23 15:57:40'),
+(43, 'Request', 'created', 'App\\Models\\Sprequest', 10, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 10, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:58:29.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:58:29.000000Z\"}}', '2021-05-23 15:58:29', '2021-05-23 15:58:29'),
+(44, 'Request item', 'created', 'App\\Models\\Sprequestitem', 16, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 16, \"rate\": 15.5, \"total\": 7750, \"quantity\": 500, \"created_at\": \"2021-05-23T13:58:29.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 10, \"updated_at\": \"2021-05-23T13:58:29.000000Z\", \"description\": \"500 qty\", \"product_name\": \"product 1\"}}', '2021-05-23 15:58:29', '2021-05-23 15:58:29'),
+(45, 'Request item', 'created', 'App\\Models\\Sprequestitem', 17, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 17, \"rate\": 43, \"total\": 64500, \"quantity\": 1500, \"created_at\": \"2021-05-23T13:58:29.000000Z\", \"deleted_at\": null, \"product_id\": 3, \"request_id\": 10, \"updated_at\": \"2021-05-23T13:58:29.000000Z\", \"description\": \"1500 qty\", \"product_name\": \"product 3\"}}', '2021-05-23 15:58:29', '2021-05-23 15:58:29'),
+(46, 'Request', 'updated', 'App\\Models\\Sprequest', 10, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 10, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:58:29.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:58:29.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 10, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a test\", \"sent_at\": \"2021-05-23 16:58:31\", \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T13:58:29.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T13:58:31.000000Z\"}}', '2021-05-23 15:58:31', '2021-05-23 15:58:31'),
+(47, 'Request', 'created', 'App\\Models\\Sprequest', 11, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 11, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"This is my message\", \"sent_at\": null, \"subject\": \"Request Letter for Medical Supplies\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:38:40.000000Z\"}}', '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(48, 'Request item', 'created', 'App\\Models\\Sprequestitem', 18, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 18, \"rate\": 15.5, \"total\": 4650, \"quantity\": 300, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 11, \"updated_at\": \"2021-05-23T14:38:40.000000Z\", \"description\": \"300 test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(49, 'Request item', 'created', 'App\\Models\\Sprequestitem', 19, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 19, \"rate\": 25, \"total\": 1675, \"quantity\": 67, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 11, \"updated_at\": \"2021-05-23T14:38:40.000000Z\", \"description\": \"TEst\", \"product_name\": \"product 2\"}}', '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(50, 'Request item', 'created', 'App\\Models\\Sprequestitem', 20, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 20, \"rate\": 43, \"total\": 3870, \"quantity\": 90, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"product_id\": 3, \"request_id\": 11, \"updated_at\": \"2021-05-23T14:38:40.000000Z\", \"description\": \"test\", \"product_name\": \"product 3\"}}', '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(51, 'Request', 'updated', 'App\\Models\\Sprequest', 11, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 11, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"This is my message\", \"sent_at\": null, \"subject\": \"Request Letter for Medical Supplies\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:38:40.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 11, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"This is my message\", \"sent_at\": \"2021-05-23 17:38:42\", \"subject\": \"Request Letter for Medical Supplies\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:38:40.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:38:42.000000Z\"}}', '2021-05-23 16:38:42', '2021-05-23 16:38:42'),
+(52, 'Request', 'created', 'App\\Models\\Sprequest', 12, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 12, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:41:36.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:41:36.000000Z\"}}', '2021-05-23 16:41:36', '2021-05-23 16:41:36'),
+(53, 'Request item', 'created', 'App\\Models\\Sprequestitem', 21, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 21, \"rate\": 25, \"total\": 12500, \"quantity\": 500, \"created_at\": \"2021-05-23T14:41:36.000000Z\", \"deleted_at\": null, \"product_id\": 2, \"request_id\": 12, \"updated_at\": \"2021-05-23T14:41:36.000000Z\", \"description\": \"last request\", \"product_name\": \"product 2\"}}', '2021-05-23 16:41:36', '2021-05-23 16:41:36'),
+(54, 'Request', 'updated', 'App\\Models\\Sprequest', 12, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 12, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"test\", \"sent_at\": null, \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:41:36.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:41:36.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 12, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"test\", \"sent_at\": \"2021-05-23 17:41:38\", \"subject\": \"Medical Equipment Request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:41:36.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:41:38.000000Z\"}}', '2021-05-23 16:41:38', '2021-05-23 16:41:38'),
+(55, 'Request', 'created', 'App\\Models\\Sprequest', 13, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 13, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:45:53.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:45:53.000000Z\"}}', '2021-05-23 16:45:53', '2021-05-23 16:45:53'),
+(56, 'Request item', 'created', 'App\\Models\\Sprequestitem', 22, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 22, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:45:53.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 13, \"updated_at\": \"2021-05-23T14:45:53.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:45:53', '2021-05-23 16:45:53'),
+(57, 'Request', 'created', 'App\\Models\\Sprequest', 14, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 14, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:06.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:06.000000Z\"}}', '2021-05-23 16:46:06', '2021-05-23 16:46:06'),
+(58, 'Request item', 'created', 'App\\Models\\Sprequestitem', 23, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 23, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:46:06.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 14, \"updated_at\": \"2021-05-23T14:46:06.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:46:06', '2021-05-23 16:46:06'),
+(59, 'Request', 'created', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
+(60, 'Request item', 'created', 'App\\Models\\Sprequestitem', 24, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 24, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 15, \"updated_at\": \"2021-05-23T14:46:37.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
+(61, 'Request', 'updated', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a ttest\", \"sent_at\": \"2021-05-23 17:46:39\", \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:39.000000Z\"}}', '2021-05-23 16:46:39', '2021-05-23 16:46:39');
 
 -- --------------------------------------------------------
 
@@ -421,7 +475,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (49, '2021_05_11_030144_create_doctors_table', 8),
 (50, '2021_05_09_185255_create_tooths_table', 9),
 (51, '2021_05_15_202820_create_settings_table', 10),
-(52, '2021_05_21_002612_create_activity_log_table', 11);
+(52, '2021_05_21_002612_create_activity_log_table', 11),
+(62, '2021_05_22_135002_create_products_table', 12),
+(63, '2021_05_22_135017_create_requests_table', 12),
+(64, '2021_05_22_135033_create_request_items_table', 12),
+(65, '2021_05_23_182924_create_patient_storage_table', 13);
 
 -- --------------------------------------------------------
 
@@ -573,21 +631,22 @@ INSERT INTO `patient_notes` (`id`, `patient_id`, `doctor_id`, `category_id`, `te
 --
 
 CREATE TABLE `patient_storage` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `patient_id` int(11) NOT NULL,
-  `title` varchar(200) NOT NULL,
-  `description` text NOT NULL,
-  `url` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `patient_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `patient_storage`
 --
 
-INSERT INTO `patient_storage` (`id`, `patient_id`, `title`, `description`, `url`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMDU4MzcwNF9kaWFnLnN2Zw==', '2021-05-09 21:08:24', '2021-05-09 21:08:24');
+INSERT INTO `patient_storage` (`id`, `title`, `description`, `url`, `patient_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTc4NDI3MV9hbmFzdC5zdmc=', 3, 1, '2021-05-23 17:37:51', '2021-05-23 17:37:51');
 
 -- --------------------------------------------------------
 
@@ -1135,7 +1194,103 @@ INSERT INTO `set_settings` (`id`, `name`, `value`, `type`, `deleted_at`, `create
 (3, 'favicon', 'uploads/files/settings//1621123856_favicon_logo_empty.jpeg', 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:10:56'),
 (4, 'show_logo_in_signin_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-21 22:16:56'),
 (5, 'show_logo_in_signup_page', 'yes', 'app', NULL, '2021-05-15 17:38:57', '2021-05-21 22:16:56'),
-(6, 'sidebar_logo', NULL, 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:50:00');
+(6, 'sidebar_logo', NULL, 'app', NULL, '2021-05-15 17:37:28', '2021-05-16 02:50:00'),
+(7, 'app_email_from', 'admin@mdsupplies365.com', 'app', NULL, '2021-05-15 17:33:53', '2021-05-21 22:16:56'),
+(8, 'clinic_phone', '21206123456789', 'app', NULL, '2021-05-15 17:33:53', '2021-05-21 22:16:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_products`
+--
+
+CREATE TABLE `sp_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `price` double(8,2) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sp_products`
+--
+
+INSERT INTO `sp_products` (`id`, `name`, `description`, `price`, `is_active`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'product 1', NULL, 15.50, 1, NULL, '2021-05-23 09:35:26', '2021-05-23 09:35:26'),
+(2, 'product 2', NULL, 25.00, 1, NULL, '2021-05-23 09:35:26', '2021-05-23 09:35:26'),
+(3, 'product 3', NULL, 43.00, 1, NULL, '2021-05-23 09:35:26', '2021-05-23 09:35:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_requests`
+--
+
+CREATE TABLE `sp_requests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `to` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bcc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci,
+  `sent_at` timestamp NULL DEFAULT NULL,
+  `status` enum('draft','sent') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'draft',
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sp_requests`
+--
+
+INSERT INTO `sp_requests` (`id`, `to`, `cc`, `bcc`, `subject`, `message`, `sent_at`, `status`, `user_id`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(10, 'mhidaoui@mdevhd.com', NULL, NULL, 'Medical Equipment Request', 'this is a test', '2021-05-23 15:58:31', 'sent', 1, NULL, '2021-05-23 15:58:29', '2021-05-23 15:58:31'),
+(11, 'mhidaoui@mdevhd.com', NULL, NULL, 'Request Letter for Medical Supplies', 'This is my message', '2021-05-23 16:38:42', 'sent', 1, NULL, '2021-05-23 16:38:40', '2021-05-23 16:38:42'),
+(12, 'mhidaoui@mdevhd.com', NULL, NULL, 'Medical Equipment Request', 'test', '2021-05-23 16:41:38', 'sent', 1, NULL, '2021-05-23 16:41:36', '2021-05-23 16:41:38'),
+(13, 'mhidaoui@mdevhd.com', NULL, NULL, 'custom request', 'this is a ttest', NULL, 'draft', 1, NULL, '2021-05-23 16:45:53', '2021-05-23 16:45:53'),
+(14, 'mhidaoui@mdevhd.com', NULL, NULL, 'custom request', 'this is a ttest', NULL, 'draft', 1, NULL, '2021-05-23 16:46:06', '2021-05-23 16:46:06'),
+(15, 'mhidaoui@mdevhd.com', NULL, NULL, 'custom request', 'this is a ttest', '2021-05-23 16:46:39', 'sent', 1, NULL, '2021-05-23 16:46:37', '2021-05-23 16:46:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sp_request_items`
+--
+
+CREATE TABLE `sp_request_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` double(8,2) NOT NULL DEFAULT '1.00',
+  `rate` double(8,2) NOT NULL,
+  `total` double(8,2) NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `request_id` bigint(20) UNSIGNED NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sp_request_items`
+--
+
+INSERT INTO `sp_request_items` (`id`, `product_name`, `quantity`, `rate`, `total`, `description`, `product_id`, `request_id`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(16, 'product 1', 500.00, 15.50, 7750.00, '500 qty', 1, 10, NULL, '2021-05-23 15:58:29', '2021-05-23 15:58:29'),
+(17, 'product 3', 1500.00, 43.00, 64500.00, '1500 qty', 3, 10, NULL, '2021-05-23 15:58:29', '2021-05-23 15:58:29'),
+(18, 'product 1', 300.00, 15.50, 4650.00, '300 test', 1, 11, NULL, '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(19, 'product 2', 67.00, 25.00, 1675.00, 'TEst', 2, 11, NULL, '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(20, 'product 3', 90.00, 43.00, 3870.00, 'test', 3, 11, NULL, '2021-05-23 16:38:40', '2021-05-23 16:38:40'),
+(21, 'product 2', 500.00, 25.00, 12500.00, 'last request', 2, 12, NULL, '2021-05-23 16:41:36', '2021-05-23 16:41:36'),
+(22, 'product 1', 1.00, 15.50, 15.50, 'test', 1, 13, NULL, '2021-05-23 16:45:53', '2021-05-23 16:45:53'),
+(23, 'product 1', 1.00, 15.50, 15.50, 'test', 1, 14, NULL, '2021-05-23 16:46:06', '2021-05-23 16:46:06'),
+(24, 'product 1', 1.00, 15.50, 15.50, 'test', 1, 15, NULL, '2021-05-23 16:46:37', '2021-05-23 16:46:37');
 
 -- --------------------------------------------------------
 
@@ -1324,7 +1479,8 @@ ALTER TABLE `patient_notes`
 -- Indexes for table `patient_storage`
 --
 ALTER TABLE `patient_storage`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `patient_storage_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `pr_procedure_service_items`
@@ -1364,6 +1520,27 @@ ALTER TABLE `set_settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sp_products`
+--
+ALTER TABLE `sp_products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sp_requests`
+--
+ALTER TABLE `sp_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sp_requests_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `sp_request_items`
+--
+ALTER TABLE `sp_request_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sp_request_items_product_id_foreign` (`product_id`),
+  ADD KEY `sp_request_items_request_id_foreign` (`request_id`);
+
+--
 -- Indexes for table `storages`
 --
 ALTER TABLE `storages`
@@ -1383,7 +1560,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `appointments`
@@ -1461,7 +1638,7 @@ ALTER TABLE `inv_invoice_refunds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1497,7 +1674,7 @@ ALTER TABLE `patient_notes`
 -- AUTO_INCREMENT for table `patient_storage`
 --
 ALTER TABLE `patient_storage`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pr_procedure_service_items`
@@ -1527,7 +1704,25 @@ ALTER TABLE `service_categories`
 -- AUTO_INCREMENT for table `set_settings`
 --
 ALTER TABLE `set_settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `sp_products`
+--
+ALTER TABLE `sp_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `sp_requests`
+--
+ALTER TABLE `sp_requests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `sp_request_items`
+--
+ALTER TABLE `sp_request_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `storages`
@@ -1571,6 +1766,12 @@ ALTER TABLE `inv_invoice_refunds`
   ADD CONSTRAINT `inv_invoice_refunds_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `inv_invoices` (`id`);
 
 --
+-- Constraints for table `patient_storage`
+--
+ALTER TABLE `patient_storage`
+  ADD CONSTRAINT `patient_storage_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `pr_procedure_service_items`
 --
 ALTER TABLE `pr_procedure_service_items`
@@ -1590,3 +1791,16 @@ ALTER TABLE `services`
 --
 ALTER TABLE `service_categories`
   ADD CONSTRAINT `service_categories_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `service_categories` (`id`);
+
+--
+-- Constraints for table `sp_requests`
+--
+ALTER TABLE `sp_requests`
+  ADD CONSTRAINT `sp_requests_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `sp_request_items`
+--
+ALTER TABLE `sp_request_items`
+  ADD CONSTRAINT `sp_request_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `sp_products` (`id`),
+  ADD CONSTRAINT `sp_request_items_request_id_foreign` FOREIGN KEY (`request_id`) REFERENCES `sp_requests` (`id`);

@@ -214,6 +214,9 @@ class DbHelperTools
             if(isset($data['url'])){
                 $row->url = (isset($data['url']))?$data['url']:null;
             }
+            if(isset($data['user_id'])){
+                $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
+            }
             $row->save ();
             $id = $row->id;
         }
