@@ -27,6 +27,7 @@
                     <table class="datatable table table-bordered">
                         <thead>
                             <tr>
+                                <th>Doctor</th>
                                 <th>Star Time</th>
                                 <th>Duration</th>
                                 <th>Patient</th>
@@ -37,6 +38,7 @@
                         <tbody>
                             @foreach($events as $event)
                             <tr>
+                                <td>{{$event->user_name}}</td>
                                 <td><span>{{ $event->start_time }}</span></td>
                                 <td><span>{{ $event->end }}</span></td>
                                 <td><span>{{ $event->p_email }}</span></td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 23, 2021 at 04:42 PM
+-- Generation Time: May 24, 2021 at 12:59 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -98,7 +98,8 @@ INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `su
 (58, 'Request item', 'created', 'App\\Models\\Sprequestitem', 23, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 23, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:46:06.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 14, \"updated_at\": \"2021-05-23T14:46:06.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:46:06', '2021-05-23 16:46:06'),
 (59, 'Request', 'created', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
 (60, 'Request item', 'created', 'App\\Models\\Sprequestitem', 24, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 24, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 15, \"updated_at\": \"2021-05-23T14:46:37.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
-(61, 'Request', 'updated', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a ttest\", \"sent_at\": \"2021-05-23 17:46:39\", \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:39.000000Z\"}}', '2021-05-23 16:46:39', '2021-05-23 16:46:39');
+(61, 'Request', 'updated', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a ttest\", \"sent_at\": \"2021-05-23 17:46:39\", \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:39.000000Z\"}}', '2021-05-23 16:46:39', '2021-05-23 16:46:39'),
+(62, 'Storage', 'created', 'App\\Models\\Patientstorage', 2, 'App\\Models\\User', 2, '{\"attributes\": {\"id\": 2, \"url\": \"ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn\", \"title\": \"Dental Filling 2\", \"user_id\": 2, \"created_at\": \"2021-05-23T22:50:04.000000Z\", \"patient_id\": 1, \"updated_at\": \"2021-05-23T22:50:04.000000Z\", \"description\": \"test\"}}', '2021-05-24 00:50:04', '2021-05-24 00:50:04');
 
 -- --------------------------------------------------------
 
@@ -181,6 +182,7 @@ CREATE TABLE `doctors` (
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `target` decimal(15,2) NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `nurse_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -189,10 +191,10 @@ CREATE TABLE `doctors` (
 -- Dumping data for table `doctors`
 --
 
-INSERT INTO `doctors` (`id`, `birthday`, `address`, `phone`, `photo`, `target`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'Office 149, 450 South Brand Brooklyn', '+12 (876) 543 2198', NULL, '1000.00', 2, '2021-02-13 02:38:22', '2021-02-12 23:38:22'),
-(3, NULL, 'qscqcsqsc', NULL, NULL, '500.00', 8, '2021-04-19 17:18:22', '2021-05-21 22:16:34'),
-(4, NULL, 'scsccqcsqsc', NULL, NULL, '1200.00', 6, '2021-02-22 00:45:56', '2021-05-11 00:09:20');
+INSERT INTO `doctors` (`id`, `birthday`, `address`, `phone`, `photo`, `target`, `user_id`, `nurse_id`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'Office 149, 450 South Brand Brooklyn', '+12 (876) 543 2198', NULL, '1000.00', 2, 1, '2021-02-13 01:38:22', '2021-02-12 22:38:22'),
+(3, NULL, 'qscqcsqsc', NULL, NULL, '500.00', 8, 1, '2021-04-19 17:18:22', '2021-05-21 21:16:34'),
+(4, NULL, 'scsccqcsqsc', NULL, NULL, '1200.00', 6, 1, '2021-02-21 23:45:56', '2021-05-11 00:09:20');
 
 -- --------------------------------------------------------
 
@@ -472,14 +474,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (46, '2021_05_08_195857_create_procedure_service_items_table', 7),
 (47, '2021_05_08_213315_create_inv_invoice_payments_table', 7),
 (48, '2021_05_08_213333_create_inv_invoice_refunds_table', 7),
-(49, '2021_05_11_030144_create_doctors_table', 8),
 (50, '2021_05_09_185255_create_tooths_table', 9),
 (51, '2021_05_15_202820_create_settings_table', 10),
 (52, '2021_05_21_002612_create_activity_log_table', 11),
 (62, '2021_05_22_135002_create_products_table', 12),
 (63, '2021_05_22_135017_create_requests_table', 12),
 (64, '2021_05_22_135033_create_request_items_table', 12),
-(65, '2021_05_23_182924_create_patient_storage_table', 13);
+(65, '2021_05_23_182924_create_patient_storage_table', 13),
+(67, '2021_05_24_011320_create_request_nurses_table', 14),
+(68, '2021_05_11_030144_create_doctors_table', 15);
 
 -- --------------------------------------------------------
 
@@ -504,6 +507,32 @@ CREATE TABLE `notes` (
 INSERT INTO `notes` (`id`, `user_id`, `patient_id`, `note`, `audio_file`, `created_at`, `updated_at`) VALUES
 (11, 3, 1, 'test Mouhssin', 'dXBsb2Fkcy8=', '2021-05-01 20:45:26', '2021-05-01 20:45:26'),
 (12, 3, 1, 'this is a test from scratch', NULL, '2021-05-01 21:08:52', '2021-05-01 21:08:52');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nurses`
+--
+
+CREATE TABLE `nurses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `birthday` date DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `target` decimal(15,2) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `nurses`
+--
+
+INSERT INTO `nurses` (`id`, `birthday`, `address`, `phone`, `photo`, `target`, `user_id`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, '1991-05-23', 'adr1', NULL, NULL, NULL, 15, NULL, '2021-05-23 22:23:14', '2021-05-23 22:23:14');
 
 -- --------------------------------------------------------
 
@@ -646,7 +675,8 @@ CREATE TABLE `patient_storage` (
 --
 
 INSERT INTO `patient_storage` (`id`, `title`, `description`, `url`, `patient_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTc4NDI3MV9hbmFzdC5zdmc=', 3, 1, '2021-05-23 17:37:51', '2021-05-23 17:37:51');
+(1, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTc4NDI3MV9hbmFzdC5zdmc=', 3, 1, '2021-05-23 17:37:51', '2021-05-23 17:37:51'),
+(2, 'Dental Filling 2', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn', 1, 2, '2021-05-24 00:50:04', '2021-05-24 00:50:04');
 
 -- --------------------------------------------------------
 
@@ -1329,7 +1359,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `user_type`, `state`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin', 'admin@gmail.com', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, 'FrHSbvrwdqD0gR4mVG7HS5jTh9H9XDPf2Rt4ZDnTFFKI40m8SIhk4eZIQiXn', '2021-02-11 02:46:17', '2021-04-19 20:44:58'),
+(1, 'Admin', 'admin', 'admin@gmail.com', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, '5MipLHD6TyU8EKrCjvOvbDJGyKED45yKGnO4hjiyTGRGg3LG3tzpGC0IiEzb', '2021-02-11 02:46:17', '2021-04-19 20:44:58'),
 (2, 'Doctor Kevin', 'admin1', 'doctor1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
 (3, 'Reception Dol', 'admin2', 'reception1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 1, NULL, '2021-02-11 03:55:47', '2021-02-12 10:31:03'),
 (6, 'Other2 Dol', 'admin4', 'other2@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-12 10:34:58', '2021-02-22 01:45:29'),
@@ -1340,7 +1370,8 @@ INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `pa
 (11, 'hidaoui', 'hidaoui.mouhssin@gmail.com', NULL, NULL, '$2y$10$4p5I5D3IZYo3pXze6A2pr.I7qMC0cCzwFllIpZdtBeWLp8aEZQvca', 'none', 1, NULL, '2021-04-18 17:25:44', '2021-04-19 20:48:13'),
 (12, 'mouhssin', 'hidaoui1', NULL, NULL, '$2y$10$60VMvvqvDJaRSK2AMrkRYutzQtvUvOS424Snyfxma3xrc0Cl0mqjm', 'none', 0, NULL, '2021-04-18 17:41:12', '2021-04-18 17:41:12'),
 (13, 'Doctor John', 'admin', 'doctorjohn@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
-(14, 'mouhssin', 'hidaoui', NULL, NULL, '$2y$10$TPNT8YjlTt0fQzvr1QvRBueCiC9wbGK5TtxQHb2ebwKMsYKEp.aia', 'none', 0, NULL, '2021-05-16 16:44:39', '2021-05-16 16:44:39');
+(14, 'mouhssin', 'hidaoui', NULL, NULL, '$2y$10$TPNT8YjlTt0fQzvr1QvRBueCiC9wbGK5TtxQHb2ebwKMsYKEp.aia', 'none', 0, NULL, '2021-05-16 16:44:39', '2021-05-16 16:44:39'),
+(15, 'Nurse', 'nurse1', 'nurse@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'nurse', 1, NULL, '2021-05-23 03:29:29', '2021-05-23 07:42:28');
 
 --
 -- Indexes for dumped tables
@@ -1373,7 +1404,8 @@ ALTER TABLE `clinics`
 --
 ALTER TABLE `doctors`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `doctors_user_id_foreign` (`user_id`);
+  ADD KEY `doctors_user_id_foreign` (`user_id`),
+  ADD KEY `doctors_nurse_id_foreign` (`nurse_id`);
 
 --
 -- Indexes for table `doctor_schedules`
@@ -1444,6 +1476,13 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `notes`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `nurses`
+--
+ALTER TABLE `nurses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `nurses_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `officetimes`
@@ -1560,7 +1599,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `appointments`
@@ -1638,13 +1677,19 @@ ALTER TABLE `inv_invoice_refunds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `nurses`
+--
+ALTER TABLE `nurses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `officetimes`
@@ -1674,7 +1719,7 @@ ALTER TABLE `patient_notes`
 -- AUTO_INCREMENT for table `patient_storage`
 --
 ALTER TABLE `patient_storage`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pr_procedure_service_items`
@@ -1734,7 +1779,7 @@ ALTER TABLE `storages`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
@@ -1744,6 +1789,7 @@ ALTER TABLE `users`
 -- Constraints for table `doctors`
 --
 ALTER TABLE `doctors`
+  ADD CONSTRAINT `doctors_nurse_id_foreign` FOREIGN KEY (`nurse_id`) REFERENCES `nurses` (`id`),
   ADD CONSTRAINT `doctors_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
@@ -1764,6 +1810,12 @@ ALTER TABLE `inv_invoice_payments`
 --
 ALTER TABLE `inv_invoice_refunds`
   ADD CONSTRAINT `inv_invoice_refunds_invoice_id_foreign` FOREIGN KEY (`invoice_id`) REFERENCES `inv_invoices` (`id`);
+
+--
+-- Constraints for table `nurses`
+--
+ALTER TABLE `nurses`
+  ADD CONSTRAINT `nurses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `patient_storage`

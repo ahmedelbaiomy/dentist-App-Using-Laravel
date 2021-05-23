@@ -151,6 +151,7 @@
                                     <option value="doctor">Doctor</option>
                                     <option value="reception">Reception</option>
                                     <option value="accountant">Accountant</option>
+                                    <option value="nurse">Nurse</option>
                                     <option value="none">None</option>
                                 </select>
                             </div>

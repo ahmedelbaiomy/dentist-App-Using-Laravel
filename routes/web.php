@@ -71,6 +71,12 @@ Route::get('/profile/pdf/invoice/{invoice_id}/{mode}', [App\Http\Controllers\App
 //Daily doctors report
 Route::get('/report/pdf/doctor/daily/{doctor_id}/{mode}', [App\Http\Controllers\AppController::class, 'generateDailyDoctorReportPdf']);
 
+Route::prefix('admin/sdt')->group(function () {
+    Route::post('/doctors/stats', [App\Http\Controllers\Admin\HomeController::class, 'sdtDoctorStats']);
+    Route::post('/services/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtServices']);
+    Route::post('/procedures/{patient_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtProcedures']);
+});
+
 Route::group(['middleware' => ['auth', 'is_admin']], function () {
 
 	Route::get('/', function () {
@@ -109,11 +115,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
         Route::post('/general', [App\Http\Controllers\AppController::class, 'storeGeneralSetting']);
     });
 
-    Route::prefix('admin/sdt')->group(function () {
-        Route::post('/doctors/stats', [App\Http\Controllers\Admin\HomeController::class, 'sdtDoctorStats']);
-        Route::post('/services/{category_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtServices']);
-        Route::post('/procedures/{patient_id}', [App\Http\Controllers\Admin\ServicesController::class, 'sdtProcedures']);
-    });
+    
     Route::get('/admin/form/service/{service_id}', [App\Http\Controllers\Admin\ServicesController::class, 'formService']);
     Route::post('/admin/form/service', [App\Http\Controllers\Admin\ServicesController::class, 'storeFormService']);
     
@@ -291,3 +293,12 @@ Route::group(['middleware' => ['auth', 'is_reception']], function () {
 });
 //custom register store
 Route::post('custom/register', [App\Http\Controllers\Auth\RegisterController::class, 'customRegisterUser'])->name('custom.register');
+
+/* Profile nurse */
+Route::group(['middleware' => ['auth', 'is_nurse']], function () {
+    Route::get('/', function () {
+    	return redirect('nurse/home');
+	});
+    Route::get('nurse/home', [App\Http\Controllers\Nurse\NurseController::class, 'index'])->name('nurse.home');
+    Route::get('nurse/appointment', [App\Http\Controllers\Nurse\NurseController::class, 'appointment'])->name('nurse.appointment');
+});

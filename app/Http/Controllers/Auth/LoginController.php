@@ -57,6 +57,8 @@ class LoginController extends Controller
                     return redirect()->route('admin.home');
                 else if (auth()->user()->user_type == "doctor" && auth()->user()->state == 1 ) 
                     return redirect()->route('doctor.home');
+                else if (auth()->user()->user_type == "nurse" && auth()->user()->state == 1 ) 
+                    return redirect()->route('nurse.home');
                 else if (auth()->user()->user_type == "reception" && auth()->user()->state == 1 ) 
                     return redirect()->route('reception.home');
                 else if (auth()->user()->state == 0 ){
