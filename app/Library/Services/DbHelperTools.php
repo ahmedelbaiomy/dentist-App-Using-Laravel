@@ -11,14 +11,18 @@ use App\Models\Storage;
 use App\Models\Category;
 use App\Models\Schedule;
 use App\Models\Helpindex;
+use App\Models\Sprequest;
+use App\Mail\SupplyRequest;
 use App\Models\Appointment;
 use App\Models\Invoiceitem;
 use App\Models\Invoicerefund;
+use App\Models\Sprequestitem;
 use App\Models\Invoicepayment;
 use App\Models\Patientstorage;
 use App\Models\service_category;
 use Illuminate\Support\Facades\DB;
 use App\Models\Procedureserviceitem;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
   
 class DbHelperTools
@@ -133,6 +137,10 @@ class DbHelperTools
             $cat->delete();
         }elseif($type=='log'){
             Activity::whereIn('id', $ids)->delete();
+        }elseif($type=='request'){
+            $deletedRows = Sprequestitem::where('request_id',$ids[0])->forceDelete();
+            $row = Sprequest::findOrFail($ids[0]);
+            $row->forceDelete();
         }
         return $deletedRows;
     }
@@ -748,5 +756,76 @@ class DbHelperTools
         }
     }
     return $response;
+  }
+  public function manageRequest($data){
+    $id=0;
+    if (count($data)>0){
+        $row = new Sprequest();
+        $id=(isset($data['id']))?$data['id']:0;
+        if ($id > 0) {
+            $row = Sprequest::find ( $id );
+            if(!$row){
+                $row = new Sprequest();
+              }        
+        }    
+        $row->to = (isset($data['to']))?$data['to']:'';
+        $row->cc = (isset($data['cc']))?$data['cc']:null;
+        $row->bcc = (isset($data['bcc']))?$data['bcc']:null;
+        $row->subject = (isset($data['subject']))?$data['subject']:null;
+        $row->message = (isset($data['message']))?$data['message']:null;
+        $row->sent_at = (isset($data['sent_at']))?$data['sent_at']:null;
+        $row->status = (isset($data['status']))?$data['status']:null;
+        $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
+        $row->save ();
+        $id = $row->id;
+    }
+    return $id;
+  }
+  public function manageRequestItem($data){
+    $id=0;
+    if (count($data)>0){
+        $row = new Sprequestitem();
+        $id=(isset($data['id']))?$data['id']:0;
+        if ($id > 0) {
+            $row = Sprequestitem::find ( $id );
+            if(!$row){
+                $row = new Sprequestitem();
+              }        
+        }
+        $row->product_name = (isset($data['product_name']))?$data['product_name']:'';
+        $row->quantity = (isset($data['quantity']))?$data['quantity']:'';
+        $row->rate = (isset($data['rate']))?$data['rate']:'';
+        $row->total = (isset($data['total']))?$data['total']:'';
+        $row->description = (isset($data['description']))?$data['description']:'';
+        $row->product_id = (isset($data['product_id']))?$data['product_id']:'';
+        $row->request_id = (isset($data['request_id']))?$data['request_id']:'';
+        $row->save ();
+        $id = $row->id;
+    }
+    return $id;
+  }
+  public function sendEmailRequest($request_id){
+      $success=true;
+    if($request_id>0){
+        $sprequest = Sprequest::find($request_id);
+        $items=Sprequestitem::where('request_id',$request_id)->get();
+        $total=$this->getAmountsRequestItems($request_id);
+        Mail::to($sprequest->to)
+            //->cc($sprequest->cc)
+            //->bcc($sprequest->bcc)
+            ->send(new SupplyRequest($sprequest,$items,number_format($total,2)));
+            // check for failures
+            if (Mail::failures()) {
+                $success=false;
+            }
+    } 
+    return $success; 
+  }
+  public function getAmountsRequestItems($request_id){
+    $total=0;
+    if($request_id>0){
+      $total = Sprequestitem::where ('request_id',$request_id)->sum('total');
+    }
+    return $total;
   }
 }

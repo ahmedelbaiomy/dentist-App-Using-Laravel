@@ -76,6 +76,14 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 	Route::get('/', function () {
     	return redirect('admin/home');
 	});
+    Route::get('/admin/requests', [App\Http\Controllers\AppController::class, 'requests'])->name('admin.requests');
+    Route::post('/admin/sdt/requests', [App\Http\Controllers\AppController::class, 'sdtRequests']);
+    Route::get('/admin/form/request/{request_id}', [App\Http\Controllers\AppController::class, 'formRequest']);
+    Route::get('/admin/get/price/product/{product_id}', [App\Http\Controllers\AppController::class, 'getPriceProduct']);
+    Route::post('/admin/form/request', [App\Http\Controllers\AppController::class, 'storeFormRequest']);
+    Route::delete('/admin/request/delete/{request_id}', [App\Http\Controllers\AppController::class, 'deleteRequest']);
+    Route::get('/admin/view/request/{request_id}', [App\Http\Controllers\AppController::class, 'viewRequest']);
+
     //backup
     Route::get('/admin/backup', [App\Http\Controllers\BackupController::class, 'index'])->name('admin.backup');
     Route::get('/admin/backup/create', [App\Http\Controllers\BackupController::class, 'create']);

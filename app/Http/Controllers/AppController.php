@@ -10,11 +10,14 @@ use App\Models\Teeth;
 use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
+use App\Models\Product;
 use App\Models\Setting;
 use Carbon\CarbonPeriod;
+use App\Models\Sprequest;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Invoicerefund;
+use App\Models\Sprequestitem;
 use App\Models\Invoicepayment;
 use App\Models\Patientstorage;
 use App\Library\Helpers\Helper;
@@ -1126,5 +1129,145 @@ class AppController extends Controller
             $success = true;
         }
         return response()->json(['success'=>$success]);
+    }
+    public function requests()
+    {
+        return view('request.requests');
+    }
+    public function sdtRequests(Request $request)
+    {
+        $data=$meta=[];
+        $requests = Sprequest::orderByDesc('id')->get();
+        $cssArray=array(
+            'draft'=>'warning',
+            'sent'=>'success',
+        );
+        foreach ($requests as $d) {
+            $row=array();
+                //ID
+                $row[]='#REQUEST-'.$d->id;
+                //To
+                $row[]='<p class="mb-0"><span class="badge badge-light-primary">To : '.$d->to.'</span></p>';
+                //<th>Subject</th>
+                $row[]=$d->subject;
+                //<th>Status</th>
+                $row[]='<span class="badge badge-light-'.$cssArray[$d->status].'">'.$d->status.'</span>';
+                //<th>Sent at</th>
+                $sent='';
+                if($d->sent_at){
+                    $dtSentDate = Carbon::createFromFormat('Y-m-d H:i:s',$d->sent_at);
+                    $sent='<span class="badge badge-light-success">'.$dtSentDate->format('Y-m-d H:i:s').'</span>';
+                }
+                $row[]=$sent;
+                //<th>Created</th>
+                $created='<p class="mb-0"><span class="badge badge-light-primary">'.$d->created_at->format('Y/m/d h:i:s').'</span></p>';
+                $row[]=$created;
+                //Actions
+                $btn_delete='<button class="btn btn-icon btn-outline-danger" onclick="_deleteRequest('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                $btn_view='<button class="btn btn-icon btn-outline-primary" onclick="_viewRequest('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('VIEW').'</button>';
+                
+                $row[]=$btn_view.$btn_delete;
+            $data[]=$row;
+        }    
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+    public function formRequest($request_id){
+        $request=$products=null;
+        if ($request_id > 0) {
+                $request = Sprequest::find ( $request_id );
+        }
+        $products = Product::all();
+        return view('request.form',compact('request','products'));
+    }
+    public function storeFormRequest(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        $request_id = 0;
+        if ($request->isMethod('post')) {
+            $DbHelperTools=new DbHelperTools();
+            //dd($request->all());
+            $data = array(
+                'id'=>$request->id,
+                'to'=>$request->to,
+                'cc'=>null,
+                'bcc'=>null,
+                'subject'=>$request->subject,
+                'message'=>$request->message,
+                'sent_at'=>null,
+                'status'=>'draft',
+                'user_id'=>auth()->user()->id,
+            );
+            //dd($data);
+            $request_id=$DbHelperTools->manageRequest($data);
+            if($request_id>0){
+                $items=$request->products;
+                if(count($items)>0){
+                    foreach($items as $item){
+                        $product = Product::find ( $item['product_id']);
+                        $rate=$product->price;
+                        $data_item=array(
+                            'id'=>0,
+                            'product_name'=>$product->name,
+                            'quantity'=>$item['quantity'],
+                            'rate'=>$rate,
+                            'total'=>$rate*$item['quantity'],
+                            'description'=>$item['description'],
+                            'product_id'=>$item['product_id'],
+                            'request_id'=>$request_id,
+                        );
+                        //dd($data_item);
+                        $item_id=$DbHelperTools->manageRequestItem($data_item);
+                    }
+                }
+                $isSent=$DbHelperTools->sendEmailRequest($request_id);
+                if($isSent){
+                    $request = Sprequest::find ( $request_id );
+                    $request->sent_at = Carbon::now();
+                    $request->status = 'sent';
+                    $request->save ();
+                }
+            }
+            $success = true;
+            $msg = 'Your request has been saved successfully';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg,
+                'request_id' => $request_id 
+        ] );
+    }
+    public function getPriceProduct($product_id){
+        $price=0;
+        if($product_id>0){
+            $row=Product::select('id','price')->where('id',$product_id)->first();
+            $price=$row['price'];
+        }
+        return response()->json(['price' => $price]);
+    }
+    public function deleteRequest($id){
+        $success = false;
+        $DbHelperTools=new DbHelperTools();
+        if($id>0){
+            $deletedRows = $DbHelperTools->massDeletes([$id],'request',0);
+            if($deletedRows>0){
+              $success = true;
+            }
+        }
+        return response()->json(['success'=>$success]);
+    }
+    public function viewRequest($request_id){
+        $request=null;
+        $items=[];
+        $total=0;
+        $DbHelperTools=new DbHelperTools();
+        if ($request_id > 0) {
+                $request = Sprequest::findOrFail ( $request_id );
+                $items = Sprequestitem::where('request_id',$request_id)->get();
+                $total=$DbHelperTools->getAmountsRequestItems($request_id);
+        }
+        return view('request.details',compact('request','items','total'));
     }
 }
