@@ -20,5 +20,6 @@ class IsReception
         if (Auth::user() &&  Auth::user()->user_type  == "reception" ) {
             return $next($request);
         }
+        abort(403);
     }
 }
