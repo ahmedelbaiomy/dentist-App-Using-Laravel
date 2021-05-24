@@ -82,11 +82,14 @@ $birthday = $dt->format('d/m/Y');
                                 data-feather="mic"></i>
                             Notes</a>
                     </li>
+                    @if(in_array(auth()->user()->user_type,['admin','doctor','reception']))
                     <li class="nav-item">
                         <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billings" aria-controls="about"
                             onclick="_loadContent('billings')" role="tab" aria-selected="false"><i
                                 data-feather="file-text"></i> Billing</a>
                     </li>
+                    @endif
+
                     <li class="nav-item">
                         <a class="nav-link" id="storageIcon-tab" data-toggle="tab" href="#storages"
                             onclick="_loadContent('storages')" aria-controls="storage" role="tab"
