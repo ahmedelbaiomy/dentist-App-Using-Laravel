@@ -20,7 +20,7 @@ class IsAdmin
         if (Auth::user() &&  Auth::user()->user_type  == "admin" ) {
             return $next($request);
         }
-        abort(403);
-       //return redirect('home')->with('error','You have not admin access');
+        //abort(403);
+       return redirect('home')->with('error','You have not admin access');
     }
 }

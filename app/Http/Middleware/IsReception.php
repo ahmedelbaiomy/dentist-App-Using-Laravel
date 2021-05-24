@@ -20,6 +20,6 @@ class IsReception
         if (Auth::user() &&  Auth::user()->user_type  == "reception" ) {
             return $next($request);
         }
-        abort(403);
+        return redirect('home')->with('error','You have not reception access');
     }
 }

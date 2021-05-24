@@ -20,6 +20,6 @@ class IsDoctor
         if (Auth::user() &&  Auth::user()->user_type  == "doctor" ) {
             return $next($request);
         }
-        abort(403);
+        return redirect('home')->with('error','You have not doctor access');
     }
 }

@@ -20,7 +20,7 @@ class IsPatient
         if (Auth::user() &&  Auth::user()->user_type  == "patient" ) {
             return $next($request);
         }
-        abort(403);
+        return redirect('home')->with('error','You have not patient access');
 
     }
 }

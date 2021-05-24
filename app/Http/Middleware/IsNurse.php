@@ -20,6 +20,6 @@ class IsNurse
         if (Auth::user() &&  Auth::user()->user_type  == "nurse" ) {
             return $next($request);
         }
-        abort(403);
+        return redirect('home')->with('error','You have not nurse access');
     }
 }
