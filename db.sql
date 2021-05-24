@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 24, 2021 at 12:59 AM
+-- Generation Time: May 24, 2021 at 07:30 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.9
 
@@ -99,7 +99,8 @@ INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `su
 (59, 'Request', 'created', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
 (60, 'Request item', 'created', 'App\\Models\\Sprequestitem', 24, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 24, \"rate\": 15.5, \"total\": 15.5, \"quantity\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"product_id\": 1, \"request_id\": 15, \"updated_at\": \"2021-05-23T14:46:37.000000Z\", \"description\": \"test\", \"product_name\": \"product 1\"}}', '2021-05-23 16:46:37', '2021-05-23 16:46:37'),
 (61, 'Request', 'updated', 'App\\Models\\Sprequest', 15, 'App\\Models\\User', 1, '{\"old\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"draft\", \"message\": \"this is a ttest\", \"sent_at\": null, \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:37.000000Z\"}, \"attributes\": {\"cc\": null, \"id\": 15, \"to\": \"mhidaoui@mdevhd.com\", \"bcc\": null, \"status\": \"sent\", \"message\": \"this is a ttest\", \"sent_at\": \"2021-05-23 17:46:39\", \"subject\": \"custom request\", \"user_id\": 1, \"created_at\": \"2021-05-23T14:46:37.000000Z\", \"deleted_at\": null, \"updated_at\": \"2021-05-23T14:46:39.000000Z\"}}', '2021-05-23 16:46:39', '2021-05-23 16:46:39'),
-(62, 'Storage', 'created', 'App\\Models\\Patientstorage', 2, 'App\\Models\\User', 2, '{\"attributes\": {\"id\": 2, \"url\": \"ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn\", \"title\": \"Dental Filling 2\", \"user_id\": 2, \"created_at\": \"2021-05-23T22:50:04.000000Z\", \"patient_id\": 1, \"updated_at\": \"2021-05-23T22:50:04.000000Z\", \"description\": \"test\"}}', '2021-05-24 00:50:04', '2021-05-24 00:50:04');
+(62, 'Storage', 'created', 'App\\Models\\Patientstorage', 2, 'App\\Models\\User', 2, '{\"attributes\": {\"id\": 2, \"url\": \"ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn\", \"title\": \"Dental Filling 2\", \"user_id\": 2, \"created_at\": \"2021-05-23T22:50:04.000000Z\", \"patient_id\": 1, \"updated_at\": \"2021-05-23T22:50:04.000000Z\", \"description\": \"test\"}}', '2021-05-24 00:50:04', '2021-05-24 00:50:04'),
+(63, 'Storage', 'created', 'App\\Models\\Patientstorage', 3, 'App\\Models\\User', 1, '{\"attributes\": {\"id\": 3, \"url\": \"ZmlsZXMvZG9jcy8vMTYyMTg1ODM0NF9leHQuc3Zn\", \"title\": \"Dental Filling\", \"user_id\": 1, \"created_at\": \"2021-05-24T12:12:24.000000Z\", \"patient_id\": 2, \"updated_at\": \"2021-05-24T12:12:24.000000Z\", \"description\": \"test\"}}', '2021-05-24 14:12:24', '2021-05-24 14:12:24');
 
 -- --------------------------------------------------------
 
@@ -252,6 +253,20 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `favorite_id` bigint(20) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -452,6 +467,37 @@ INSERT INTO `inv_invoice_refunds` (`id`, `refund_code`, `amount`, `reason`, `ref
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint(20) NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_id` bigint(20) NOT NULL,
+  `to_id` bigint(20) NOT NULL,
+  `body` varchar(5000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attachment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seen` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `type`, `from_id`, `to_id`, `body`, `attachment`, `seen`, `created_at`, `updated_at`) VALUES
+(1713182706, 'user', 1, 3, 'ok', NULL, 1, '2021-05-24 20:00:58', '2021-05-24 20:01:07'),
+(2012480890, 'user', 3, 1, 'i\'m fine thank you', NULL, 1, '2021-05-24 20:02:11', '2021-05-24 20:02:11'),
+(2114588104, 'user', 1, 1, 'hi', NULL, 1, '2021-05-24 19:57:42', '2021-05-24 19:57:42'),
+(2133773763, 'user', 3, 1, 'hi', NULL, 1, '2021-05-24 19:59:10', '2021-05-24 20:00:52'),
+(2234226469, 'user', 3, 1, 'hi mouhssin', NULL, 1, '2021-05-24 20:01:12', '2021-05-24 20:01:13'),
+(2367108116, 'user', 1, 3, 'hey there how are you??', NULL, 1, '2021-05-24 20:01:54', '2021-05-24 20:01:55'),
+(2413557545, 'user', 3, 1, 'and you', NULL, 1, '2021-05-24 20:02:14', '2021-05-24 20:02:16');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -482,7 +528,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (64, '2021_05_22_135033_create_request_items_table', 12),
 (65, '2021_05_23_182924_create_patient_storage_table', 13),
 (67, '2021_05_24_011320_create_request_nurses_table', 14),
-(68, '2021_05_11_030144_create_doctors_table', 15);
+(68, '2021_05_11_030144_create_doctors_table', 15),
+(69, '2019_09_22_192348_create_messages_table', 16),
+(70, '2019_10_16_211433_create_favorites_table', 16),
+(71, '2019_10_18_223259_add_avatar_to_users', 16),
+(72, '2019_10_20_211056_add_messenger_color_to_users', 16),
+(73, '2019_10_22_000539_add_dark_mode_to_users', 16),
+(74, '2019_10_25_214038_add_active_status_to_users', 16);
 
 -- --------------------------------------------------------
 
@@ -676,7 +728,8 @@ CREATE TABLE `patient_storage` (
 
 INSERT INTO `patient_storage` (`id`, `title`, `description`, `url`, `patient_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTc4NDI3MV9hbmFzdC5zdmc=', 3, 1, '2021-05-23 17:37:51', '2021-05-23 17:37:51'),
-(2, 'Dental Filling 2', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn', 1, 2, '2021-05-24 00:50:04', '2021-05-24 00:50:04');
+(2, 'Dental Filling 2', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTgxMDIwNF9oeWcuc3Zn', 1, 2, '2021-05-24 00:50:04', '2021-05-24 00:50:04'),
+(3, 'Dental Filling', 'test', 'ZmlsZXMvZG9jcy8vMTYyMTg1ODM0NF9leHQuc3Zn', 2, 1, '2021-05-24 14:12:24', '2021-05-24 14:12:24');
 
 -- --------------------------------------------------------
 
@@ -1345,6 +1398,10 @@ CREATE TABLE `users` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active_status` tinyint(1) NOT NULL DEFAULT '0',
+  `dark_mode` tinyint(1) NOT NULL DEFAULT '0',
+  `messenger_color` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '#2180f3',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'avatar.png',
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'none',
@@ -1358,20 +1415,20 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `user_type`, `state`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin', 'admin@gmail.com', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, '5MipLHD6TyU8EKrCjvOvbDJGyKED45yKGnO4hjiyTGRGg3LG3tzpGC0IiEzb', '2021-02-11 02:46:17', '2021-04-19 20:44:58'),
-(2, 'Doctor Kevin', 'admin1', 'doctor1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
-(3, 'Reception Dol', 'admin2', 'reception1@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 1, NULL, '2021-02-11 03:55:47', '2021-02-12 10:31:03'),
-(6, 'Other2 Dol', 'admin4', 'other2@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-12 10:34:58', '2021-02-22 01:45:29'),
-(7, 'Other3 De', 'admin5', 'other3@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 0, NULL, '2021-02-12 10:41:49', '2021-02-12 11:11:41'),
-(8, 'Doctor Dol', 'admin6', 'doctor2@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-15 07:08:44', '2021-02-22 01:45:20'),
-(9, 'mohamed25', 'admin7', 'mohamedabdelateef25@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'admin', 1, NULL, '2021-03-13 09:39:45', '2021-03-13 09:39:45'),
-(10, 'mohamed25', 'admin25', NULL, NULL, '$2y$10$FKVcrbMnRWkDPwmceqflx.OgWMSdpDNufyOAiJBJswys75lczVg56', 'admin', 1, NULL, '2021-03-15 03:26:08', '2021-03-15 03:26:08'),
-(11, 'hidaoui', 'hidaoui.mouhssin@gmail.com', NULL, NULL, '$2y$10$4p5I5D3IZYo3pXze6A2pr.I7qMC0cCzwFllIpZdtBeWLp8aEZQvca', 'none', 1, NULL, '2021-04-18 17:25:44', '2021-04-19 20:48:13'),
-(12, 'mouhssin', 'hidaoui1', NULL, NULL, '$2y$10$60VMvvqvDJaRSK2AMrkRYutzQtvUvOS424Snyfxma3xrc0Cl0mqjm', 'none', 0, NULL, '2021-04-18 17:41:12', '2021-04-18 17:41:12'),
-(13, 'Doctor John', 'admin', 'doctorjohn@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
-(14, 'mouhssin', 'hidaoui', NULL, NULL, '$2y$10$TPNT8YjlTt0fQzvr1QvRBueCiC9wbGK5TtxQHb2ebwKMsYKEp.aia', 'none', 0, NULL, '2021-05-16 16:44:39', '2021-05-16 16:44:39'),
-(15, 'Nurse', 'nurse1', 'nurse@gmail.com', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'nurse', 1, NULL, '2021-05-23 03:29:29', '2021-05-23 07:42:28');
+INSERT INTO `users` (`id`, `name`, `username`, `email`, `active_status`, `dark_mode`, `messenger_color`, `avatar`, `email_verified_at`, `password`, `user_type`, `state`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin', 'admin@gmail.com', 1, 0, '#2180f3', 'c016a139-0c79-4d95-83e2-ab926cb2cc3b.jpg', NULL, '$2y$10$A5rTPLgqAAg9bQeCeSZh5uuwI32fuPMmoMj3wfnJKsEdZ2Mm7hlh.', 'admin', 1, 'hdoDPrs6sGHZxgqarG8sm3roasg4MbqSDA7A28PTz0hEsi66UgCosRPxvQor', '2021-02-11 02:46:17', '2021-05-24 20:00:50'),
+(2, 'Doctor Kevin', 'admin1', 'doctor1@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
+(3, 'Reception Dol', 'admin2', 'reception1@gmail.com', 1, 0, '#FF9800', '4d264c40-0a0c-47dd-95b4-2daed33e31dc.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 1, NULL, '2021-02-11 03:55:47', '2021-05-24 20:00:44'),
+(6, 'Other2 Dol', 'admin4', 'other2@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-12 10:34:58', '2021-02-22 01:45:29'),
+(7, 'Other3 De', 'admin5', 'other3@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'reception', 0, NULL, '2021-02-12 10:41:49', '2021-02-12 11:11:41'),
+(8, 'Doctor Dol', 'admin6', 'doctor2@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-15 07:08:44', '2021-02-22 01:45:20'),
+(9, 'mohamed25', 'admin7', 'mohamedabdelateef25@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'admin', 1, NULL, '2021-03-13 09:39:45', '2021-03-13 09:39:45'),
+(10, 'mohamed25', 'admin25', NULL, 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$FKVcrbMnRWkDPwmceqflx.OgWMSdpDNufyOAiJBJswys75lczVg56', 'admin', 1, NULL, '2021-03-15 03:26:08', '2021-03-15 03:26:08'),
+(11, 'hidaoui', 'hidaoui.mouhssin@gmail.com', NULL, 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$4p5I5D3IZYo3pXze6A2pr.I7qMC0cCzwFllIpZdtBeWLp8aEZQvca', 'none', 1, NULL, '2021-04-18 17:25:44', '2021-04-19 20:48:13'),
+(12, 'mouhssin', 'hidaoui1', NULL, 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$60VMvvqvDJaRSK2AMrkRYutzQtvUvOS424Snyfxma3xrc0Cl0mqjm', 'none', 0, NULL, '2021-04-18 17:41:12', '2021-04-18 17:41:12'),
+(13, 'Doctor John', 'admin', 'doctorjohn@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'doctor', 1, NULL, '2021-02-11 03:29:29', '2021-02-14 07:42:28'),
+(14, 'mouhssin', 'hidaoui', NULL, 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$TPNT8YjlTt0fQzvr1QvRBueCiC9wbGK5TtxQHb2ebwKMsYKEp.aia', 'none', 0, NULL, '2021-05-16 16:44:39', '2021-05-16 16:44:39'),
+(15, 'Nurse', 'nurse1', 'nurse@gmail.com', 0, 0, '#2180f3', 'avatar.png', NULL, '$2y$10$0EXHkaz0gHtck1ajmzPsyOWJoaSyh5WITfT39eq6gl3/Cdlh1wD.e', 'nurse', 1, NULL, '2021-05-23 03:29:29', '2021-05-23 07:42:28');
 
 --
 -- Indexes for dumped tables
@@ -1420,6 +1477,12 @@ ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `help_indexes`
 --
 ALTER TABLE `help_indexes`
@@ -1464,6 +1527,12 @@ ALTER TABLE `inv_invoice_payments`
 ALTER TABLE `inv_invoice_refunds`
   ADD PRIMARY KEY (`id`),
   ADD KEY `inv_invoice_refunds_invoice_id_foreign` (`invoice_id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `migrations`
@@ -1599,7 +1668,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `appointments`
@@ -1677,7 +1746,7 @@ ALTER TABLE `inv_invoice_refunds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1719,7 +1788,7 @@ ALTER TABLE `patient_notes`
 -- AUTO_INCREMENT for table `patient_storage`
 --
 ALTER TABLE `patient_storage`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pr_procedure_service_items`
