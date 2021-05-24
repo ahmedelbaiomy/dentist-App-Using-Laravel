@@ -66,6 +66,7 @@ if(isset($sidebar_logo) && !empty($sidebar_logo)){
                 <li class=" nav-item {{ Route::currentRouteName() === 'reception.patient' ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('reception.patient') }}"><i data-feather="user-x"></i><span class="menu-title text-truncate" data-i18n="Patients">Patients</span></a></li>
                 @endif
             @endif
+            <li class=" nav-item "><a class="d-flex align-items-center" target="_blank" href="/messenger"><i data-feather="message-circle"></i><span class="menu-title text-truncate" data-i18n="Messenger">Messenger</span></a></li>
 
             </ul>
         </div>

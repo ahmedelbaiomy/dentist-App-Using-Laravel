@@ -24,7 +24,8 @@
 	************************************************
 ************************************************/
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;display=swap");
+/* @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600");
 
 /************************************************
 	************************************************
@@ -40,7 +41,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    font: normal .875rem 'Open Sans', sans-serif;
+    font: normal .875rem 'Montserrat', Helvetica, Arial, serif;
     color: #333333;
     background: #074b9c;
     min-height: 100%;

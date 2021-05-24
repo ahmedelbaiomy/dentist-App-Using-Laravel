@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         TimeHunter\LaravelGoogleReCaptchaV3\Providers\GoogleReCaptchaV3ServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+        \Chatify\ChatifyServiceProvider::class,
 
     ],
 
@@ -231,7 +232,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
-        'GoogleReCaptchaV3'=> TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::class
+        'GoogleReCaptchaV3'=> TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::class,
+        'Chatify' => Chatify\Facades\ChatifyMessenger::class,
     ],
 
 ];
