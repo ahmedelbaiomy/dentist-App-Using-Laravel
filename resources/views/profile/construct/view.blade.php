@@ -10,11 +10,11 @@ $birthday = $dt->format('d/m/Y');
 $patient_status='Open';
 $patient_status_css_class='warning';
 if($patient->state == 0){
-    $patient_status='Open';
-    $patient_status_css_class='success';
+$patient_status='Open';
+$patient_status_css_class='success';
 }elseif($patient->state == 1){
-    $patient_status='Complete';
-    $patient_status_css_class='warning';
+$patient_status='Complete';
+$patient_status_css_class='warning';
 }
 
 @endphp
@@ -78,7 +78,7 @@ if($patient->state == 0){
             </div>
         </div>
         <div class="row">
-            
+
             <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
                 <div class="media">
                     <div class="avatar bg-light-info mr-2">
@@ -125,44 +125,49 @@ if($patient->state == 0){
 <div class="card card-statistics shadow-none bg-transparent border-primary">
     <div class="card-body statistics-body">
         <h4 class="card-title">About</h4>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="mt-2">
-            <h6 class="mb-75">Birthday:</h5>
-                <p class="card-text">{{$birthday}}</p>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mt-2">
+                    <h6 class="mb-75">Birthday:</h5>
+                        <p class="card-text">{{$birthday}}</p>
+                </div>
+                <div class="mt-2">
+                    <h6 class="mb-75">Phone:</h5>
+                        <p class="card-text">{{ $patient->phone }}</p>
+                </div>
+                <div class="mt-2">
+                    <h6 class="mb-75">Email:</h5>
+                        <p class="card-text">{{ $patient->email }}</p>
+                </div>
+                <div class="mt-2">
+                    <h6 class="mb-50">Address:</h5>
+                        <p class="card-text mb-0">{{ $patient->address }}</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mt-2">
+                    <h6 class="mb-75">Status:</h5>
+                        <p class="card-text"><span
+                                class="badge badge-light-{{$patient_status_css_class}}">{{$patient_status}}</span></p>
+                </div>
+                <div class="mt-2">
+                    <h6 class="mb-50">Created at:</h5>
+                        <p class="card-text mb-0"><span
+                                class="badge badge-light-primary">{{ $patient->created_at->format('Y/m/d H:i') }}</span>
+                        </p>
+                </div>
+                <div class="mt-2">
+                    <h6 class="mb-50">Updated at:</h5>
+                        <p class="card-text mb-0"><span
+                                class="badge badge-light-info">{{ $patient->updated_at->format('Y/m/d H:i')}}</span></p>
+                </div>
+            </div>
         </div>
-        <div class="mt-2">
-            <h6 class="mb-75">Phone:</h5>
-                <p class="card-text">{{ $patient->phone }}</p>
-        </div>
-        <div class="mt-2">
-            <h6 class="mb-75">Email:</h5>
-                <p class="card-text">{{ $patient->email }}</p>
-        </div>
-        <div class="mt-2">
-            <h6 class="mb-50">Address:</h5>
-                <p class="card-text mb-0">{{ $patient->address }}</p>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="mt-2">
-            <h6 class="mb-75">Status:</h5>
-            <p class="card-text"><span class="badge badge-light-{{$patient_status_css_class}}">{{$patient_status}}</span></p>
-        </div>
-        <div class="mt-2">
-                <h6 class="mb-50">Created at:</h5>
-                <p class="card-text mb-0"><span class="badge badge-light-primary">{{ $patient->created_at->format('Y/m/d H:i') }}</span></p>
-        </div>
-        <div class="mt-2">
-                <h6 class="mb-50">Updated at:</h5>
-                <p class="card-text mb-0"><span class="badge badge-light-info">{{ $patient->updated_at->format('Y/m/d H:i')}}</span></p>
-        </div>
-    </div>
-</div>
     </div>
 </div>
 <script>
 _loadPatientStats();
+
 function _loadPatientStats() {
     var spinner = '<span class="spinner-border spinner-border-sm"></span>';
     $("#nb_invoices,#total_invoices,#total_paid_invoices,#total_discount").html(spinner);
@@ -191,22 +196,38 @@ function _loadPatientStats() {
     <div class="col-lg-12">
         <div class="card shadow-none bg-transparent border-primary">
             <div class="card-body">
-                @if(count($categories) > 0 )
-                <div class="btn-group flex-wrap btn-group-toggle" data-toggle="buttons">
-                    @foreach($categories as $k=>$category)
-                    <label style="border:0 !important;" class="btn btn-outline-primary btn-sm mb-1">
-                        @if($category->path_icon)
-                        <p class="mb-0 text-center"><img style="height:30px"
-                                src="{{asset(base64_decode($category->path_icon))}}" class="" /></p>
-                        @endif
-                        <input type="radio" name="radio_categories" value="{{$category->id}}"
-                            id="radio_category{{$category->id}}" {{ ($k==0)?'checked':'' }} /> {{$category->name}}
-                    </label>
-                    @endforeach
+                <!-- carousel -->
+                <div class="jcarousel-wrapper p-1">
+                    <div class="jcarousel">
+                        <ul>
+                            @if(count($categories) > 0 )
+                            @foreach($categories as $k=>$category)
+                            <li class="text-center">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label style="border:0 !important;" class="btn btn-outline-primary btn-sm mb-1">
+                                        @if($category->path_icon)
+                                        <p class="mb-0 text-center"><img style="height:30px"
+                                                src="{{asset(base64_decode($category->path_icon))}}" class="" /></p>
+                                        @endif
+                                        <input type="radio" name="radio_categories" value="{{$category->id}}"
+                                            id="radio_category{{$category->id}}" {{ ($k==0)?'checked':'' }} />
+                                        {{$category->name}}
+                                    </label>
+                                </div>
+                            </li>
+                            @endforeach
+                            @else
+                            <li>No categories</li>
+                            @endif
+                        </ul>
+                    </div>
+
+                    <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+                    <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+
+                    <p class="jcarousel-pagination d-none"></p>
                 </div>
-                @else
-                <p>No categories</p>
-                @endif
+                <!-- carousel -->
 
             </div>
         </div>
@@ -244,6 +265,56 @@ function _loadPatientStats() {
     </div>
 </div>
 <script>
+(function($) {
+    $(function() {
+        var jcarousel = $('.jcarousel');
+
+        jcarousel
+            .on('jcarousel:reload jcarousel:create', function() {
+                var carousel = $(this),
+                    width = carousel.innerWidth();
+
+                if (width >= 600) {
+                    width = width / 6;
+                } else if (width >= 350) {
+                    width = width / 2;
+                }
+
+                carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
+            })
+            .jcarousel({
+                wrap: 'circular'
+            });
+
+        $('.jcarousel-control-prev')
+            .jcarouselControl({
+                target: '-=1'
+            });
+
+        $('.jcarousel-control-next')
+            .jcarouselControl({
+                target: '+=1'
+            });
+
+        $('.jcarousel-pagination')
+            .on('jcarouselpagination:active', 'a', function() {
+                $(this).addClass('active');
+            })
+            .on('jcarouselpagination:inactive', 'a', function() {
+                $(this).removeClass('active');
+            })
+            .on('click', function(e) {
+                e.preventDefault();
+            })
+            .jcarouselPagination({
+                perPage: 1,
+                item: function(page) {
+                    return '<a href="#' + page + '">' + page + '</a>';
+                }
+            });
+    });
+})(jQuery);
+
 var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
 //procedures_datatable
 var dtProceduresUrl = '/admin/sdt/procedures/' + patient_id;
@@ -877,7 +948,22 @@ $("#FORM_PAYMENT").validate({
 });
 
 _loadBillingStats();
-
+function _loadBillingStats() {
+    var spinner = '<span class="spinner-border spinner-border-sm"></span>';
+    $("#nb_invoices,#total_invoices,#total_paid_invoices,#total_discount").html(spinner);
+    var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
+    $.ajax({
+        url: "/profile/stats/invoice/" + patient_id,
+        type: "GET",
+        dataType: "json",
+        success: function(res, status) {
+            $("#nb_invoices").html(res.nb_invoices);
+            $("#total_invoices").html('$' + res.total_invoices);
+            $("#total_paid_invoices").html('$' + res.total_paid_invoices);
+            $("#total_discount").html('$' + res.total_discount);
+        },
+    });
+};
 
 
 function _formRefund(refund_id, invoice_id) {

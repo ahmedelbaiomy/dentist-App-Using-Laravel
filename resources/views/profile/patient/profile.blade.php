@@ -14,6 +14,7 @@
 <link href="{{ asset('new-assets/js/fancybox/jquery.fancybox.min.css') }}" rel="stylesheet" />
 
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
+<link rel="stylesheet" href="{{ asset('new-assets/js/jcarousel/custom_jcarousel.css') }}">
 @endsection
 
 @section('page-style')
@@ -254,6 +255,8 @@ $birthday = $dt->format('d/m/Y');
 <script type="text/javascript" src="{{ asset('new-assets/js/webcam/webcam.min.js') }}"></script>
 
 <script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+
+<script src="{{ asset('new-assets/js/jcarousel/jcarousel.min.js') }}"></script>
 @endsection
 @section('page-script')
 <!-- <script src="{{ asset('new-assets/js/recorder-script.js') }}"></script> -->
