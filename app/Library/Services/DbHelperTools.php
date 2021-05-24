@@ -610,12 +610,18 @@ class DbHelperTools
                 $total_discount=$total_discount+$calcul['nnf_discount_amount'];
             }
         }
+        $nb_appointments = Appointment::where('patient_id',$patient_id)->count();
+        $nb_notes = note::where('patient_id',$patient_id)->count();
+        $nb_storages = Patientstorage::where('patient_id',$patient_id)->count();
     }
     return [
         'nb_invoices'=>$nb_invoices,
         'total_invoices'=>$total_invoices,
         'total_paid_invoices'=>$total_paid_invoices,
         'total_discount'=>$total_discount,
+        'nb_appointments'=>$nb_appointments,
+        'nb_notes'=>$nb_notes,
+        'nb_storages'=>$nb_storages,
     ];
   }
   public function generateCodeForRefund(){

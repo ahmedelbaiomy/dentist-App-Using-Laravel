@@ -6,23 +6,184 @@ if($patient){
 $dt = Carbon\Carbon::createFromFormat('Y-m-d',$patient->birthday);
 $birthday = $dt->format('d/m/Y');
 }
+
+$patient_status='Open';
+$patient_status_css_class='warning';
+if($patient->state == 0){
+    $patient_status='Open';
+    $patient_status_css_class='success';
+}elseif($patient->state == 1){
+    $patient_status='Complete';
+    $patient_status_css_class='warning';
+}
+
 @endphp
-<div class="mt-2">
-    <h6 class="mb-75">Birthday:</h5>
-        <p class="card-text">{{$birthday}}</p>
+
+<!-- statistics billing-->
+<div class="card card-statistics shadow-none bg-transparent border-primary">
+    <div class="card-body statistics-body">
+        <h4 class="card-title">Statistics</h4>
+        <div class="row mb-2">
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                <div class="media">
+                    <div class="avatar bg-light-primary mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('CALENDAR')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="nb_appointments">0</h4>
+                        <p class="card-text font-small-3 mb-0">Appointments</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                <div class="media">
+                    <div class="avatar bg-light-success mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('MIC')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="nb_notes">0</h4>
+                        <p class="card-text font-small-3 mb-0">Notes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                <div class="media">
+                    <div class="avatar bg-light-warning mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('ARCHIVE')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="nb_storages">0</h4>
+                        <p class="card-text font-small-3 mb-0">Storage</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                <div class="media">
+                    <div class="avatar bg-light-info mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('TRENDING')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="nb_invoices">0</h4>
+                        <p class="card-text font-small-3 mb-0">Invoices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                <div class="media">
+                    <div class="avatar bg-light-info mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOLLAR')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="total_invoices">$0</h4>
+                        <p class="card-text font-small-3 mb-0">Total</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                <div class="media">
+                    <div class="avatar bg-light-danger mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOLLAR')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="total_paid_invoices">$0</h4>
+                        <p class="card-text font-small-3 mb-0">Paid</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="media">
+                    <div class="avatar bg-light-success mr-2">
+                        <div class="avatar-content">
+                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOLLAR')!!}
+                        </div>
+                    </div>
+                    <div class="media-body my-auto">
+                        <h4 class="font-weight-bolder mb-0" id="total_discount">$0</h4>
+                        <p class="card-text font-small-3 mb-0">Discount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="mt-2">
-    <h6 class="mb-75">Phone:</h5>
-        <p class="card-text">{{ $patient->phone }}</p>
+<!-- statistics -->
+<div class="card card-statistics shadow-none bg-transparent border-primary">
+    <div class="card-body statistics-body">
+        <h4 class="card-title">About</h4>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="mt-2">
+            <h6 class="mb-75">Birthday:</h5>
+                <p class="card-text">{{$birthday}}</p>
+        </div>
+        <div class="mt-2">
+            <h6 class="mb-75">Phone:</h5>
+                <p class="card-text">{{ $patient->phone }}</p>
+        </div>
+        <div class="mt-2">
+            <h6 class="mb-75">Email:</h5>
+                <p class="card-text">{{ $patient->email }}</p>
+        </div>
+        <div class="mt-2">
+            <h6 class="mb-50">Address:</h5>
+                <p class="card-text mb-0">{{ $patient->address }}</p>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mt-2">
+            <h6 class="mb-75">Status:</h5>
+            <p class="card-text"><span class="badge badge-light-{{$patient_status_css_class}}">{{$patient_status}}</span></p>
+        </div>
+        <div class="mt-2">
+                <h6 class="mb-50">Created at:</h5>
+                <p class="card-text mb-0"><span class="badge badge-light-primary">{{ $patient->created_at->format('Y/m/d H:i') }}</span></p>
+        </div>
+        <div class="mt-2">
+                <h6 class="mb-50">Updated at:</h5>
+                <p class="card-text mb-0"><span class="badge badge-light-info">{{ $patient->updated_at->format('Y/m/d H:i')}}</span></p>
+        </div>
+    </div>
 </div>
-<div class="mt-2">
-    <h6 class="mb-75">Email:</h5>
-        <p class="card-text">{{ $patient->email }}</p>
+    </div>
 </div>
-<div class="mt-2">
-    <h6 class="mb-50">Address:</h5>
-        <p class="card-text mb-0">{{ $patient->address }}</p>
-</div>
+<script>
+_loadPatientStats();
+function _loadPatientStats() {
+    var spinner = '<span class="spinner-border spinner-border-sm"></span>';
+    $("#nb_invoices,#total_invoices,#total_paid_invoices,#total_discount").html(spinner);
+    var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
+    $.ajax({
+        url: "/profile/stats/invoice/" + patient_id,
+        type: "GET",
+        dataType: "json",
+        success: function(res, status) {
+            $("#nb_invoices").html(res.nb_invoices);
+            $("#total_invoices").html('$' + res.total_invoices);
+            $("#total_paid_invoices").html('$' + res.total_paid_invoices);
+            $("#total_discount").html('$' + res.total_discount);
+            //stats
+            $("#nb_appointments").html(res.nb_appointments);
+            $("#nb_notes").html(res.nb_notes);
+            $("#nb_storages").html(res.nb_storages);
+        },
+    });
+};
+</script>
 @endif
 
 @if($viewtype=='procedures')
@@ -717,22 +878,7 @@ $("#FORM_PAYMENT").validate({
 
 _loadBillingStats();
 
-function _loadBillingStats() {
-    var spinner = '<span class="spinner-border spinner-border-sm"></span>';
-    $("#nb_invoices,#total_invoices,#total_paid_invoices,#total_discount").html(spinner);
-    var patient_id = $('#VIEW_INPUT_PATIENT_ID').val();
-    $.ajax({
-        url: "/profile/stats/invoice/" + patient_id,
-        type: "GET",
-        dataType: "json",
-        success: function(res, status) {
-            $("#nb_invoices").html(res.nb_invoices);
-            $("#total_invoices").html('$' + res.total_invoices);
-            $("#total_paid_invoices").html('$' + res.total_paid_invoices);
-            $("#total_discount").html('$' + res.total_discount);
-        },
-    });
-};
+
 
 function _formRefund(refund_id, invoice_id) {
     var modal_id = "modal_form_refund";
