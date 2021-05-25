@@ -1,46 +1,14 @@
 <style>
-/* td:hover {
+#jcarousel-procedure1 ul li:hover {
     background-color: rgba(115, 103, 240, .12);
-} */
-ul li:hover {
+}
+#jcarousel-procedure2 ul li:hover {
     background-color: rgba(115, 103, 240, .12);
 }
 </style>
-<!-- 
-<table>
-    <tbody>
-        <tr>
-  
-            @if(count($procedures_row_one)>0)
-            @foreach($procedures_row_one as $p)
-            <td>
-                <a style="cursor:pointer;" onClick="_formProcedureServiceItem(0,{{$p->number}})">
-                    <img style="max-height:196px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
-                    <p class="text-center">{{$p->number}}</p>
-                </a>
-            </td>
-            @endforeach
-            @endif
-        </tr>
-        <tr>
-   
-            @if(count($procedures_row_two)>0)
-            @foreach($procedures_row_two as $p)
-            <td>
-                <a style="cursor:pointer;" onClick="_formProcedureServiceItem(0,{{$p->number}})">
-                    <p class="text-center">{{$p->number}}</p>
-                    <img style="max-height:196px;" src="{{ asset($p->image) }}" alt="" class="img-fluid">
-                </a>
-            </td>
-            @endforeach
-            @endif
-        </tr>
-    </tbody>
-</table> -->
-
 <!-- begin::carousel line 1-->
 <div class="jcarousel-wrapper p-1">
-    <div class="jcarousel">
+    <div id="jcarousel-procedure1" class="jcarousel">
         <ul>
             <!-- row one -->
             @if(count($procedures_row_one)>0)
@@ -63,7 +31,7 @@ ul li:hover {
 
 <!-- begin::carousel line 2-->
 <div class="jcarousel-wrapper p-1">
-    <div class="jcarousel">
+    <div id="jcarousel-procedure2" class="jcarousel">
         <ul>
             @if(count($procedures_row_two)>0)
             @foreach($procedures_row_two as $p)
@@ -86,7 +54,7 @@ ul li:hover {
 <script>
 (function($) {
     $(function() {
-        var jcarousel = $('.jcarousel');
+        var jcarousel = $('#jcarousel-procedure1,#jcarousel-procedure2');
 
         jcarousel
             .on('jcarousel:reload jcarousel:create', function() {

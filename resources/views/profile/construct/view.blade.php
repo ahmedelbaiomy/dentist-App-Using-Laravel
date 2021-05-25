@@ -198,12 +198,12 @@ function _loadPatientStats() {
             <div class="card-body">
                 <!-- carousel -->
                 <div class="jcarousel-wrapper p-1">
-                    <div class="jcarousel">
+                    <div id="jcarousel-categories" class="jcarousel">
                         <ul>
                             @if(count($categories) > 0 )
                             @foreach($categories as $k=>$category)
                             <li class="text-center">
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
                                     <label style="border:0 !important;" class="btn btn-outline-primary btn-sm mb-1">
                                         @if($category->path_icon)
                                         <p class="mb-0 text-center"><img style="height:30px"
@@ -213,7 +213,7 @@ function _loadPatientStats() {
                                             id="radio_category{{$category->id}}" {{ ($k==0)?'checked':'' }} />
                                         {{$category->name}}
                                     </label>
-                                </div>
+                                <!-- </div> -->
                             </li>
                             @endforeach
                             @else
@@ -267,7 +267,7 @@ function _loadPatientStats() {
 <script>
 (function($) {
     $(function() {
-        var jcarousel = $('.jcarousel');
+        var jcarousel = $('#jcarousel-categories');
 
         jcarousel
             .on('jcarousel:reload jcarousel:create', function() {
