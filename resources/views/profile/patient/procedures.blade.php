@@ -92,9 +92,10 @@ ul li:hover {
             .on('jcarousel:reload jcarousel:create', function() {
                 var carousel = $(this),
                     width = carousel.innerWidth();
-
-                if (width >= 600) {
-                    width = width / 6;
+                if (width >= 900) {
+                    width = width / 10;
+                }else if (width >= 600) {
+                    width = width / 8;
                 } else if (width >= 350) {
                     width = width / 2;
                 }
