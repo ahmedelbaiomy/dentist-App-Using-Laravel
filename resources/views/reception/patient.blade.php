@@ -42,7 +42,7 @@
 
 
                 <div class="table-responsive">
-                        <table class="datatable table"> 
+                        <table class="datatable table table-bordered"> 
                         <thead>
                                 <tr>
                                     <th>En name</th>
@@ -75,10 +75,10 @@
 
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
-                                            <button type="button"  data-toggle="modal" data-target="#edit_patient_modal"  data-id="{{ $patient }}" class="btn btn-info">
+                                            <button type="button"  data-toggle="modal" data-target="#edit_patient_modal"  data-id="{{ $patient }}" class="btn btn-outline-info">
                                             {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
                                             </button>
-                                            <button onclick="delete_func('delete_frm_{{ $patient->id }}')" type="button" class="btn btn-danger">
+                                            <button onclick="delete_func('delete_frm_{{ $patient->id }}')" type="button" class="btn btn-outline-danger">
                                                 <form action="{{ route('reception.patient.destroy', $patient->id)}}" name="delete_frm_{{ $patient->id }}" id="delete_frm_{{ $patient->id }}" method="post">
                                                     @csrf
                                                     @method('DELETE')

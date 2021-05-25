@@ -59,8 +59,10 @@
                                 </td>
                                 <td><span>{{ $doctor->target }}</span></td>
                                 <td class="text-center">
-                                    <a href="" data-toggle="modal" data-target="#set_target_modal" data-id="{{ json_encode($doctor) }}" title="Set Target" class="btn btn-icon btn-sm btn-outline-primary mr-1">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CREDIT-CARD')!!}</a>
-                                    <a href="/report/pdf/doctor/daily/{{ $doctor->id }}/1" target="_blank" title="Download daily report" class="btn btn-icon btn-sm btn-outline-warning mr-1 mt-1">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOWNLOAD')!!}</a>
+                                    <div class="btn-group" role="group">
+                                        <a href="" data-toggle="modal" data-target="#set_target_modal" data-id="{{ json_encode($doctor) }}" title="Set Target" class="btn btn-icon btn-sm btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CREDIT-CARD')!!}</a>
+                                        <a href="/report/pdf/doctor/daily/{{ $doctor->id }}/1" target="_blank" title="Download daily report" class="btn btn-icon btn-sm btn-outline-warning">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOWNLOAD')!!}</a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

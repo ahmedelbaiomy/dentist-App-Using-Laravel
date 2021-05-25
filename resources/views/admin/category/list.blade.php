@@ -34,7 +34,7 @@
     <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
     <a href="#" class="jcarousel-control-next">&rsaquo;</a>
 
-    <p class="jcarousel-pagination"></p>
+    <p class="jcarousel-pagination d-none"></p>
 </div>
 
 <script>

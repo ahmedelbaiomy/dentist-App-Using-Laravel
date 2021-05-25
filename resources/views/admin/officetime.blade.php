@@ -29,7 +29,7 @@
 
                     </div>
                     <div class="col-md-1 text-right">
-                        <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
+                        <a href="#" id="new_service_btn" class="btn btn-icon btn-outline-primary" data-toggle="modal"
                             data-target="#add_officetime_modal"><i data-feather="plus"></i></a>
                     </div>
                 </div>
@@ -77,11 +77,11 @@
                                         <div class="btn-group btn-group-sm">
                                             <button type="button" data-toggle="modal"
                                                 data-target="#edit_officetime_modal"
-                                                data-id="{{ json_encode($officetime) }}" class="btn btn-info">
+                                                data-id="{{ json_encode($officetime) }}" class="btn btn-outline-info">
                                                 {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
                                             </button>
                                             <button onclick="delete_func('delete_frm_{{ $officetime->id }}')"
-                                                type="button" class="btn btn-danger">
+                                                type="button" class="btn btn-outline-danger">
                                                 <form action="{{ route('admin.officetime.destroy', $officetime->id)}}"
                                                     name="delete_frm_{{ $officetime->id }}"
                                                     id="delete_frm_{{ $officetime->id }}" method="post">
@@ -252,19 +252,19 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
 $(document).ready(function() {
-    var table = $('.datatable').DataTable();
+    var table = $('.datatable').DataTable({
+        responsive: true,
+    });
 
     $("#officetime_save_btn").click(function(e) {
         e.preventDefault();

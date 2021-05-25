@@ -52,12 +52,12 @@ $dtNow = Carbon\Carbon::now();
                         <div class="btn-group float-right" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-outline-primary btn-sm"
                                 onclick="quick_filters('reset')">Reset</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                onclick="quick_filters('today')">Today</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                onclick="quick_filters('this_month')">This month</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                onclick="quick_filters('this_year')">This year</button>
+                            <!-- <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('today')">Today</button> -->
+                            <!-- <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('this_month')">This month</button> -->
+                            <!-- <button type="button" class="btn btn-outline-primary btn-sm"
+                                onclick="quick_filters('this_year')">This year</button> -->
                             <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -65,13 +65,19 @@ $dtNow = Carbon\Carbon::now();
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('today')">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('yesterday')">Yesterday</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('last_7_days')">Last 7 Days</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('last_30_days')">Last 30 Days</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('this_month')">This month</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('last_month')">Last Month</a>
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                    onclick="quick_filters('this_year')">This year</a>
                             </div>
                             
                         </div>

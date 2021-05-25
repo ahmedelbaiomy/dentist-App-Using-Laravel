@@ -14,6 +14,17 @@
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/pages/app-calendar.css') }}"> 
 <!-- <link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/custom-calendar.css') }}" /> -->
 <link rel="stylesheet" href="{{ asset('assets/css/color.css') }}">
+<style>
+.fc-sidebarToggle-button {
+    background-image: url('/new-assets/svg/sidebar.svg') !important;
+    background-position: 50% !important;
+    background-repeat: no-repeat !important;
+    width: 25px;
+}
+.fc .fc-toolbar .fc-button-group .fc-sidebarToggle-button {
+    color: #6e6b7b!important;
+}
+</style>
 @endsection
 
 @section('content')
@@ -218,5 +229,19 @@ function getDoctorappointmentCalender() {
         },
     });
 }
+
+
+
+$(document).on('click', '.fc-sidebarToggle-button', function (e) {
+  $('.app-calendar-sidebar, .body-content-overlay').addClass('show');
+});
+
+$(document).on('click', '.body-content-overlay', function (e) {
+  $('.app-calendar-sidebar, .body-content-overlay').removeClass('show');
+});
+
+$('.btn-toggle-sidebar').on('click', function () {
+    $('.app-calendar-sidebar, .body-content-overlay').removeClass('show');
+  });
 </script>
 @endsection

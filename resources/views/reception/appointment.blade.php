@@ -32,14 +32,14 @@
                     </div>
                     <div class="col-md-2 text-right">
                         <!-- <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal" data-target="#add_appointment_modal"><span class="icon-plus1"></span></a> -->
-                        <button onclick="_formAppointment(0)" class="btn btn-icon btn-primary"><i data-feather="plus"></i></button>
+                        <button onclick="_formAppointment(0)" class="btn btn-icon btn-outline-primary"><i data-feather="plus"></i></button>
                     </div>
                 </div>
 
                 
 
                 <div class="table-responsive">
-                    <table class="datatable table">
+                    <table class="datatable table table-striped dataex-html5-selectors table-bordered">
                         <thead>
                             <tr>
                                 <th>Patient</th>
@@ -90,11 +90,11 @@
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm">
                                         <button type="button" onclick="_formAppointment({{$appointment->id}})"
-                                            class="btn btn-info">
+                                            class="btn btn-outline-info">
                                             {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
                                         </button>
                                         <button onclick="delete_func('delete_frm_{{ $appointment->id }}')" type="button"
-                                            class="btn btn-danger">
+                                            class="btn btn-outline-danger">
                                             <form action="{{ route('reception.appointment.destroy', $appointment->id)}}"
                                                 name="delete_frm_{{ $appointment->id }}"
                                                 id="delete_frm_{{ $appointment->id }}" method="post">

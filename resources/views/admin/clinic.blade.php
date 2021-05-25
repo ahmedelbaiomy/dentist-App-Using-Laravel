@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-1 text-right">
-                        <a href="#" id="new_service_btn" class="btn btn-icon btn-primary" data-toggle="modal"
+                        <a href="#" id="new_service_btn" class="btn btn-icon btn-outline-primary" data-toggle="modal"
                             data-target="#add_clinic_modal"><i data-feather="plus"></i></a>
                     </div>
                 </div>
@@ -79,11 +79,11 @@
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <button type="button" data-toggle="modal" data-target="#edit_clinic_modal"
-                                                    data-id="{{ $clinic }}" class="btn btn-info">
+                                                    data-id="{{ $clinic }}" class="btn btn-outline-info">
                                                     {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
                                                 </button>
                                                 <button onclick="delete_func('delete_frm_{{ $clinic->id }}')" type="button"
-                                                    class="btn btn-danger">
+                                                    class="btn btn-outline-danger">
                                                     <form action="{{ route('admin.clinic.destroy', $clinic->id)}}"
                                                         name="delete_frm_{{ $clinic->id }}" id="delete_frm_{{ $clinic->id }}"
                                                         method="post">
@@ -420,12 +420,10 @@
 @endsection
 
 @section('vendor-script')
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous"></script>
 @endsection
@@ -433,7 +431,9 @@
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
 $(document).ready(function() {
-    var table = $('.datatable').DataTable();
+    var table = $('.datatable').DataTable({
+        responsive: true,
+    });
 
     $('#search_year').datepicker({
         format: "yyyy",
