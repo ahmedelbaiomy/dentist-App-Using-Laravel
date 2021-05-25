@@ -182,7 +182,7 @@ class AppController extends Controller
                 //<th>Description</th>
                 $row[]=$d->note;
                 //attachment
-                $audio=(isset($d->audio_file))?'<div style="width: 100%;max-width: 600px;" class="col-md-12"><audio controls><source src="/'.base64_decode($d->audio_file).'" type="audio/wav"></audio></div>':'';
+                $audio=(isset($d->audio_file))?'<div style="width: 100%;max-width: 200px;" class="col-md-12"><audio controls><source src="/'.base64_decode($d->audio_file).'" type="audio/wav"></audio></div>':'';
                 $row[]=$audio;
                 //<th>Created</th>
                 $created='<p class="mb-0"><span class="badge badge-light-primary">Created at : '.$d->created_at->format('Y/m/d h:i:s').'</span></p>';
