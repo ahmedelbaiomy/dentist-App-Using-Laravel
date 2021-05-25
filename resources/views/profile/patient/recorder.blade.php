@@ -8,7 +8,11 @@
 
 @section('page-style')
 {{-- Page Css files --}}
-
+<style>
+audio {
+    width:100%;
+}
+</style>
 @endsection
 
 @section('content')
