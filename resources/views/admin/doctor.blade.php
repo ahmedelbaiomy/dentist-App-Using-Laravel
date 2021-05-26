@@ -27,7 +27,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <a style="float:right;" target="_blank" href="/report/pdf/doctor/daily/0/1" title="daily report all doctors" class="btn btn-icon btn-outline-primary"><i data-feather="download"></i></a>
+                        <a style="float:right;" target="_blank" href="/report/pdf/doctor/daily/0/1" title="daily report all doctors" class="btn btn-icon btn-outline-primary"><i data-feather="download"></i> Daily doctor's report</a>
                     </div>
                 </div>
 
