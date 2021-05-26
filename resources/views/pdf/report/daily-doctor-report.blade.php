@@ -47,16 +47,26 @@ $app_title=config('global.app_title');
     <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
         <thead>
             <tr class="gray">
-                <td colspan="8" style="text-align:center;font-size: 15px;" class="gray">Daily doctor's report</td>
+                <td colspan="{{($doctor==null)?9:8}}" style="text-align:center;font-size: 15px;" class="gray">Daily doctor's report</td>
             </tr>
+            @if($doctor!=null)
             <tr class="gray">
                 <td colspan="4">Doctor name : <strong>{{$doctor->name}}</strong></td>
                 <td>Assistant name : </td>
                 <td colspan="3">Date : </td>
             </tr>
+            @else
+            <tr class="gray">
+                <td colspan="6"></td>
+                <td colspan="3">Date : </td>
+            </tr>
+            @endif
             <tr class="gray">
                 <td><strong> N</strong></td>
-                <td><strong>Patient name</strong></td>
+                @if($doctor==null)
+                <td><strong> Doctor</strong></td>
+                @endif
+                <td><strong>Patient</strong></td>
                 <td><strong>New</strong></td>
                 <td><strong>Usual</strong></td>
                 <td><strong>Note</strong></td>
@@ -70,6 +80,9 @@ $app_title=config('global.app_title');
             @foreach($appointments as $apt)
             <tr>
                 <td style="height:70px;">{{$apt->patient->id}}</td>
+                @if($doctor==null)
+                <td style="height:70px;">{{$apt->userdoctor->name}}</td>
+                @endif
                 <td>{{$apt->patient->name}}</td>
                 <td>{{($states_array[$apt->patient->id]=='new')?'X':''}}</td>
                 <td>{{($states_array[$apt->patient->id]=='usual')?'X':''}}</td>
@@ -84,6 +97,9 @@ $app_title=config('global.app_title');
             @if($nb_empty_rows>0)
             @for ($i = 1; $i <= $nb_empty_rows; $i++)
             <tr>
+                @if($doctor==null)
+                <td></td>
+                @endif
                 <td style="height:70px;"></td>
                 <td></td>
                 <td></td>
@@ -99,7 +115,7 @@ $app_title=config('global.app_title');
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="8">Assistant signature : </td>
+                <td colspan="{{($doctor==null)?9:8}}">Assistant signature : </td>
             </tr>
         </tfoot>
     </table>

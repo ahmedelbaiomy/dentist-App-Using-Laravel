@@ -1056,14 +1056,17 @@ class AppController extends Controller
             $DbHelperTools=new DbHelperTools();
             $doctor=User::select('name')->where('id',$doctor_id)->first();
             $appointments = Appointment::where('doctor_id',$doctor_id)->get();
-            //$appointments = Appointment::all();
-            if(count($appointments)>0){
-                foreach($appointments as $apt){
-                    $state=$DbHelperTools->checkPatientIfIsNewOrUsual($apt->patient->id);
-                    $states_array[$apt->patient->id]=$state;
-                }
+        }else{
+            $DbHelperTools=new DbHelperTools();
+            $appointments = Appointment::all();
+        }
+
+
+        if(count($appointments)>0){
+            foreach($appointments as $apt){
+                $state=$DbHelperTools->checkPatientIfIsNewOrUsual($apt->patient->id);
+                $states_array[$apt->patient->id]=$state;
             }
-            
         }
         
         if(count($appointments)<=$max_rows){
