@@ -24,6 +24,13 @@
             <div class="card-body">
                 <h4 class="card-title">Doctor List</h4>
                 <h5 class='text-success'>You have total {{ count($doctors) }} doctors.</h5>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a style="float:right;" target="_blank" href="/report/pdf/doctor/daily/0/1" title="daily report all doctors" class="btn btn-icon btn-outline-primary"><i data-feather="download"></i></a>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="datatable table table-bordered">
                         <thead>
