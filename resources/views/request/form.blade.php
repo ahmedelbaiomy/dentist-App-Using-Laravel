@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card shadow-none bg-transparent border-primary">
                 <div class="card-body">
-                    <h4 class="card-title">1 - Select products to request : </h4>
+                    <h4 class="card-title">1 - {{ __('locale.select_product_to_request') }} : </h4>
                     <div class="product-repeater">
                         <div data-repeater-list="products">
                             <div data-repeater-item>
@@ -15,12 +15,12 @@
 
                                     <div class="col-md-8 col-12">
                                         <div class="form-group">
-                                            <label>Item</label>
+                                            <label>{{ __('locale.item') }}</label>
                                             <select id="select_products" name="product_id"
                                                 class="form-control form-control-sm js-select2" required>
                                                 @if($products)
                                                 @foreach($products as $p)
-                                                <option value="{{$p->id}}">{{$p->name}} (${{number_format($p->price,2)}}/Unit)</option>
+                                                <option value="{{$p->id}}">{{$p->name}} ({{number_format($p->price,2)}} {{env('CURRENCY_SYMBOL')}}/Unit)</option>
                                                 @endforeach
                                                 @endif
                                             </select>
@@ -29,7 +29,7 @@
 
                                     <div class="col-md-2 col-12">
                                         <div class="form-group">
-                                            <label for="itemquantity">Quantity</label>
+                                            <label for="itemquantity">{{ __('locale.quantity') }}</label>
                                             <input type="number" class="form-control form-control-sm qty" id="itemquantity"
                                                 name="quantity" aria-describedby="itemquantity" value="1" required />
                                         </div>
@@ -55,7 +55,7 @@
 
                                     <div class="col-md-10 col-12">
                                         <div class="form-group">
-                                            <label for="itemdesc">Description</label>
+                                            <label for="itemdesc">{{ __('locale.description') }}</label>
                                             <textarea class="form-control form-control-sm" id="itemdesc"
                                                 name="description" aria-describedby="itemdesc"
                                                 placeholder="Description"></textarea>
@@ -68,7 +68,7 @@
                                             <button class="btn btn-outline-danger btn-sm text-nowrap px-1"
                                                 data-repeater-delete type="button">
                                                 {!!\App\Library\Helpers\Helper::getSvgIconeByAction('DELETE')!!}
-                                                <span>Delete</span>
+                                                <span>{{ __('locale.delete') }}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                             <div class="col-12">
                                 <button class="btn btn-icon btn-primary btn-sm" type="button" data-repeater-create>
                                     {!!\App\Library\Helpers\Helper::getSvgIconeByAction('NEW')!!}
-                                    <span>Add New</span>
+                                    <span>{{ __('locale.new') }}</span>
                                 </button>
                             </div>
                         </div>
@@ -92,42 +92,42 @@
     </div>
 </section>
 
-<section>
-    <div class="card shadow-none bg-transparent border-primary">
-        <div class="card-body">
-            <h4 class="card-title">2 - Send request by email : </h4>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="patients">To <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-sm" name="to"
-                            value="{{ ($request)?$request->to:'' }}" required />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="patients">Subject <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-sm" name="subject"
-                            value="{{ ($request)?$request->subject:'Request for Medical Supplies' }}" required />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="form-label" for="cf-default-textarea">Message</label>
-                        <div class="form-control-wrap">
-                            <textarea class="form-control form-control-sm" rows="5" id="message" name="message"
-                                placeholder="Enter message">{{ ($request)?$request->message:'' }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<!--<section>-->
+<!--    <div class="card shadow-none bg-transparent border-primary">-->
+<!--        <div class="card-body">-->
+<!--            <h4 class="card-title">2 - {{ __('locale.send_request_by_email') }} : </h4>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="patients">{{ __('locale.to') }} <span class="text-danger">*</span></label>-->
+<!--                        <input type="text" class="form-control form-control-sm" name="to"-->
+<!--                            value="{{ ($request)?$request->to:'' }}" required />-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="patients">{{ __('locale.subject') }} <span class="text-danger">*</span></label>-->
+<!--                        <input type="text" class="form-control form-control-sm" name="subject"-->
+<!--                            value="{{ ($request)?$request->subject:'Request for Medical Supplies' }}" required />-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="form-label" for="cf-default-textarea">{{ __('locale.message') }}</label>-->
+<!--                        <div class="form-control-wrap">-->
+<!--                            <textarea class="form-control form-control-sm" rows="5" id="message" name="message"-->
+<!--                                placeholder="Enter message">{{ ($request)?$request->message:'' }}</textarea>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
 
 <script>
 $(document).ready(function() {

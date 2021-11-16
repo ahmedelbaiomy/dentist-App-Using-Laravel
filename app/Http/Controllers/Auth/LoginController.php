@@ -43,10 +43,10 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    { 
-        $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
+    {
+        // $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
         //dd($responseRecaptcha);
-        if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
+        // if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
             $inputVal = $request->all();
             $this->validate($request, [
                 'username' => 'required|string',
@@ -55,11 +55,11 @@ class LoginController extends Controller
             if(auth()->attempt(array('username' => $inputVal['username'], 'password' => $inputVal['password']))){
                 if (auth()->user()->user_type == "admin")
                     return redirect()->route('admin.home');
-                else if (auth()->user()->user_type == "doctor" && auth()->user()->state == 1 ) 
+                else if (auth()->user()->user_type == "doctor" && auth()->user()->state == 1 )
                     return redirect()->route('doctor.home');
-                else if (auth()->user()->user_type == "nurse" && auth()->user()->state == 1 ) 
+                else if (auth()->user()->user_type == "nurse" && auth()->user()->state == 1 )
                     return redirect()->route('nurse.home');
-                else if (auth()->user()->user_type == "reception" && auth()->user()->state == 1 ) 
+                else if (auth()->user()->user_type == "reception" && auth()->user()->state == 1 )
                     return redirect()->route('reception.home');
                 else if (auth()->user()->state == 0 ){
                     Auth::logout();
@@ -67,11 +67,12 @@ class LoginController extends Controller
                     ->with('error','Account Still suspensed.');
                 }
             }else{
-                return redirect()->route('login')->with('error','Email & Password are incorrect.');
+                return redirect()->route('login')->with('error','Email or Password are incorrect.');
             }
-        }else{
-            return redirect()->route('login')->with('error','ReCaptcha Error');
-        }     
+        // }else{
+        //     return redirect()->route('login')->with('error','ReCaptcha Error');
+        // }
     }
+
 
 }

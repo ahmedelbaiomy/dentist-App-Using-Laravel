@@ -20,4 +20,9 @@ class Doctor extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function profiles()
+    {
+        return $this->hasMany(DoctorProfile::class);
+    }
 }

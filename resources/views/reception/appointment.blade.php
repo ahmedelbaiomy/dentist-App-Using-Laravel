@@ -10,6 +10,8 @@
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
+<link href="{{ asset('new-assets/js/select2/select2.min.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
 @endsection
 
 @section('page-style')
@@ -19,12 +21,18 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Appointments Lists</h4>
-                <h5 class='text-success'>You have total {{ count(json_decode($appointments)) }} Appointments.</h5>
+                <h4 class="card-title">{{ __('locale.appointments') }}</h4>
 
                 <div class="row mb-2">
                     <div class="col-md-10">
@@ -36,78 +44,41 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <form id="formFilterSearch">
+                            <div class="input-group mb-1">
+                                <input type="text" class="form-control  flatpickr-range" id="custom-range"
+                                    name="filter_range" placeholder="" aria-describedby="button-filter" />
+                                <div class="input-group-append" id="button-filter">
+                                    <button class="btn btn-outline-primary " type="button" onclick="_submit_search_form()"><i
+                                            data-feather="search"></i> {{ __('locale.search') }}</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="spinner-border text-primary d-none" id="SPINNER">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
                 
 
                 <div class="table-responsive">
-                    <table class="datatable table table-striped dataex-html5-selectors table-bordered">
+                    <table class="datatable table table-striped dataex-html5-selectors table-bordered" id="appointments_datatable">
                         <thead>
                             <tr>
-                                <th>Patient</th>
-                                <th>Doctor</th>
-                                <th>Star Time</th>
-                                <th>Duration</th>
-                                <th>Comments</th>
-                                <th>Status</th>
-                                <th class="tb-tnx-action">
-                                    Action
-                                </th>
+                                <th>{{__('locale.patient')}}</th>
+                                <th>{{__('locale.doctor')}}</th>
+                                <th>{{__('locale.start_time')}}</th>
+                                <th>{{__('locale.duration')}}</th>
+                                <th>{{__('locale.comments')}}</th>
+                                <th>{{__('locale.status')}}</th>
+                                <th>{{__('locale.actions')}}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(json_decode($appointments) as $appointment)
-                            <tr>
-                                <!-- <td onClick="window.location.href = 'patientprofile/{{$appointment->patient_id}}/{{$appointment->doctor_id}}'"
-                                    style="cursor:pointer">
-                                    <span>{{ $appointment->p_email }}</span>
-                                </td>
-                                <td onClick="window.location.href = 'patientprofile/{{$appointment->patient_id}}/{{$appointment->doctor_id}}'"
-                                    style="cursor:pointer">
-                                    <span>{{ $appointment->d_email }}</span>
-                                </td> -->
-                                <td style="cursor:pointer">
-                                    <span onClick="window.location.href = '/profile/patient/{{$appointment->patient_id}}'">{{ $appointment->p_email }}</span>
-                                </td>
-                                <td onClick="window.location.href = '/profile/patient/{{$appointment->patient_id}}'"
-                                    style="cursor:pointer">
-                                    <span>{{ $appointment->d_email }}</span>
-                                </td>
-                                <td><span>{{ $appointment->start_time }}</span></td>
-                                <td><span>{{ $appointment->duration }}</span></td>
-                                <td><span>{{ $appointment->comments }}</span></td>
-                                <td>
-                                    @if($appointment->status == 1)
-                                    <span class="tb-status text-success">Booked</span>
-                                    @elseif($appointment->status == 2)
-                                    <span class="tb-status text-warning">Confirmed</span>
-                                    @elseif($appointment->status == 3)
-                                    <span class="tb-status text-danger">Canceled</span>
-                                    @elseif($appointment->status == 4)
-                                    <span class="tb-status text-info">Attended</span>
-                                    @else
-                                    <span class="tb-status">None</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm">
-                                        <button type="button" onclick="_formAppointment({{$appointment->id}})"
-                                            class="btn btn-outline-info">
-                                            {!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}
-                                        </button>
-                                        <button onclick="delete_func('delete_frm_{{ $appointment->id }}')" type="button"
-                                            class="btn btn-outline-danger">
-                                            <form action="{{ route('reception.appointment.destroy', $appointment->id)}}"
-                                                name="delete_frm_{{ $appointment->id }}"
-                                                id="delete_frm_{{ $appointment->id }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <i data-feather="trash"></i>
-                                            </form>
-
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -161,18 +132,76 @@
 <script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
 <script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
 <script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
+<script src="{{ asset('new-assets/js/select2/select2.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <script>
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
+});
+
+$('#custom-range').flatpickr({
+        mode: 'range'
+});
 
 $(document).ready(function() {
-    var table = $('.datatable').DataTable({
-        responsive: true
+    var dtUrl = '/sdt/appointments';
+    var table = $('#appointments_datatable').DataTable({
+        responsive: true,
+        @if($lang=='ar')
+        language: {
+                url: '/json/datatable/ar.json'
+        },
+        @endif
+        searching: false,
+        processing: true,
+        paging: true,
+        ordering: true,
+        ajax: {
+            url: dtUrl,
+            type: 'POST',
+            data: {
+                pagination: {
+                    perpage: 50,
+                },
+            },
+        },
+        lengthMenu: [5, 10, 25, 50],
+        pageLength: 25,
     });
     
 });
-
+function show_confirm(name, notif_id) {
+    swal.fire({
+        title: 'Would you make an appointment for '+name+'?',
+        icon: 'question',
+        confirmButtonText: `Yes`,
+        showDenyButton: true,
+    }).then(function(result) {
+        var flag = 0;
+        if (result.isConfirmed) {
+            flag = 1;
+        } else if (result.isDenied) {
+            flag = 2;
+        }
+        $.ajax({
+            type: "post",
+            url: '{{ route("reception.confirm_answer") }}',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "flag": flag,
+                "id": notif_id
+            },
+            success: function(data) {
+                location.href='/reception/appointment';
+            },
+        });
+    });
+}
 function _formAppointment(id) {
     var modal_id = "modal_form_appointment";
     var modal_content_id = "modal_form_appointment_body";
@@ -225,5 +254,131 @@ function _submit_form(){
     $("#SUBMIT_APPOINTMENT_FORM").click();
 }
 
+
+function _deleteAppointment(id) {
+    var successMsg = "Appointment has been deleted.";
+    var errorMsg = "Appointment has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete this appointment?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/delete/appointment/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                        setTimeout(function(){ location.reload(); }, 2000);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    //setTimeout(function(){ location.reload(); }, 2000);
+                },
+            });
+        }
+    });
+}
+
+function _submit_search_form(){
+    $("#formFilterSearch").submit();
+}
+//submit form
+$("#formFilterSearch").submit(function(event) {
+    event.preventDefault();
+    $("#SPINNER").removeClass('d-none');
+    var formData = $(this).serializeArray();
+    var table = 'appointments_datatable';
+    var dtUrl = '/sdt/appointments';
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: formData,
+        url: dtUrl,
+        success: function(response) {
+            if (response.data.length == 0) {
+                $('#' + table).dataTable().fnClearTable();
+                return 0;
+            }
+            $('#' + table).dataTable().fnClearTable();
+            $("#" + table).dataTable().fnAddData(response.data, true);
+        },
+        error: function() {
+            $('#' + table).dataTable().fnClearTable();
+        }
+    }).done(function(data) {
+        $("#SPINNER").addClass('d-none');
+    });
+    return false;
+});
+
+function update_status(appointment_id)
+{
+    var status=$("#SELECT_STATUS_"+appointment_id).val();
+    $("#SPAN_UPDATE_STATUS_"+appointment_id).addClass("spinner-border spinner-border-sm");
+    //console.log(status);
+    //return false;
+    $.ajax({
+        url: "change_status",
+        type: "POST",
+        data: {
+            id:appointment_id,
+            value: status
+        },
+        dataType: "json",
+        success: function(res, status) {
+            if(res.success){
+                $("#SPAN_UPDATE_STATUS_"+appointment_id).removeClass("spinner-border spinner-border-sm");
+                if($("#SELECT_STATUS_"+appointment_id).val()==5){
+                    $("#patient_name").val($("#INPUT_HIDDEN_PATIENT_NAME_"+appointment_id).val());
+                    $("#modal_change_doctor").modal('show');
+                }else{
+                    Swal.fire({
+                        html: res.msg,
+                        icon: 'success',
+                        customClass: {
+                            confirmButton: 'btn btn-primary',
+                            cancelButton: 'btn btn-outline-danger ml-1'
+                        },
+                        buttonsStyling: false,
+                    }).then(function(result) {
+                        location.href='/reception/appointment';
+                    });
+                }
+            }else {
+                Swal.fire({
+                    html: res.msg,
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-primary',
+                        cancelButton: 'btn btn-outline-danger ml-1'
+                    },
+                    buttonsStyling: false,
+                });
+            }
+        },
+    });
+
+}
 </script>
 @endsection

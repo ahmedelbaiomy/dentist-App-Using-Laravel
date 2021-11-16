@@ -17,14 +17,21 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Activities of the users</h4>
+                <h4 class="card-title">{{ __('locale.logs') }}</h4>
                 <div class="row">
                 <div class="col-md-12">
-                    <button style="float:right;" class="btn btn-outline-danger btn-sm" onclick="_deleteLog(0)" title="Delete all"><i data-feather="trash"></i> clean all</button>
+                    <button style="float:right;" class="btn btn-outline-danger btn-sm" onclick="_deleteLog(0)" title="Delete all"><i data-feather="trash"></i> {{ __('locale.delete_all') }}</button>
                 </div>
                 </div>
                  <div class="table-responsive">
@@ -32,10 +39,10 @@
                     <table class="table table-bordered table-checkable" id="dt_logs">
                         <thead>
                             <tr>
-                                <th>Activity date</th>
-                                <th>Who</th>
-                                <th>Activity</th>
-                                <th>Actions</th>
+                                <th>{{ __('locale.date') }}</th>
+                                <th>{{ __('locale.who') }}</th>
+                                <th>{{ __('locale.activity') }}</th>
+                                <th>{{ __('locale.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +76,11 @@ var dtUrl = '/admin/sdt/logs';
 var dt_logs = $('#dt_logs');
 dt_logs.DataTable({
     responsive: true,
+    @if($lang=='ar')
+        language: {
+                url: '/json/datatable/ar.json'
+        },
+    @endif
     processing: true,
     paging: true,
     ordering: false,

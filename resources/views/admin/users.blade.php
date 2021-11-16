@@ -16,24 +16,29 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Users List</h4>
-                <h5 class='text-success'>You have total {{ count($users) }} users.</h5>
+                <h4 class="card-title">{{ __('locale.users') }}</h4>
+                <!-- <h5 class='text-success'>You have total {{ count($users) }} users.</h5> -->
 
                 <div class="table-responsive">
                     <table class="datatable table table-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>username</th>
-                                <th>Type</th>
-                                <th>State</th>
-                                <th class="tb-tnx-action">
-                                    Action
-                                </th>
+                                <th>{{ __('locale.name') }}</th>
+                                <th>{{ __('locale.username') }}</th>
+                                <th>{{ __('locale.type') }}</th>
+                                <th>{{ __('locale.state') }}</th>
+                                <th>{{ __('locale.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,8 +99,8 @@
                                             </form>
                                         </div>
                                         <div data-toggle="modal" data-target="#set_type_modal" data-id="{{ $user }}"><a
-                                                class="dropdown-item" href="#"><i data-feather="settings"></i><span>&nbsp;Set Type</span></a></div>
-                                        <div onclick="delete_func('delete_frm_{{ $user->id }}')">
+                                                class="dropdown-item" style="cursor:pointer;"><i data-feather="settings"></i><span>&nbsp;Set Type</span></a></div>
+                                        <!-- <div onclick="delete_func('delete_frm_{{ $user->id }}')">
                                             <form action="{{ route('admin.users.destroy', $user->id)}}"
                                                 name="delete_frm_{{ $user->id }}" id="delete_frm_{{ $user->id }}"
                                                 method="post">
@@ -103,7 +108,19 @@
                                                 @method('DELETE')
                                                 <a class="dropdown-item" href="#" style="color:#e85347"><i data-feather="trash"></i><span>&nbsp;Remove</span></a>
                                             </form>
-                                        </div>
+                                        </div> -->
+                                        <!-- <div onclick="delete_func('delete_frm_{{ $user->id }}')">
+                                            <form action="{{ route('admin.users.destroy', $user->id)}}"
+                                                name="delete_frm_{{ $user->id }}" id="delete_frm_{{ $user->id }}"
+                                                method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a class="dropdown-item" href="#" style="color:#e85347"><i data-feather="trash"></i><span>&nbsp;Remove</span></a>
+                                            </form>
+                                        </div> -->
+                                        @if(Auth::user()->id!=$user->id)
+                                        <a class="dropdown-item" style="color:#e85347;cursor:pointer;" onclick="_deleteUser({{ $user->id }})" title="Delete"><i data-feather="trash"></i> Remove</a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -184,6 +201,11 @@
 $(document).ready(function() {
     var table = $('.datatable').DataTable({
         responsive: true,
+        @if($lang=='ar')
+        language: {
+                url: '/json/datatable/ar.json'
+        },
+        @endif
     });
     $('#set_type_modal').on('show.bs.modal', function(e) {
         var user_data = $(e.relatedTarget).data('id');
@@ -206,9 +228,6 @@ $(document).ready(function() {
             },
             success: function(response) {
                 $("#set_type_modal").modal('hide');
-                /* NioApp.Toast('Success.', 'success');
-                toastr.clear();
-                window.location.href = '{{route("admin.users")}}'; */
                 _showResponseMessage("success", 'Success.');
                 setTimeout(function(){ window.location.href = '{{route("admin.users")}}'; }, 1500);
             },
@@ -235,6 +254,51 @@ function reset_pass_func(val) {
         icon: "success",
     });
     setTimeout(function(){ document.getElementById(val).submit(); }, 1500);
+}
+
+
+function _deleteUser(id) {
+    var successMsg = "The user has been deleted.";
+    var errorMsg = "The user has not been deleted.";
+    var swalConfirmTitle = "Are you sure you want to delete this user?";
+    var swalConfirmText = "You can't go back!";
+    Swal.fire({
+        title: swalConfirmTitle,
+        text: swalConfirmText,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        customClass: {
+            confirmButton: "btn btn-primary",
+            cancelButton: "btn btn-outline-danger ml-1",
+        },
+        buttonsStyling: false,
+    }).then(function(result) {
+        if (result.value) {
+            $.ajax({
+                url: "/admin/delete/user/" + id,
+                type: "DELETE",
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                dataType: "JSON",
+                success: function(result, status) {
+                    if (result.success) {
+                        _showResponseMessage("success", successMsg);
+                    } else {
+                        _showResponseMessage("error", errorMsg);
+                    }
+                },
+                error: function(result, status, error) {
+                    _showResponseMessage("error", errorMsg);
+                },
+                complete: function(result, status) {
+                    setTimeout(function(){ location.reload(); }, 2000);
+                },
+            });
+        }
+    });
 }
 </script>
 @endsection

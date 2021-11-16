@@ -30,15 +30,20 @@ class OfficetimeController extends Controller
      */
     public function index()
     {
-        $doctors = User::all()->where('user_type', 'doctor')->where('state', 1);
+        //$doctors = User::all()->where('user_type', 'doctor')->where('state', 1);
+
+        $doctors =Doctor::all();
 
         $current_time = $date = date('y-m-d h:i:s');
 
-        $officetimes = DB::table('officetimes')
+        /* $officetimes = DB::table('officetimes')
             ->leftJoin('users', 'users.id', '=', 'officetimes.user_id')
             ->select('officetimes.id', 'users.name', 'users.email', 'officetimes.day', 'officetimes.from', 'officetimes.to', 'officetimes.user_id')
             ->orderBy('officetimes.day', 'DESC')
-            ->get();
+            ->get(); */
+        $officetimes= DB::table('officetimes')->join('users', 'users.id', '=', 'officetimes.user_id')
+        ->select('officetimes.*', 'users.name')
+        ->orderBy('officetimes.day', 'DESC')->get();
 
         return view('admin.officetime', compact('doctors', 'officetimes', 'current_time'));
     }

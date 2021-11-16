@@ -11,6 +11,7 @@ use App\models\service_category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Procedureserviceitem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Library\Services\DbHelperTools;
 use Illuminate\Support\Facades\Storage;
@@ -32,12 +33,14 @@ class ServicesController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+
     public function index()
     {
         $services = DB::select("SELECT services.id, services.service_name, services.price, services.note, services.category_id, service_categories.name AS s_name FROM services
         LEFT JOIN service_categories ON service_categories.id = services.category_id");
 
-        $data = DB::select("SELECT * FROM service_categories");
+        $data     = DB::select("SELECT * FROM service_categories");
         $cat_arrs = array();
         foreach($data as $row) { 
             $cat_arrs[] = array(
@@ -119,9 +122,20 @@ class ServicesController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
-        $service->delete();
-
-        return redirect('/admin/services')->with('success', 'Staff Data is successfully deleted');
+        $message = '';
+        if($service->active == 1)
+        {
+            $service->active = 0;
+            $service->save();
+            $message = 'Service Data is successfully deactived';
+        }
+        else
+        {
+            $service->active = 1;
+            $service->save();
+            $message = 'Service Data is successfully actived';
+        }
+        return redirect('/admin/services')->with('success', '');
     }
 
     public function category_delete(Request $data)
@@ -156,7 +170,13 @@ class ServicesController extends Controller
                 $row[]=$en_cat_name.$ar_cat_name;
                 //Actions
                 $btn_edit='<button class="btn btn-icon btn-sm btn-outline-primary mr-1" onclick="_formService('.$d->id.')" title="Edit">'.Helper::getSvgIconeByAction('EDIT').'</button>';
-                $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteService('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                if($d->active == 0)
+                {
+                    $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteService('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('ACTIVE').'</button>';
+                }else
+                {
+                    $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteService('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('UNACTIVE').'</button>';
+                }
                 $row[]='<p class="mb-0">'.$btn_edit.$btn_delete.'</p>';
             $data[]=$row;
         }    
@@ -189,21 +209,27 @@ class ServicesController extends Controller
                 'msg' => $msg 
         ] );
     }
-    public function deleteService($id){
-        /**
-         * forceDelete
-         */
+    
+
+    public function deleteService($id)
+    {
         $success = false;
-        $DbHelperTools=new DbHelperTools();
-        if($id){
-            //delete from database
-            $deletedRows = $DbHelperTools->massDeletes([$id],'service',0);
-            if($deletedRows>0){
-              $success = true;
-            }
+        $service = Service::findOrFail($id);
+        $message = '';
+        if($service->active == 1)
+        {
+            $service->active = 0;
+            $service->save();
         }
+        else
+        {
+            $service->active = 1;
+            $service->save();
+        }
+        $success = true;
         return response()->json(['success'=>$success]);
     }
+
     public function selectCategoriesOptions(){
         $result=[];
         $rows=Category::select('id','name')->get();
@@ -285,6 +311,7 @@ class ServicesController extends Controller
     }
     public function sdtProcedures(Request $request,$patient_id)
     {
+        $canDelete=(Auth::user()->user_type=='admin')?true:false;
         $data=$meta=$procedureItems=[];
         if($patient_id>0){
             $procedureItems = Procedureserviceitem::where('patient_id',$patient_id)->orderByDesc('id')->get();
@@ -292,6 +319,8 @@ class ServicesController extends Controller
         
         foreach ($procedureItems as $d) {
             $row=array();
+                //th
+                $row[]='<label class="checkbox checkbox-single"><input type="checkbox" value="'.$d->id.'" class="checkable"/><span></span></label>';
                 //<th>Teeth ID</th>
                 $invoice='';
                 if($d->invoice_id>0){
@@ -307,17 +336,29 @@ class ServicesController extends Controller
                 //<th>quantity</th>
                 $row[]=$d->quantity;
                 //<th>rate</th>
-                $row[]=$d->rate.'$';
+                $row[]=$d->rate.' '.env('CURRENCY_SYMBOL');
                 //<th>total</th>
-                $row[]=$d->total.'$';
+                $row[]=$d->total.' '.env('CURRENCY_SYMBOL');
                 //<th>Note</th>
                 $row[]=$d->note;
                 //Actions
                 $btn_edit='<button class="btn btn-icon btn-sm btn-outline-primary mr-1" onclick="_formProcedureServiceItem('.$d->id.','.$d->teeth_id.')" title="Edit">'.Helper::getSvgIconeByAction('EDIT').'</button>';
-                $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteProcedureServiceItem('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                $btn_delete='';
+                if($canDelete)
+                    $btn_delete='<button class="btn btn-icon btn-sm btn-outline-danger" onclick="_deleteProcedureServiceItem('.$d->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
                 if($d->invoice_id>0){
                     $btn_edit=$btn_delete=''; 
                 }
+                $btn_group_actions='<div class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="invoiceActions"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        '.Helper::getSvgIconeByAction('MORE-VERTICAL').'
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoiceActions">
+                        <a class="dropdown-item sort-asc" target="_blank" href="/procedures/pdf/'.$d->doctor_id.'/'.$d->patient_id.'/'.$d->id.'/stream">'.Helper::getSvgIconeByAction('FILE').' Pdf</a>
+                        <a class="dropdown-item sort-asc" target="_blank" href="/procedures/pdf/'.$d->doctor_id.'/'.$d->patient_id.'/'.$d->id.'/download">'.Helper::getSvgIconeByAction('DOWNLOAD').' Download</a>
+                    </div>
+            </div>';
                 $row[]='<p class="mb-0">'.$btn_edit.$btn_delete.'</p>';
             $data[]=$row;
         }    
@@ -358,6 +399,7 @@ class ServicesController extends Controller
                 'type'=>$request->type,
                 //'invoiced'=>$request->invoiced,
             );
+
             //dd($data);
             $item_id=$DbHelperTools->manageProcedureServiceItem($data);
             $success = true;
@@ -371,14 +413,14 @@ class ServicesController extends Controller
     public function selectServicesOptions($category_id){
         $result=[];
         if($category_id>0){
-            $rows=Service::select('id','code','service_name','price')->where('category_id',$category_id)->get();
+            $rows=Service::select('id','code','service_name','price')->where('active',1)->where('category_id',$category_id)->get();
         }else{
-           $rows=Service::select('id','code','service_name')->get(); 
+           $rows=Service::select('id','code','service_name')->where('active',1)->get(); 
         }
         
         if(count($rows)>0){
             foreach($rows as $row){
-                $result[]=['id'=>$row['id'],'name'=>$row['code'].' - '.$row['service_name'].' - '.$row['price'].'$'];
+                $result[]=['id'=>$row['id'],'name'=>$row['code'].' - '.$row['service_name'].' - '.$row['price'].' '.env('CURRENCY_SYMBOL')];
             }
         }
         return response()->json($result);

@@ -9,6 +9,15 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
+
+
 <div class="auth-wrapper auth-v1 px-2">
   <div class="auth-inner py-2">
     <!-- Login v1 -->
@@ -34,12 +43,16 @@
         <!-- <h4 class="card-title mb-1">Welcome to Vuexy! 👋</h4>
         <p class="card-text mb-2">Please sign-in to your account and start the adventure</p> -->
 
+        @if(session()->has('error'))
+          <div class="alert alert-danger"><div class="alert-body">{{ session()->get('error') }}</div></div>
+        @endif
+
         <form id="LOGIN_FORM" class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
           @csrf
-          {!!  GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!}
+          {{-- {!!  GoogleReCaptchaV3::renderField('login_ajax_id','login_ajax_action') !!} --}}
           <div class="form-group">
-            <label for="login-username" class="form-label">{{ __('Username') }}</label>
-            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Username" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
+            <label for="login-username" class="form-label">{{ __('locale.username') }}</label>
+            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="{{ __('locale.username') }}" aria-describedby="login-username" tabindex="1" autofocus value="{{ old('username') }}" />
             @error('username')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -49,10 +62,10 @@
 
           <div class="form-group">
             <div class="d-flex justify-content-between">
-              <label for="login-password">{{ __('Password') }}</label>
+              <label for="login-password">{{ __('locale.password') }}</label>
               @if (Route::has('password.request'))
               <a href="{{ route('password.request') }}">
-                <small>Forgot Password?</small>
+                <small>{{ __('locale.forgot_password') }}</small>
               </a>
               @endif
             </div>
@@ -66,17 +79,17 @@
           <div class="form-group">
             <div class="custom-control custom-checkbox">
               <input class="custom-control-input" type="checkbox" id="remember-me" name="remember-me" tabindex="3" {{ old('remember-me') ? 'checked' : '' }} />
-              <label class="custom-control-label" for="remember-me"> Remember Me </label>
+              <label class="custom-control-label" for="remember-me"> {{ __('locale.remember_me') }} </label>
             </div>
           </div>
-          <button type="submit" id="SUBMIT_LOGIN_FORM" class="btn btn-primary btn-block" tabindex="4">Sign in</button>
+          <button type="submit" id="SUBMIT_LOGIN_FORM" class="btn btn-primary btn-block" tabindex="4">{{ __('locale.sign_in') }} </button>
         </form>
 
         <p class="text-center mt-2">
-          <span>New on our platform?</span>
+          <span>{{ __('locale.new_on_our_platform') }}</span>
           @if (Route::has('register'))
           <a href="{{ route('register') }}">
-            <span>Create an account</span>
+            <span>{{ __('locale.create_an_account') }}</span>
           </a>
           @endif
         </p>
@@ -107,6 +120,6 @@
 </div>
 @endsection
 
-@section('page-script')
+{{-- @section('page-script')
 {!!  GoogleReCaptchaV3::init() !!}
-@endsection
+@endsection --}}

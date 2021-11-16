@@ -17,13 +17,13 @@
           <img src="{{asset('new-assets/logo/logo-dark.png')}}" alt="logo dentinizer">
         </a>
 
-        <h4 class="card-title mb-1">Forgot Password? 🔒</h4>
-        <p class="card-text mb-2">Enter your email and we'll send you instructions to reset your password</p>
+        <h4 class="card-title mb-1">{{ __('locale.forgot_password') }} 🔒</h4>
+        <p class="card-text mb-2">{{ __('locale.forgot_password_desc') }}</p>
 
         <form class="auth-forgot-password-form mt-2" method="POST" action="{{ route('password.email') }}">
           @csrf
           <div class="form-group">
-            <label for="forgot-password-email" class="form-label">{{ __('E-Mail Address') }}</label>
+            <label for="forgot-password-email" class="form-label">{{ __('locale.email') }}</label>
             <input type="text" class="form-control @error('email') is-invalid @enderror" id="forgot-password-email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="forgot-password-email" tabindex="1" autofocus />
              @error('email')
               <span class="invalid-feedback" role="alert">
@@ -31,12 +31,12 @@
               </span>
             @enderror
           </div>
-          <button type="submit" class="btn btn-primary btn-block" tabindex="2">{{ __('Send Password Reset Link') }}</button>
+          <button type="submit" class="btn btn-primary btn-block" tabindex="2">{{ __('locale.send_password_reset_link') }}</button>
         </form>
 
         <p class="text-center mt-2">
           @if (Route::has('login'))
-          <a href="{{ route('login') }}"> <i data-feather="chevron-left"></i> Back to login </a>
+          <a href="{{ route('login') }}"> <i data-feather="chevron-left"></i> {{ __('locale.back_to_login') }} </a>
           @endif
         </p>
       </div>

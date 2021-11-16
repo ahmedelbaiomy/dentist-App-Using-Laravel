@@ -4,9 +4,8 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<!-- <link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/fullcalendar.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/custom-calendar.css') }}" /> -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/calendars/fullcalendar.min.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css">
+<!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/calendars/fullcalendar.min.css') }}"> -->
 
 @endsection
 
@@ -23,7 +22,12 @@
 @endsection
 
 @section('content')
-
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -46,11 +50,8 @@
 @endsection
 
 @section('vendor-script')
-<!-- <script src="{{ asset('assets/js/moment.js') }}"></script>
-<script src="{{ asset('assets/plugins/calendar/js/fullcalendar.min.js') }}"></script> -->
-
-<script src="{{ asset('new-assets/app-assets/vendors/js/calendar/fullcalendar.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/moment.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js"></script>
+<script src="/json/fullcalendar/ar.js"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
@@ -112,6 +113,9 @@ var previewEventPopup = $('#previewEventPopup');
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
+    @if($lang=='ar')
+    locale: 'ar',
+    @endif
     events: {!!$events!!},
     editable: true,
     //dragScroll: true,

@@ -21,12 +21,19 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
 <!-- Employee Task Card -->
 <div class="col-md-12">
         <div class="card card-employee-task">
             <div class="card-header">
-                <h4 class="card-title">Categories</h4>
+                <h4 class="card-title">{{ __('locale.categories') }}</h4>
                 <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="todoActions"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,7 +58,7 @@
         <!-- begin card -->
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Services <span id="spinner_reload_services"></span></h4>
+                <h4 class="card-title">{{ __('locale.services') }} <span id="spinner_reload_services"></span></h4>
                 <!-- <div class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle hide-arrow mr-1" id="todoActions"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,12 +77,12 @@
                     <table class="table table-bordered" id="services_datatable">
                         <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th class="tb-tnx-action">
-                                    Action
+                                <th>{{ __('locale.code') }}</th>
+                                <th>{{ __('locale.name') }}</th>
+                                <th>{{ __('locale.price') }} ({{__('locale.'.env('CURRENCY_SYMBOL')) }})</th>
+                                <th>{{ __('locale.category') }}</th>
+                                <th>
+                                {{ __('locale.actions') }}
                                 </th>
                             </tr>
                         </thead>
@@ -126,6 +133,11 @@ var dtUrl = '/admin/sdt/services/0';
 var services_datatable = $('#services_datatable');
 services_datatable.DataTable({
     responsive: true,
+    @if($lang=='ar')
+    language: {
+            url: '/json/datatable/ar.json'
+    },
+    @endif
     processing: true,
     paging: true,
     ordering: true,
@@ -150,7 +162,7 @@ function _formService(service_id) {
     var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
-    var modalTitle = (service_id > 0)? 'Edit service' : 'New service';
+    var modalTitle = (service_id > 0)? "{{ __('locale.edit') }}" : "{{ __('locale.new') }}";
     $("#SERVICE_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
     $.ajax({
         url: "/admin/form/service/" + service_id,
@@ -218,16 +230,16 @@ $("#FORM_SERVICE").validate({
 });
 
 function _deleteService(id) {
-    var successMsg = "Your service has been deleted.";
+    var successMsg = "Your service Active has been updated.";
     var errorMsg = "Your service has not been deleted.";
-    var swalConfirmTitle = "Are you sure you want to delete?";
+    var swalConfirmTitle = "Are you sure ?";
     var swalConfirmText = "You can't go back!";
     Swal.fire({
         title: swalConfirmTitle,
         text: swalConfirmText,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes!",
         customClass: {
             confirmButton: "btn btn-primary",
             cancelButton: "btn btn-outline-danger ml-1",
@@ -304,7 +316,7 @@ function _formCategory(category_id) {
     var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
-    var modalTitle = (category_id > 0)? 'Edit category' : 'New category';
+    var modalTitle = (category_id > 0)? "{{ __('locale.edit') }}" : "{{ __('locale.new') }}";
     $("#CATEGORY_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
     $.ajax({
         url: "/admin/form/category/" + category_id,

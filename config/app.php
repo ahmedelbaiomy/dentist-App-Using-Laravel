@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -179,6 +180,7 @@ return [
         TimeHunter\LaravelGoogleReCaptchaV3\Providers\GoogleReCaptchaV3ServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
         \Chatify\ChatifyServiceProvider::class,
+        \Ripcord\Providers\Laravel\ServiceProvider::class,
 
     ],
 
@@ -234,6 +236,7 @@ return [
         'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
         'GoogleReCaptchaV3'=> TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::class,
         'Chatify' => Chatify\Facades\ChatifyMessenger::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

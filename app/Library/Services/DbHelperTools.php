@@ -2,6 +2,7 @@
 namespace App\Library\Services;
 use Carbon\Carbon;
 use App\Models\note;
+use App\Models\Xray;
 use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Patient;
@@ -12,11 +13,15 @@ use App\Models\Category;
 use App\Models\Schedule;
 use App\Models\Helpindex;
 use App\Models\Sprequest;
+use App\Models\Officetime;
 use App\Mail\SupplyRequest;
 use App\Models\Appointment;
 use App\Models\Invoiceitem;
+use App\Models\Doctorpatient;
 use App\Models\Invoicerefund;
 use App\Models\Sprequestitem;
+use App\Models\new_invoice_data;
+use App\Models\products_info;
 use App\Models\Invoicepayment;
 use App\Models\Patientstorage;
 use App\Models\service_category;
@@ -56,6 +61,7 @@ class DbHelperTools
             if ($id > 0) {
                 $row = Appointment::find ( $id );
             }
+            $row->appuser_id = (isset($data['appuser_id']))?$data['appuser_id']:null;
             $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
             $row->doctor_id = (isset($data['doctor_id']))?$data['doctor_id']:null;
             $row->start_time = (isset($data['start_time']))?$data['start_time']:null;
@@ -97,7 +103,7 @@ class DbHelperTools
         //first unchanged time
         $dates[$start_date->toDateString()][]=$start_date->toTimeString();
 
-        for($s = 1;$s <=$slots;$s++){
+        for($s = 1;$s <$slots;$s++){
 
             $dates[$start_date->toDateString()][]=$start_date->addMinute($slot_duration)->toTimeString();
 
@@ -141,6 +147,18 @@ class DbHelperTools
             $deletedRows = Sprequestitem::where('request_id',$ids[0])->forceDelete();
             $row = Sprequest::findOrFail($ids[0]);
             $row->forceDelete();
+        }elseif($type=='procedureserviceitem'){
+            $p = Procedureserviceitem::findOrFail($ids[0]);
+            $p->forceDelete();
+        }elseif($type=='appointment'){
+            $p = Appointment::findOrFail($ids[0]);
+            $p->forceDelete();
+        }elseif($type=='officetime'){
+            $p = Officetime::findOrFail($ids[0]);
+            $p->forceDelete();
+        }elseif($type=='xray'){
+            $ps = Xray::findOrFail($ids[0]);
+            $ps->delete();
         }
         return $deletedRows;
     }
@@ -182,10 +200,36 @@ class DbHelperTools
         return $deletedRows;
     } */
     public function checkNearstAvalabilityTime($doctor_id,$start_date,$iCount){
-        $tentativeMaxLimit = 10;
+        $tentativeMaxLimit = 8;
         $day = strtoupper(Carbon::createFromFormat('Y-m-d',$start_date)->format('l'));
         $slots = Schedule::where([['doctor_id',$doctor_id],['day',$day]])->orderBy('slot')->get();
-        if(count($slots)>0 || $iCount>=$tentativeMaxLimit){
+        $bookedSlots=$this->getBookedSlots($doctor_id,$start_date);
+
+        $today = Carbon::now();
+        $newFilteredslots=[];
+        if($today->format('Y-m-d')==$start_date){
+            if(count($slots)>0){
+                foreach($slots as $s){
+                    $dtslot=Carbon::createFromFormat('Y-m-d H:i:s',$s->slot);
+                    $newDateToday=Carbon::createFromFormat('Y-m-d H:i:s',$dtslot->format('Y-m-d').' '.$today->format('H:i:s'));
+                    //echo $dtslot->format('Y-m-d H:i:s').'---->'.$newDateToday->format('Y-m-d H:i:s').'<br>'; 
+                    if($dtslot->greaterThanOrEqualTo($newDateToday) && !in_array($dtslot->format('H:i'),$bookedSlots)){
+                        $newFilteredslots[]=$s;
+                    }
+                }
+            }
+        }else{
+            if(count($slots)>0){
+                foreach($slots as $s){
+                    $dtslot=Carbon::createFromFormat('Y-m-d H:i:s',$s->slot);
+                    if(!in_array($dtslot->format('H:i'),$bookedSlots)){
+                        $newFilteredslots[]=$s;
+                    }
+                }
+            }
+        }
+        //dd($newFilteredslots);
+        if(count($newFilteredslots)>0 || $iCount>=$tentativeMaxLimit){
             return ['doctor_id'=>$doctor_id,'start_date'=>$start_date];
         }
         $iCount++;
@@ -193,6 +237,31 @@ class DbHelperTools
         $date = $dt->addDays(1);
         $start_date=$date->format('Y-m-d');
         return $this->checkNearstAvalabilityTime($doctor_id,$start_date,$iCount);
+    }
+    public function getBookedSlots($doctor_id,$start_date){
+        $today=Carbon::now(); 
+        $tdnow=$today->format('Y-m-d'); 
+        $bookedSlots = [];
+        $rsBookedSlots=Appointment::select('start_time','duration')->where('doctor_id',$doctor_id)->where('start_time','LIKE','%'.$start_date.'%')->get();
+        if(count($rsBookedSlots)>0){
+            foreach($rsBookedSlots as $rsB){
+                $dt=Carbon::createFromFormat('Y-m-d H:i:s',$rsB->start_time);
+                $start_time=Carbon::createFromFormat('Y-m-d H:i:s',$rsB->start_time);
+                $end_date=$start_time->addMinutes($rsB->duration);
+                $newdates=$this->generateDateRange($dt->format('Y-m-d H:i'),$end_date->format('Y-m-d H:i'),1);
+                if(count($newdates)>0){
+                    foreach($newdates as $data){
+                        foreach($data as $hm){
+                            $str=$tdnow.$hm;
+                            $booked_dt=Carbon::createFromFormat('Y-m-d H:i:s',$str);
+                            $bookedSlots[]=$booked_dt->format('H:i');
+                        }
+                    }
+                }
+                
+            }
+        }
+        return $bookedSlots;
     }
     public function managePatientStorage($data){
         $id=0;
@@ -519,11 +588,14 @@ class DbHelperTools
     Helpindex::where('type',$type)->update(['index' => $indice]);
     return true;
   }
-  public function getAmountsInvoice($invoice_id){
+  public function getAmountsInvoice($invoice_id)
+  {
     $total =$subtotal = $total_paid=$total_refund=0;
+    $cashtotal_paid =$madatotal_paid = $credittotal_paid=0;
+
     $discount_amount=0;
     if($invoice_id>0){
-      $invoice = Invoice::find ( $invoice_id );
+      $invoice  = Invoice::find ( $invoice_id );
       $subtotal = Procedureserviceitem::where ('invoice_id',$invoice_id)->sum('total');
       //Réduction : //'percentage', 'fixed_amount'
       //'before_tax', 'after_tax'
@@ -549,17 +621,23 @@ class DbHelperTools
 
       $total = $subtotal-$discount_amount+$tax_amount;
       //total payments
-      $total_paid = Invoicepayment::where ('invoice_id',$invoice_id)->sum('amount');
-      $total_refund = Invoicerefund::where ('invoice_id',$invoice_id)->sum('amount');
+      $total_paid       = Invoicepayment::where('invoice_id',$invoice_id)->sum('amount');
+      $cashtotal_paid   = Invoicepayment::where('invoice_id',$invoice_id)->where('payment_method','Cash')->sum('amount');
+      $madatotal_paid   = Invoicepayment::where('invoice_id',$invoice_id)->where('payment_method','Mada')->sum('amount');
+      $credittotal_paid = Invoicepayment::where('invoice_id',$invoice_id)->where('payment_method','Credit card')->sum('amount');
+      $total_refund     = Invoicerefund::where ('invoice_id',$invoice_id)->sum('amount');
     }
     return array(
         'total'=>number_format($total,2),
         'nnf_total'=>$total,
         'subtotal'=>number_format($subtotal,2),
         'discount_amount'=>number_format($discount_amount,2),
-        'nnf_discount_amount'=>number_format($discount_amount,2),
+        'nnf_discount_amount'=>$discount_amount,
         'tax_amount'=>number_format($tax_amount,2),
         'total_paid'=>number_format($total_paid,2),
+        'cashtotal_paid'=>number_format($cashtotal_paid,2),
+        'madatotal_paid'=>number_format($madatotal_paid,2),
+        'credittotal_paid'=>number_format($credittotal_paid,2),
         'nnf_total_paid'=>$total_paid,
         'total_refund'=>$total_refund,
         'nnf_tax_amount'=>$tax_amount,
@@ -647,7 +725,7 @@ class DbHelperTools
         if($doctor_user_id>0){
             $appointments = Appointment::where('doctor_id',$doctor_user_id)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
-            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->where('type','completed')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $invoices = Invoice::where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $bookings = Appointment::where([['status',1],['doctor_id',$doctor_user_id]])->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             
@@ -659,7 +737,7 @@ class DbHelperTools
         }else{
             $appointments = Appointment::whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $patients = Patient::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
-            $procedures = Procedureserviceitem::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
+            $procedures = Procedureserviceitem::where('type','completed')->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $invoices = Invoice::whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             $bookings = Appointment::where('status',1)->whereBetween('start_time', [$start_date." 00:00:00", $end_date." 23:59:59"])->count();
             
@@ -672,7 +750,7 @@ class DbHelperTools
         if($doctor_user_id>0){
             $appointments = Appointment::where('doctor_id',$doctor_user_id)->count();
             $patients = Patient::count();
-            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->count();
+            $procedures = Procedureserviceitem::where('doctor_id',$doctor_user_id)->where('type','completed')->count();
             $invoices = Invoice::where('doctor_id',$doctor_user_id)->count();
             $bookings = Appointment::where([['status',1],['doctor_id',$doctor_user_id]])->count();
             $ids_invoices = Invoice::select('id')->where('doctor_id',$doctor_user_id)->get();
@@ -682,7 +760,7 @@ class DbHelperTools
         }else{
             $appointments = Appointment::count();
             $patients = Patient::count();
-            $procedures = Procedureserviceitem::count();
+            $procedures = Procedureserviceitem::where('type','completed')->count();
             $invoices = Invoice::count();
             $bookings = Appointment::where('status',1)->count();
             $payments = Invoicepayment::count();
@@ -700,6 +778,7 @@ class DbHelperTools
 }
   public function getStatsForReports($doctor_user_id,$start_date,$end_date){
     $total_amount_invoices=$total_amount_payed_invoices=$total_amount_discount=$total_tax_amount=0;
+    $cashtotal_paid_amount=$madatotal_paid_amount=$credittotal_paid_amount=0;
     if($doctor_user_id>0){
             if($start_date && $end_date){
                 $ids = Invoice::select('id')->where('doctor_id',$doctor_user_id)->whereBetween('created_at', [$start_date." 00:00:00", $end_date." 23:59:59"])->get();
@@ -721,6 +800,9 @@ class DbHelperTools
             $total_amount_payed_invoices=$total_amount_payed_invoices+$calcul['nnf_total_paid'];
             $total_amount_discount=$total_amount_discount+$calcul['nnf_discount_amount'];
             $total_tax_amount=$total_tax_amount+$calcul['nnf_tax_amount'];
+            $cashtotal_paid_amount=$calcul['cashtotal_paid'];
+            $madatotal_paid_amount=$calcul['madatotal_paid'];
+            $credittotal_paid_amount=$calcul['credittotal_paid'];
         }
     }
     return array(
@@ -728,8 +810,13 @@ class DbHelperTools
         'total_amount_payed_invoices'=>$total_amount_payed_invoices,
         'total_amount_discount'=>$total_amount_discount,
         'total_tax_amount'=>$total_tax_amount,
+        'cashtotal_paid_amount'=>$cashtotal_paid_amount,
+        'madatotal_paid_amount'=>$madatotal_paid_amount,
+        'credittotal_paid_amount'=>$total_tax_amount,
     );
   }
+
+
   public function getAppointmentsStatsForReports($doctor_user_id,$start_date,$end_date){
     return array(
         'nb_booked'=>$this->getNbAppointmentsByStatus(1,$doctor_user_id,$start_date,$end_date),
@@ -837,4 +924,197 @@ class DbHelperTools
     }
     return $total;
   }
+  public function manageDoctor($data){
+    $id=0;
+    if (count($data)>0){
+        $row = new Doctor();
+        $id=(isset($data['id']))?$data['id']:0;
+        if ($id > 0) {
+            $row = Doctor::find ( $id );
+            if(!$row){
+                $row = new Doctor();
+              }        
+        }            
+        if(isset($data['birthday'])){
+            $row->birthday = (isset($data['birthday']))?$data['birthday']:null;
+        }
+        if(isset($data['address'])){
+            $row->address = (isset($data['address']))?$data['address']:null;
+        }
+        if(isset($data['phone'])){
+            $row->phone = (isset($data['phone']))?$data['phone']:null;
+        }
+        if(isset($data['photo'])){
+            $row->photo = (isset($data['photo']))?$data['photo']:null;
+        }
+        if(isset($data['target'])){
+            $row->target = (isset($data['target']))?$data['target']:null;
+        }
+        if(isset($data['user_id'])){
+            $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
+        }
+        if(isset($data['nurse_id'])){
+            $row->nurse_id = (isset($data['nurse_id']))?$data['nurse_id']:null;
+        }
+        $row->save ();
+        $id = $row->id;
+    }
+    return $id;
+    }
+    public function manageDoctorPatient($data){
+        $id=0;
+        if (count($data)>0){
+            $row = new Doctorpatient();
+            $id=(isset($data['id']))?$data['id']:0;
+            if ($id > 0) {
+                $row = Doctorpatient::find ( $id );
+            }
+            $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
+            $row->doctor_user_id = (isset($data['doctor_user_id']))?$data['doctor_user_id']:null;
+            $row->save ();
+            $id = $row->id;
+        }
+        return $id;
+    }
+    public function getDoctorPatientId($patient_id,$doctor_user_id){
+        $id=0;
+        $dr=Doctorpatient::select('id')->where ( [['patient_id',$patient_id],['doctor_user_id',$doctor_user_id]] )->first();
+        $id=(isset($dr))?$dr->id:0;
+        return $id;
+    }
+    public function getAppointmentsPatientDoctor($patient_id,$doctor_user_id){
+        $nb_appointment=0;
+        $nb_appointment=Appointment::select('id')->where ( [['patient_id',$patient_id],['doctor_id',$doctor_user_id]] )->count();
+        $app=Appointment::where ( [['patient_id',$patient_id],['doctor_id',$doctor_user_id]] )->orderBy('start_time','DESC')->first();
+        $from =$to='';
+        if(isset($app)){
+            $start_time = Carbon::createFromFormat('Y-m-d H:i:s',$app->start_time);
+            $from = $start_time->format('Y/m/d H:i');
+            if($app->duration>0){
+                $end_time=$start_time->addMinute($app->duration);
+                //dd($end_time);
+                $to = $end_time->format('Y/m/d H:i');
+            }
+            
+        }
+        return ['nb_appointment'=>$nb_appointment,'from'=>$from,'to'=>$to];
+    }
+    public function getAppointmentsPatient($patient_id){
+        $nb_appointment=0;
+        $nb_appointment=Appointment::select('id')->where ( 'patient_id',$patient_id )->count();
+        $app=Appointment::where ( 'patient_id',$patient_id )->orderBy('start_time','DESC')->first();
+        $from =$to='';
+        if(isset($app)){
+            $start_time = Carbon::createFromFormat('Y-m-d H:i:s',$app->start_time);
+            $from = $start_time->format('Y/m/d H:i');
+            if($app->duration>0){
+                $end_time=$start_time->addMinute($app->duration);
+                //dd($end_time);
+                $to = $end_time->format('Y/m/d H:i');
+            }
+            
+        }
+        return ['nb_appointment'=>$nb_appointment,'from'=>$from,'to'=>$to];
+    }
+    public function checkIfDoctorCanViewPatient($patient_id,$doctor_user_id){
+        $autorize=false;
+        if($patient_id>0 && $doctor_user_id>0){
+            $nb=Doctorpatient::select('id')->where ( [['patient_id',$patient_id],['doctor_user_id',$doctor_user_id]] )->count();
+            if($nb>0){
+                $autorize=true;
+            }
+        }
+        return $autorize;
+    }
+      public function manageNewInvoiceItem($data){
+      
+         if (count($data)>0){
+        $row = new new_invoice_data();
+        $id=(isset($data['id']))?$data['id']:0;
+        if ($id > 0) {
+            $row = new_invoice_data::find ( $id );
+            if(!$row){
+                $row = new new_invoice_data();
+              }        
+        }
+        $row->invoice_number = (isset($data['invoice_number']))?$data['invoice_number']:'';
+        $row->login_id = (isset($data['login_id']))?$data['login_id']:'';
+        $row->bill_date = (isset($data['bill_date']))?$data['bill_date']:'';
+        $row->due_date = (isset($data['due_date']))?$data['due_date']:'';
+        $row->status = (isset($data['status']))?$data['status']:'';
+        //$row->cancelled_at = (isset($data['cancelled_at']))?$data['cancelled_at']:'';
+        //$row->cancelled_by = (isset($data['cancelled_by']))?$data['cancelled_by']:'';
+        //$row->deleted_at = (isset($data['deleted_at']))?$data['deleted_at']:'';
+        //$row->created_at = (isset($data['created_at']))?$data['created_at']:'';
+      //  $row->updated_at = (isset($data['updated_at']))?$data['updated_at']:'';
+        $row->odoo_id = (isset($data['odoo_id']))?$data['odoo_id']:'';
+         $row->request_id = (isset($data['request_id']))?$data['request_id']:'';
+        // $row->total = (isset($data['total']))?$data['total']:'';
+        // $row->description = (isset($data['description']))?$data['description']:'';
+        // $row->product_id = (isset($data['product_id']))?$data['product_id']:'';
+        // $row->request_id = (isset($data['request_id']))?$data['request_id']:'';
+        $row->save ();
+        $id = $row->id;
+    }
+    return $id;
+      
+  }
+    
+  public function manageNewProductsItem($data){
+      
+              if (count($data)>0){
+        $row = new products_info(); 
+        $id=(isset($data['id']))?$data['id']:0;
+        if ($id > 0) {
+            $row = products_info::find ( $id );
+            if(!$row){
+                $row = new products_info();
+              }        
+        }
+        $row->request_id = (isset($data['request_id']))?$data['request_id']:'';
+        
+        $row->product_id = (isset($data['product_id']))?$data['product_id']:'';
+        $row->rate = (isset($data['rate']))?$data['rate']:'';
+        $row->total = (isset($data['total']))?$data['total']:'';
+        $row->quantity = (isset($data['quantity']))?$data['quantity']:'';
+        $row->description = (isset($data['note']))?$data['note']:'';
+        // $row->total = (isset($data['total']))?$data['total']:'';
+        $row->invoice_number = (isset($data['invoice_number']))?$data['invoice_number']:'';
+        // $row->description = (isset($data['description']))?$data['description']:'';
+        // $row->product_id = (isset($data['product_id']))?$data['product_id']:'';
+        // $row->request_id = (isset($data['request_id']))?$data['request_id']:'';
+        $row->save ();
+        $id = $row->id;
+    }
+    return $id;
+      
+  }
+    public function manageXray($data){
+        $id=0;
+        if (count($data)>0){
+            $row = new Xray();
+            $id=(isset($data['id']))?$data['id']:0;
+            if ($id > 0) {
+                $row = Xray::find ( $id );
+            }
+            if(isset($data['patient_id'])){
+                $row->patient_id = (isset($data['patient_id']))?$data['patient_id']:null;
+            }
+            if(isset($data['title'])){
+                $row->title = (isset($data['title']))?$data['title']:null;
+            }
+            if(isset($data['description'])){
+                $row->description = (isset($data['description']))?$data['description']:null;
+            }
+            if(isset($data['url'])){
+                $row->url = (isset($data['url']))?$data['url']:null;
+            }
+            if(isset($data['user_id'])){
+                $row->user_id = (isset($data['user_id']))?$data['user_id']:null;
+            }
+            $row->save ();
+            $id = $row->id;
+        }
+        return $id;
+    }
 }

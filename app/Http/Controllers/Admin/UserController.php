@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Library\Services\DbHelperTools;
 
 
 class UserController extends Controller
@@ -56,6 +58,23 @@ class UserController extends Controller
         $user = User::findOrFail($data['id']);
         $user->user_type = $data['user_type'];
         $user->save();
+        $user_id = $user->id;
+
+        //create if type is doctor
+        if($data['user_type']=='doctor' && $user_id>0){
+            $DbHelperTools=new DbHelperTools();
+            $rsDoctor=Doctor::select('id')->where('user_id',$user_id)->first();
+            if(!$rsDoctor){
+                $data = array(
+                    'id'=>0,
+                    'target'=>0,
+                    'user_id'=>$user_id,
+                );
+                //dd($data);
+                $doctor_id=$DbHelperTools->manageDoctor($data);
+            }
+        }
+
         return response()->json(['success'=>'Ajax request submitted successfully']);
     }
     

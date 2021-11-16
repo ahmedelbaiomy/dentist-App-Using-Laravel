@@ -50,7 +50,8 @@ $percent = '('.$invoice->discount_amount.'%)';
                         </div>
                         <div class="mt-md-0 mt-2">
                             <h4 class="invoice-title">
-                                Invoice
+				<span>الرقم الضريبي 301008778100003</span><br><br>
+			        Invoice
                                 <span class="invoice-number">#{{$invoice->number}}</span>
                             </h4>
                             <div class="invoice-date-wrapper">
@@ -80,7 +81,7 @@ $percent = '('.$invoice->discount_amount.'%)';
                         </div>
                         <div class="col-md-4 p-0">
                             <h6 class="mb-2">Invoice To:</h6>
-                            <h6 class="mb-25">{{$invoice->patient->name}}</h6>
+                            <h6 class="mb-25">{{($invoice->patient->ar_name)?$invoice->patient->ar_name:$invoice->patient->name}}</h6>
                             <p class="card-text mb-25">{{$invoice->patient->address}}</p>
                             <p class="card-text mb-25">{{$invoice->patient->phone}}</p>
                             <p class="card-text mb-0">{{$invoice->patient->email}}</p>
@@ -118,10 +119,10 @@ $percent = '('.$invoice->discount_amount.'%)';
                                     <span class="font-weight-bold">{{$item->quantity}}</span>
                                 </td>
                                 <td class="py-1">
-                                    <span class="font-weight-bold">{{number_format($item->rate,2)}} $</span>
+                                    <span class="font-weight-bold">{{number_format($item->rate,2)}} {{env('CURRENCY_SYMBOL')}}</span>
                                 </td>
                                 <td class="py-1">
-                                    <span class="font-weight-bold">{{number_format($item->total,2)}} $</span>
+                                    <span class="font-weight-bold">{{number_format($item->total,2)}} {{env('CURRENCY_SYMBOL')}}</span>
                                 </td>
                             </tr>
                             @endforeach
@@ -151,7 +152,7 @@ $percent = '('.$invoice->discount_amount.'%)';
                                     @endphp
                                     <tr>
                                         <td>{{$refund_date->format('Y-m-d')}}</td>
-                                        <td>{{number_format($refund->amount,2)}} $</td>
+                                        <td>{{number_format($refund->amount,2)}} {{env('CURRENCY_SYMBOL')}}</td>
                                         <td>{{$refund->reason}}</td>
                                     </tr>
                                     @endforeach
@@ -163,20 +164,20 @@ $percent = '('.$invoice->discount_amount.'%)';
                             <div class="invoice-total-wrapper">
                                 <div class="invoice-total-item">
                                     <p class="invoice-total-title">Subtotal:</p>
-                                    <p class="invoice-total-amount">{{$calcul['subtotal']}} $</p>
+                                    <p class="invoice-total-amount">{{$calcul['subtotal']}} {{env('CURRENCY_SYMBOL')}}</p>
                                 </div>
                                 <div class="invoice-total-item">
                                     <p class="invoice-total-title">Discount {{$percent}}:</p>
-                                    <p class="invoice-total-amount">{{$calcul['discount_amount']}} $</p>
+                                    <p class="invoice-total-amount">{{$calcul['discount_amount']}} {{env('CURRENCY_SYMBOL')}}</p>
                                 </div>
                                 <div class="invoice-total-item">
                                     <p class="invoice-total-title">Tax ({{$invoice->tax_percentage}}%):</p>
-                                    <p class="invoice-total-amount">{{$calcul['tax_amount']}} $</p>
+                                    <p class="invoice-total-amount">{{$calcul['tax_amount']}} {{env('CURRENCY_SYMBOL')}}</p>
                                 </div>
                                 <hr class="my-50" />
                                 <div class="invoice-total-item">
                                     <p class="invoice-total-title">Total:</p>
-                                    <p class="invoice-total-amount">{{$calcul['total']}} $</p>
+                                    <p class="invoice-total-amount">{{$calcul['total']}} {{env('CURRENCY_SYMBOL')}}</p>
                                 </div>
                             </div>
                         </div>

@@ -9,24 +9,35 @@
                         <span></span>
                     </label>
                 </th>
-                <th>Teeth</th>
-                <th>Service</th>
-                <th>Note</th>
-                <th>Qty</th>
-                <th>Cost</th>
-                <th>Total</th>
+                <th>{{ __('locale.teeth') }}</th>
+                <th>{{ __('locale.service') }}</th>
+                <th>{{ __('locale.note') }}</th>
+                <th>{{ __('locale.quantity') }}</th>
+                <th>{{ __('locale.rate') }}</th>
+                <th>{{ __('locale.total') }}</th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
 </div>
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
 <script>
 var invoice_id = $('#INPUT_HIDDEN_INVOICE_ID').val();
 var dtStiUrl = '/profile/sdt/services/to/invoice/' + invoice_id;
 var sti_datatable = $('#services_to_invoice_datatable');
 sti_datatable.DataTable({
     responsive: true,
+    @if($lang=='ar')
+    language: {
+            url: '/json/datatable/ar.json'
+    },
+    @endif
     processing: true,
     paging: true,
     ordering: true,

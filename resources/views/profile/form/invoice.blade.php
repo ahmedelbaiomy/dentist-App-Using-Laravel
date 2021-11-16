@@ -7,18 +7,21 @@
     <div class="col-md-6">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="patients">Patient</label>
-                <input type="text" class="form-control form-control-sm" value="{{ ($patient)?$patient->name:'' }}"
+                <label for="patients">{{ __('locale.patient') }}</label>
+                <input type="text" class="form-control form-control-sm" value="{{ ($patient && $patient->ar_name)?$patient->ar_name:$patient->name }}"
                     readonly />
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                <label for="select_doctors">Doctor</label>
+                <label for="select_doctors">{{ __('locale.doctor') }}</label>
                 @php
                 $readonly='';
                 if($invoice && $invoice->doctor_id>0){
-                $readonly='readonly';
+                    $readonly='readonly';
+                }
+                if(Auth::user()->user_type == "doctor"){
+                    $readonly='readonly';
                 }
                 @endphp
                 <select class="form-control form-control-sm js-select2" id="select_doctors_invoice" name="doctor_id"
@@ -28,7 +31,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                <label for="select-tax">Tax (%)</label>
+                <label for="select-tax">{{ __('locale.tax') }} (%)</label>
                 <input type="number" class="form-control form-control-sm" name="tax_percentage"
                     value="{{ ($invoice)?$invoice->tax_percentage:'' }}" placeholder="Enter tax" />
                 <!-- <select class="form-control form-control-sm" id="tax_percentage" name="tax_percentage">
@@ -43,7 +46,7 @@
     <div class="col-md-6">
         <div class="col-md-12">
             <div class="form-group">
-                <label>Invoice</label>
+                <label>{{ __('locale.invoice') }}</label>
                 <input type="text" class="form-control form-control-sm" value="{{ ($invoice)?$invoice->number:'' }}"
                     readonly />
             </div>
@@ -59,7 +62,7 @@
                 }
                 @endphp
 
-                <label for="fp-bill-date">Bill date</label>
+                <label for="fp-bill-date">{{ __('locale.bill_date') }}</label>
                 <input type="text" id="fp-bill-date" class="form-control flatpickr-basic form-control-sm"
                     name="bill_date" value="{{$bill_date}}" placeholder="YYYY-MM-DD" required />
             </div>
@@ -75,7 +78,7 @@
                 }
                 @endphp
 
-                <label for="fp-due-date">Due date</label>
+                <label for="fp-due-date">{{ __('locale.due_date') }}</label>
                 <input type="text" id="fp-due-date" class="form-control flatpickr-basic form-control-sm" name="due_date"
                     value="{{$due_date}}" placeholder="YYYY-MM-DD" required />
             </div>
@@ -98,7 +101,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            <label class="form-label" for="cf-default-textarea">Note</label>
+            <label class="form-label" for="cf-default-textarea">{{ __('locale.note') }}</label>
             <div class="form-control-wrap">
                 <textarea class="form-control form-control-sm" cols="30" rows="5" id="note" name="note"
                     placeholder="Enter Note">{{ ($invoice)?$invoice->note:'' }}</textarea>
@@ -179,7 +182,7 @@ function _addItemsToInvoice(invoice_id) {
         '<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
     $("#" + modal_id).modal("show");
     $("#" + modal_content_id).html(spinner);
-    var modalTitle = 'Add services to current invoice';
+    var modalTitle = "{{__('locale.add_services_to_current_invoice')}}";
     $("#INVOICE_ITEMS_MODAL_TITLE").html(modalTitle);
     $.ajax({
         url: "/profile/invoice/items/" + invoice_id,

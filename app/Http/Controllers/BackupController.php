@@ -79,12 +79,13 @@ class BackupController extends Controller
     }
     public function index()
     {
+        $backupFolder=env('BACKUP_FOLDER');
         //$disk = Storage::disk(config('laravel-backup.backup.destination.disks')[0]);
         $disk = Storage::disk('local');
         
 
         //$files = $disk->files(config('laravel-backup.backup.name'));
-        $files = $disk->files('Appointment');
+        $files = $disk->files($backupFolder);
         
         $backups = [];
         // make an array of backup files, with their filesize and creation date
@@ -94,7 +95,7 @@ class BackupController extends Controller
                 $backups[] = [
                     'file_path' => $f,
                     //'file_name' => str_replace(config('laravel-backup.backup.name') . '/', '', $f),
-                    'file_name' => str_replace('Appointment/', '', $f),
+                    'file_name' => str_replace($backupFolder.'/', '', $f),
                     'file_size' => $disk->size($f),
                     'last_modified' => $disk->lastModified($f),
                 ];
@@ -130,7 +131,8 @@ class BackupController extends Controller
      */
     public function download($file_name)
     {
-        $file = 'Appointment/' . $file_name;
+        $backupFolder=env('BACKUP_FOLDER');
+        $file = $backupFolder.'/' . $file_name;
         $disk = Storage::disk('local');
         if ($disk->exists($file)) {
             return response()->download(storage_path("app/{$file}"));
@@ -144,12 +146,11 @@ class BackupController extends Controller
      */
     public function delete($file_name)
     {
+        $backupFolder=env('BACKUP_FOLDER');
         $success = false;
         $disk = Storage::disk('local');
-        if ($disk->exists('appointment' . '/' . $file_name)) {
-            $disk->delete('appointment' . '/' . $file_name);
-            //session()->flash('delete', 'Successfully deleted backup!');
-            //return redirect()->back();
+        if ($disk->exists($backupFolder . '/' . $file_name)) {
+            $disk->delete($backupFolder . '/' . $file_name);
             $success = true;
         } else {
             abort(404, "The backup file doesn't exist.");

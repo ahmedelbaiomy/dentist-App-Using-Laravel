@@ -9,6 +9,11 @@
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet"
     href="{{ asset('new-assets/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/plugins/datepicker/css/classic.date.css') }}" />
+<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}">
+
 @endsection
 
 @section('page-style')
@@ -18,16 +23,25 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Doctor List</h4>
-                <h5 class='text-success'>You have total {{ count($doctors) }} doctors.</h5>
+                <h4 class="card-title">{{ __('locale.doctors') }}</h4>
+                <!-- <h5 class='text-success'>You have total {{ count($doctors) }} doctors.</h5> -->
 
                 <div class="row">
                     <div class="col-md-12">
-                        <a style="float:right;" target="_blank" href="/report/pdf/doctor/daily/0/1" title="daily report all doctors" class="btn btn-icon btn-outline-primary"><i data-feather="download"></i> Daily doctor's report</a>
+
+                        <a style="float:right;" target="_blank" href="/report/pdf/doctor/daily/0/1" title="daily report all doctors" class="btn btn-icon btn-outline-primary ml-1"><i data-feather="download"></i> {{ __('locale.daily_doctors_report') }}</a>
+                        <button style="float:right;" onclick="_formDoctor(0)" title="New doctor" class="btn btn-icon btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('NEW')!!}</button>
                     </div>
                 </div>
 
@@ -35,15 +49,14 @@
                     <table class="datatable table table-bordered">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Birthday</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Target</th>
+                                <th>{{ __('locale.name') }}</th>
+                                <th>{{ __('locale.birthday') }}</th>
+                                <th>{{ __('locale.address') }}</th>
+                                <th>{{ __('locale.phone') }}</th>
+                                <th>{{ __('locale.status') }}</th>
+                                <th>{{ __('locale.target') }} ({{__('locale.'.env('CURRENCY_SYMBOL')) }})</th>
                                 <th>
-                                    Action
+                                {{ __('locale.actions') }}
                                 </th>
                             </tr>
                         </thead>
@@ -51,7 +64,6 @@
                             @foreach($doctors as $doctor)
                             <tr>
                                 <td><span>{{ $doctor->name }}</span></td>
-                                <td><span>{{ $doctor->email }}</span></td>
                                 <td><span>{{ $doctor->birthday }}</span></td>
                                 <td><span>{{ $doctor->address }}</span></td>
                                 <td><span>{{ $doctor->phone }}</span></td>
@@ -69,6 +81,7 @@
                                     <div class="btn-group" role="group">
                                         <a href="" data-toggle="modal" data-target="#set_target_modal" data-id="{{ json_encode($doctor) }}" title="Set Target" class="btn btn-icon btn-sm btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CREDIT-CARD')!!}</a>
                                         <a href="/report/pdf/doctor/daily/{{ $doctor->id }}/1" target="_blank" title="Download daily report" class="btn btn-icon btn-sm btn-outline-warning">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOWNLOAD')!!}</a>
+                                        <button class="btn btn-icon btn-sm btn-outline-primary" onclick="_formDoctor({{ $doctor->id }})" title="Edit">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}</button>
                                     </div>
                                 </td>
                             </tr>
@@ -107,7 +120,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" for="default-05">Target(USD)</label>
+                            <label class="form-label" for="default-05">Target({{env('CURRENCY_SYMBOL')}})</label>
                             <div class="form-control-wrap">
                                 <input type="number" min="1" max="9999999999" id="s_target" name="s_target"
                                     class="form-control form-control-lg">
@@ -124,9 +137,12 @@
     </div><!-- .modal-dialog -->
 </div><!-- .modal -->
 
+
+<x-modal-form id="modal_form_doctor" formName="DOCTOR" content="modal_form_doctor_content" />
 @endsection
 
 @section('vendor-script')
+<script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
@@ -137,6 +153,12 @@
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+
+
+<script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
@@ -147,6 +169,11 @@ function delete_func(val) {
 $(document).ready(function() {
     var table = $('.datatable').DataTable({
         responsive: true,
+        @if($lang=='ar')
+        language: {
+                url: '/json/datatable/ar.json'
+        },
+        @endif
     });
     /* $(".form_datetime").datetimepicker({
         format: "yyyy-mm-dd hh:ii",
@@ -218,6 +245,57 @@ $(document).ready(function() {
 
 
 
+});
+
+function _formDoctor(doctor_id) {
+    var modal_id = "modal_form_doctor";
+    var modal_content_id = "modal_form_doctor_content";
+    var spinner ='<div class="modal-body"><center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center></div>';
+    $("#" + modal_id).modal("show");
+    $("#" + modal_content_id).html(spinner);
+    var modalTitle = (doctor_id > 0)? "{{ __('locale.edit') }}" : "{{ __('locale.new') }}";
+    $("#DOCTOR_MODAL_TITLE").html('{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT ')!!} ' + modalTitle);
+    $.ajax({
+        url: "/admin/form/doctor/" + doctor_id,
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#" + modal_content_id).html(html);
+        },
+    });
+};
+$("#FORM_DOCTOR").validate({
+    rules: {},
+    messages: {},
+    submitHandler: function(form) {
+        $("#SPAN_SAVE_DOCTOR").addClass("spinner-border spinner-border-sm");
+        var formData = $(form).serializeArray(); // convert form to array
+        $.ajax({
+            type: "POST",
+            url: "/admin/form/doctor",
+            data: formData,
+            dataType: "JSON",
+            success: function(result) {
+                if (result.success) {
+                    _showResponseMessage("success", result.msg);
+                    $("#modal_form_doctor").modal("hide");
+                } else {
+                    _showResponseMessage("error", result.msg);
+                }
+            },
+            error: function(error) {
+                _showResponseMessage(
+                    "error",
+                    "Oooops..."
+                );
+            },
+            complete: function(resultat, statut) {
+                $("#SPAN_SAVE_DOCTOR").removeClass("spinner-border spinner-border-sm");
+                setTimeout(function(){ window.location.href = '{{route("admin.doctor")}}'; }, 1500);
+            },
+        });
+        return false;
+    },
 });
 </script>
 @endsection

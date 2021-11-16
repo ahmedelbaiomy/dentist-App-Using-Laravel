@@ -6,9 +6,14 @@ $favicon=$defaultLogos['favicon'];
 if(isset($site_favicon) && !empty($site_favicon)){
 $favicon=$site_favicon;
 }
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+$direction=($lang=='ar')?'rtl':'ltr';
 @endphp
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
+<html class="loading" lang="@if(session()->has('locale')){{session()->get('locale')}}@else 'en' @endif" data-textdirection="{{ $direction }}">
 
 <head>
     <meta charset="utf-8">
@@ -118,6 +123,7 @@ $favicon=$site_favicon;
       }
     }
   });
+  
   if (typeof screenfull != "undefined") {
     if (screenfull.isEnabled) {
       $(document).on(screenfull.raw.fullscreenchange, function () {
@@ -135,6 +141,73 @@ $favicon=$site_favicon;
       });
     }
   }
+
+$(window).on('load', function () {
+        var language = $('html')[0].lang;
+        if (language !== null) {
+        // get the selected flag class
+        var selectedLang = $('.dropdown-language')
+            .find('a[data-language=' + language + ']')
+            .text();
+        var selectedFlag = $('.dropdown-language')
+            .find('a[data-language=' + language + '] .flag-icon')
+            .attr('class');
+        // set the class in button
+        $('#dropdown-flag .selected-language').text(selectedLang);
+        $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
+        }
+});
+
+// change language according to data-language of dropdown item
+$('.dropdown-language .dropdown-item').on('click', function () {
+      var $this = $(this);
+      $this.siblings('.selected').removeClass('selected');
+      $this.addClass('selected');
+      var selectedLang = $this.text();
+      var selectedFlag = $this.find('.flag-icon').attr('class');
+      $('#dropdown-flag .selected-language').text(selectedLang);
+      $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
+      var currentLanguage = $this.data('language');
+      i18next.changeLanguage(currentLanguage, function (err, t) {
+        $('.main-menu, .horizontal-menu-wrapper').localize();
+      });
+    });
+/* NOTIFICATIONS */
+_getTotalNotifications();
+function _getTotalNotifications(){
+    $("#INDICE_TOTAL_NOTIFICATIONS1, #INDICE_TOTAL_NOTIFICATIONS2").html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
+    $.ajax({
+        url: "/navbar/get/notifications/json",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            $("#INDICE_TOTAL_NOTIFICATIONS1").html(response.total);
+            $("#INDICE_TOTAL_NOTIFICATIONS2").html(response.total+' New');
+            if(response.total>0){
+                $("#LI_BUTTON_READ_ALL_NOTIFICATION").show();
+                $("#INDICE_TOTAL_NOTIFICATIONS1").show();
+            }else{
+                $("#LI_BUTTON_READ_ALL_NOTIFICATION").hide();
+                $("#INDICE_TOTAL_NOTIFICATIONS1").hide();
+            }
+        },
+    });
+}
+_getNotifications();
+function _getNotifications() {
+    var spinner =
+        '<center><div class="spinner-border text-primary text-center" role="status"><span class="sr-only">Loading...</span></div></center>';
+    $("#NOTIFICATION_DROPDOWN_CONTENT").html(spinner);
+    $.ajax({
+        url: "/navbar/get/notifications/view",
+        type: "GET",
+        dataType: "html",
+        success: function(html, status) {
+            $("#NOTIFICATION_DROPDOWN_CONTENT").html(html);
+        },
+    });
+};
+
     </script>
 </body>
 

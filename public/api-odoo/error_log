@@ -1,0 +1,106 @@
+[21-Jul-2021 21:46:45 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoice.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:48:01 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoice.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:48:03 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoice.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:48:11 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoice.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:48:30 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoices.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:49:37 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoices.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:49:38 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoices.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:49:39 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoices.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[21-Jul-2021 21:50:45 UTC] PHP Fatal error:  Uncaught Ripcord_ConfigurationException: PHP XMLRPC library is not installed in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php:132
+Stack trace:
+#0 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord.php(86): Ripcord_Client->__construct('http://139.59.1...', NULL, Object(Ripcord_Transport_Stream))
+#1 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/core/odoo_functions.php(3): ripcord::client('http://139.59.1...')
+#2 /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/sync-invoices.php(10): odoo_authenticate('http://139.59.1...', 'odoodb1', 'reviewcost@gmai...', 'kF3Y7j97CNhm')
+#3 {main}
+  thrown in /home/prodesigneradmin/public_html/newsitesdev/dentinizer2/appointment20/public/api-odoo/ripcord/ripcord_client.php on line 132
+[23-Jul-2021 18:41:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/dealdailyuser/public_html/public/api-odoo/sync-invoice.php on line 79
+[23-Jul-2021 18:42:19 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/dealdailyuser/public_html/public/api-odoo/sync-invoice.php on line 79
+[23-Jul-2021 18:42:41 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/dealdailyuser/public_html/public/api-odoo/sync-invoice.php on line 79
+[28-Jul-2021 00:06:12 UTC] PHP Parse error:  syntax error, unexpected 'SELECT' (T_STRING) in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 78
+[28-Jul-2021 00:06:39 UTC] PHP Parse error:  syntax error, unexpected 'SELECT' (T_STRING) in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 78
+[28-Jul-2021 00:07:07 UTC] PHP Parse error:  syntax error, unexpected 'SELECT' (T_STRING) in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 78
+[28-Jul-2021 00:09:48 UTC] PHP Parse error:  syntax error, unexpected 'SELECT' (T_STRING) in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 75
+[28-Jul-2021 00:13:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:174
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(41): get_information_from_db('1')
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 174
+[28-Jul-2021 00:32:40 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 00:33:07 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 00:34:15 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 00:34:41 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 00:35:42 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 00:35:45 UTC] PHP Fatal error:  Uncaught Error: Call to a member function fetchAll() on bool in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php:163
+Stack trace:
+#0 /home/dealdailyuser/public_html/public/api-odoo/sync-requests.php(25): get_request_items('2021070064', Object(PDO))
+#1 {main}
+  thrown in /home/dealdailyuser/public_html/public/api-odoo/core/functions.php on line 163
+[28-Jul-2021 23:24:42 UTC] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ')' in /home/dealdailyuser/public_html/public/api-odoo/core/odoo_functions.php on line 389

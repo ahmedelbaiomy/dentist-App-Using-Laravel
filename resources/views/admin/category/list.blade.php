@@ -1,5 +1,11 @@
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
 <div class="jcarousel-wrapper border-primary p-1">
-    <div class="jcarousel">
+    <div class="jcarousel" @if($lang=='ar') dir="ltr" @endif>
         <ul>
             @foreach($categories as $cat)
             <li class="text-center" style="cursor:pointer;" onclick="_loadDatasByCategory({{$cat->id}})">
@@ -36,6 +42,8 @@
 
     <p class="jcarousel-pagination d-none"></p>
 </div>
+
+
 
 <script>
 (function($) {

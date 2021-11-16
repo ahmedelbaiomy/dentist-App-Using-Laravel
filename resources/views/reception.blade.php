@@ -4,15 +4,14 @@
 
 @section('vendor-style')
 <!-- vendor css files -->
-<link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/calendars/fullcalendar.min.css') }}">
-<!-- <link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/fullcalendar.min.css') }}" /> -->
+<!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/calendars/fullcalendar.min.css') }}"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css">
 
 @endsection
 
 @section('page-style')
 {{-- Page Css files --}}
 <link rel="stylesheet" href="{{ asset('new-assets/app-assets/css/pages/app-calendar.css') }}"> 
-<!-- <link rel="stylesheet" href="{{ asset('assets/plugins/calendar/css/custom-calendar.css') }}" /> -->
 <link rel="stylesheet" href="{{ asset('assets/css/color.css') }}">
 <style>
 .fc-sidebarToggle-button {
@@ -29,11 +28,18 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-0">Dashboard</h4>
+                <h4 class="card-title mb-0">{{__('locale.dashboard')}}</h4>
 
             </div>
         </div>
@@ -84,10 +90,10 @@
 @endsection
 
 @section('vendor-script')
-<!-- <script src="{{ asset('assets/js/moment.js') }}"></script>
-<script src="{{ asset('assets/plugins/calendar/js/fullcalendar.min.js') }}"></script> -->
-<script src="{{ asset('new-assets/app-assets/vendors/js/calendar/fullcalendar.min.js') }}"></script>
-<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/moment.min.js') }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+<script src="/json/fullcalendar/ar.js"></script>
 @endsection
 @section('page-script')
 <script>
@@ -103,7 +109,10 @@ var previewEventPopup = $('#previewEventPopup');
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
-    events: {!!$events!!},
+    @if($lang=='ar')
+    locale: 'ar',
+    @endif
+    //events: {!!$events!!},
     editable: true,
     //dragScroll: true,
     dayMaxEvents: 2,
@@ -130,9 +139,10 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
       ];
     },
     eventClick: function(info) {
-        //console.log(info.event.extendedProps.p_id);
+        //console.log(info.event);
         //console.log(info.event.extendedProps.d_id);
-        window.location.href = 'patientprofile/' + info.event.extendedProps.p_id + "/" + info.event.extendedProps.d_id;
+        //window.location.href = '/profile/patient/' + info.event.extendedProps.p_id + "/" + info.event.extendedProps.d_id;
+        window.location.href = '/profile/patient/' + info.event.extendedProps.p_id;
     },
 	drop: function(date, allDay) { // this function is called when something is dropped
 
@@ -230,7 +240,33 @@ function getDoctorappointmentCalender() {
     });
 }
 
-
+function show_confirm(name, notif_id) {
+    swal.fire({
+        title: 'Would you make an appointment for '+name+'?',
+        icon: 'question',
+        confirmButtonText: `Yes`,
+        showDenyButton: true,
+    }).then(function(result) {
+        var flag = 0;
+        if (result.isConfirmed) {
+            flag = 1;
+        } else if (result.isDenied) {
+            flag = 2;
+        }
+        $.ajax({
+            type: "post",
+            url: '{{ route("reception.confirm_answer") }}',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "flag": flag,
+                "id": notif_id
+            },
+            success: function(data) {
+                location.href='/reception/appointment';
+            },
+        });
+    });
+}
 
 $(document).on('click', '.fc-sidebarToggle-button', function (e) {
   $('.app-calendar-sidebar, .body-content-overlay').addClass('show');

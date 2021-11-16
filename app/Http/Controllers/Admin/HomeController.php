@@ -8,9 +8,12 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Appointment;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\Services\DbHelperTools;
+
+use Auth;
 
 class HomeController extends Controller
 {
@@ -37,6 +40,9 @@ class HomeController extends Controller
         $appointments = Appointment::all();
         $users = User::all();
         $services=Service::all();
+
+        // $admin_notifications = Notification::where('to_id', Auth::user()->id)->where('is_read',0)->get();
+        // View::share('admin_notifications', $admin_notifications);
         return view('dashboard.admin',compact('appointments', 'patients', 'doctors','users','services'));
     }
     public function sdtDoctorStats(Request $request)
@@ -113,9 +119,9 @@ class HomeController extends Controller
             //th>Doctor</th>
             $row[]='<div class="d-flex align-items-center"><div><div class="font-weight-bolder">'.$d->name.'</div><div class="font-small-2 text-muted">'.$d->email.'</div></div></div>';
             //<th>Income</th>
-            $row[]='<span class="badge badge-light-success">'.number_format($stats['incomes'],2).'$</span>';
+            $row[]='<span class="badge badge-light-success">'.number_format($stats['incomes'],2).' '.env('CURRENCY_SYMBOL').'</span>';
             //<th>Refund</th>
-            $row[]='<span class="badge badge-light-danger">'.number_format($stats['refunds'],2).'$</span>';
+            $row[]='<span class="badge badge-light-danger">'.number_format($stats['refunds'],2).' '.env('CURRENCY_SYMBOL').'</span>';
             $data[]=$row;
         }    
         $result = [
@@ -189,5 +195,13 @@ class HomeController extends Controller
         }
         $results=$DbHelperTools->getDashboardStats($start,$end);
         return response()->json($results);
+    }
+
+    public function viewNotification($id) {
+        $notification = Notification::find($id);
+        $notification->is_read = 1;
+        $notification->save();
+
+        return redirect('admin/reception');
     }
 }

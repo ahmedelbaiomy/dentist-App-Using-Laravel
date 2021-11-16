@@ -7,12 +7,12 @@
             <div class="form-group">
                 <label class="form-label">Patient*</label>
                 <div class="form-control-wrap">
-                    <select class="form-control form-control-lg" data-search="on" id="patient_id" name="patient_id" required>
+                    <select class="form-control form-control-lg js-select2" data-search="on" id="patient_id" name="patient_id" required>
                         @foreach($patients as $patient)
                             @php
                                 $selected = ($appointment && $appointment->patient_id ===$patient->id)?'selected':'';
                             @endphp
-                        <option value="{{ $patient->id }}">{{ $patient->email }}</option>
+                        <option value="{{ $patient->id }}">{{ ($patient->ar_name)?$patient->ar_name:$patient->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -21,14 +21,14 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label class="form-label">Doctor</label>
+                <label class="form-label">Doctor *</label>
                 <div class="form-control-wrap">
-                    <select class="form-control form-control-lg" data-search="on" id="select_doctor" name="doctor_id" required>
+                    <select class="form-control form-control-lg js-select2" data-search="on" id="select_doctor" name="doctor_id" required>
                         @foreach($doctors as $doctor)
                             @php
-                                $selected = ($appointment && $appointment->doctor_id ===$doctor->user_id)?'selected':'';
+                                $selected = ($appointment && $appointment->doctor_id ===$doctor->id)?'selected':'';
                             @endphp
-                        <option value="{{ $doctor->user_id }}">{{ $doctor->email }}</option>
+                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -92,6 +92,12 @@
             <input class="form-control form-control-lg datepicker" id="start_time" name="start_time" onchange="_loadSlots()" type="text" value="{{$start_time}}" required>
         </div>
     </div>
+    @php 
+        $today = Carbon\Carbon::now();
+        $today_date = $today->format('Y-m-d');
+    @endphp           
+    <input type="hidden" value="{{$today_date}}" id="INPUT_TODAY_DATE">
+
     <div class="row">
         <div class="col-md-12">
             <div class="form-group mt-1">
@@ -152,13 +158,14 @@ function _getNearstAvalabilityTime(){
                 error: function(err) {
                     //$("#DIV_TIME_SLOT").html('<i class="fa fa-times></i> Oops! Something went wrong. Please try again later.');
                 },
-            }).done(function(data) {});
+            }).done(function(data) {
+                var TYPE_FORM=$("#TYPE_FORM").val();
+                if(TYPE_FORM!=0){
+                    _loadSlots();
+                }
+            });
         }
     }
-}
-var TYPE_FORM=$("#TYPE_FORM").val();
-if(TYPE_FORM!=0){
-    _loadSlots();
 }
 function _loadSlots() {
     //alert('_loadSlots');
@@ -166,7 +173,7 @@ function _loadSlots() {
     $("#DIV_TIME_SLOT").html(loaderHtml);
     var doctor_id = $("#select_doctor").val();
     var start_date = $("#start_time").val();
-    //console.log(doctor_id+start_date);
+    //console.log(doctor_id+'----->'+start_date);
     if(doctor_id>0 && start_date!=''){
         $.ajax({
             type: "GET",
@@ -182,6 +189,9 @@ function _loadSlots() {
     }   
 }
 $('#select_doctor').on('change', function() {
+    today=$("#INPUT_TODAY_DATE").val();
+    $("#start_time").val(today);
+    var TYPE_FORM=$("#TYPE_FORM").val();
     if(TYPE_FORM==0){
         _getNearstAvalabilityTime();
     }else{
@@ -190,6 +200,7 @@ $('#select_doctor').on('change', function() {
 });
 
 $(document).ready(function(){
+    $('.js-select2').select2();
     var yesterday = new Date((new Date()).valueOf()-1000*60*60*24);
     $('.datepicker').pickadate({
         format: 'yyyy-mm-dd',

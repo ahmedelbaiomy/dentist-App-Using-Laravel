@@ -33,8 +33,12 @@ class NurseController extends Controller
         $nurses_ids=Nurse::select('id')->where('user_id',$user_nurse_id)->pluck('id');
         $users_doctors_ids=Doctor::select('user_id')->whereIn('nurse_id',$nurses_ids)->pluck('user_id')->toArray();
         //dd($users_doctors_ids);
-        $events = json_encode(DB::select('SELECT appointments.id, 
-                                                patients.email AS title, 
+        $rsEvents=[];
+        if(count($users_doctors_ids)>0){
+            $rsEvents = collect(DB::select('SELECT appointments.id, 
+                                                patients.email AS title,
+                                                patients.ar_name AS ar_name,  
+                                                patients.name AS name,   
                                                 appointments.start_time AS start, 
                                                 (appointments.start_time + INTERVAL appointments.duration MINUTE) AS end, 
                                                 appointments.comments AS description, 
@@ -52,6 +56,17 @@ class NurseController extends Controller
                                     LEFT JOIN users ON appointments.doctor_id = users.id
                                     LEFT JOIN patients ON patients.id = appointments.patient_id
                                     WHERE appointments.doctor_id IN (?)', $users_doctors_ids));
+        }
+        $newData=[];
+        if(count($rsEvents)>0){
+            foreach($rsEvents as $e){
+                $e->title=($e->ar_name)?$e->ar_name:$e->name;
+                if(isset($e->title) && !empty($e->title)){
+                    $newData[]=$e;
+                }
+            }
+        }
+        $events=json_encode($newData);
         //dd($events);                            
         return view('nurse.index', compact('events'));
     }
@@ -62,11 +77,15 @@ class NurseController extends Controller
      */
     public function appointment()
     {
-        $user_nurse_id=auth()->user()->id;
+        /* $user_nurse_id=auth()->user()->id;
         $nurses_ids=Nurse::select('id')->where('user_id',$user_nurse_id)->pluck('id');
         $users_doctors_ids=Doctor::select('user_id')->whereIn('nurse_id',$nurses_ids)->pluck('user_id')->toArray();
-        $events = DB::select('SELECT appointments.id, 
+        $events=[];
+        if(count($users_doctors_ids)>0){
+        $events = collect(DB::select('SELECT appointments.id, 
                                                 patients.email AS p_email,
+                                                patients.ar_name AS p_ar_name,
+                                                patients.name AS p_name,
                                                 appointments.start_time, 
                                                 (appointments.start_time + INTERVAL appointments.duration MINUTE) AS end, 
                                                 appointments.comments, 
@@ -75,8 +94,10 @@ class NurseController extends Controller
                                                 FROM appointments
                                     LEFT JOIN users ON appointments.doctor_id = users.id
                                     LEFT JOIN patients ON patients.id = appointments.patient_id
-                                    WHERE appointments.doctor_id IN (?)', $users_doctors_ids);
+                                    WHERE appointments.doctor_id IN (?)', $users_doctors_ids));
+        } */
         //dd($events);
-        return view('nurse.appointment', compact('events'));
+        //return view('nurse.appointment', compact('events'));
+        return view('nurse.appointment');
     }
 }

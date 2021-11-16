@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
+use Carbon\Carbon;
+use App\Models\Invoice;
 use App\Models\Patient;
+
+use App\Models\Appointment;
+use Illuminate\Http\Request;
+use App\Models\Invoicerefund;
+use App\Models\Invoicepayment;
 use App\Models\Patientprofile;
+use App\Library\Helpers\Helper;
+use App\Models\Medicalcondition;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Procedureserviceitem;
+use Illuminate\Support\Facades\Auth;
+use App\Library\Services\DbHelperTools;
 
 
 class PatientController extends Controller
@@ -30,8 +40,9 @@ class PatientController extends Controller
 
     public function index()
     {
-        $patients = Patient::all();
-        return view('admin.patient',compact('patients'));
+        /* $patients = Patient::all();
+        return view('admin.patient',compact('patients')); */
+        return view('patient.list');
     }
 
     public function store(Request $data) 
@@ -41,12 +52,12 @@ class PatientController extends Controller
                 'id' => $data['id']
             ],
             [
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'birthday' => $data['birthday'],
-            'address' => $data['address'],
-            'phone' => $data['phone'],
-            'state' => 0,
+                'name'     => $data['name'],
+                'email'    => $data['email'],
+                'birthday' => $data['birthday'],
+                'address'  => $data['address'],
+                'phone'    => $data['phone'],
+                'state'    => 0,
         ]);
 
         return response()->json(['success'=>'Ajax request submitted successfully']);
@@ -146,4 +157,183 @@ class PatientController extends Controller
             return back();
     }
 
+    public function sdtPatients(Request $request)
+    {
+        $data=$meta=[];
+
+        //dd($request->all());
+        // $limit=$request->limit;
+        // if($limit>0){
+        //     $patients = Patient::select('id','name','ar_name','birthday','address','phone','state')->limit($limit)->get();
+        // }else{
+        //     $patients = Patient::select('id','name','ar_name','birthday','address','phone','state')->get();
+        // }
+ 
+        $nowdate       = Carbon::now();
+        $weekdate      = Carbon::now()->addDays(7);
+        $patients      = Patient::select('id','name','ar_name','birthday','address','phone','state')->whereDate('created_at',$nowdate)->get();
+        if($patients->count() == 0)
+        {
+            $patients = Patient::select('id','name','ar_name','birthday','address','phone','state')->whereBetween('created_at', [$nowdate, $weekdate])->get();
+        }
+
+        $DbHelperTools=new DbHelperTools();
+        $canAddApointment=(Auth::user()->user_type=='reception')?true:false;
+
+
+        if ($request->isMethod('post')) {
+            // if($request->has('filter_id') && !empty($request->filter_id)) {
+            //     $patients=Patient::select('id','name','ar_name','birthday','address','phone','state')
+            //     ->where('name', 'like', '%'.$request->filter_name.'%')
+            //     ->orWhere('ar_name', 'like', '%'.$request->filter_name.'%')
+            //     ->orWhere('phone', $request->filter_phone)
+            //     ->orWhere('iqama_id',$request->filter_iqama_id)
+            //     ->orWhere('id',$request->filter_id)
+            //     ->WhereBetween('created_at',[$request->filter_fromdate,$request->filter_todate])
+            //     ->get();
+            // }
+            
+            $filter_name      = $request->filter_name;
+            $filter_phone     = $request->filter_phone;
+            $filter_iqama_id  = $request->filter_iqama;
+            $filter_id        = $request->filter_id;
+            $filter_fromdate  = $request->filter_fromdate;
+            $filter_todate    = $request->filter_todate;
+
+            $patients = Patient::select('id','name','ar_name','birthday','address','phone','iqama_id','state')
+                ->when($filter_id, function ($query) use ($filter_id){
+                    return $query->where('id',$filter_id);
+                })->when($filter_phone, function ($query) use ($filter_phone){
+                    return $query->where('phone','like', '%'.$filter_phone.'%');
+                })->when($filter_name, function ($query) use ($filter_name){
+                    return $query->where('name', 'like', '%'.$filter_name.'%')
+                    ->orWhere('ar_name', 'like', '%'.$filter_name.'%');
+                })->when($filter_iqama_id, function ($query) use ($filter_iqama_id){
+                    return $query->where('iqama_id',$filter_iqama_id);
+                })->when($filter_fromdate, function ($query) use ($filter_fromdate){
+                    return $query->where('created_at','>=',$filter_fromdate );
+                })->when($filter_todate, function ($query) use ($filter_todate){
+                    return $query->where('created_at','<=',$filter_todate);
+                })->get();
+        }
+
+        foreach ($patients as $patient) {
+            $row=array();
+                //<th>ID</th>
+                $row[]=$patient->id;
+                //<th>Name</th>
+                $name=($patient->name && $patient->name!='NA')?'<a href="/profile/patient/'.$patient->id.'">'.$patient->name.'</a>':'';
+                $ar_name=($patient->ar_name)?'<a href="/profile/patient/'.$patient->id.'">'.$patient->ar_name.'</a>':'';
+                $row[]=$name.' '.$ar_name;
+                //<th>Email</th>
+                // $row[]=$patient->email;
+                //<th>Birthday</th>
+                /* $row[]=$patient->birthday;
+                //<th>Address</th>
+                $row[]=$patient->address; */
+                // <th>Phone</th>
+                $row[]=$patient->phone;
+                $row[]=$patient->iqama_id;
+                // <th>Status</th>
+                $status='Open';
+                $cssClass='success';
+                if($patient->state == 1){
+                    $status='Complete';
+                    $cssClass='warning';
+                }
+                $row[]='<span class="badge badge-light-'.$cssClass.'">'.$status.'</span>';
+                //Appointment
+                $btn_appointment='';
+                if($canAddApointment)
+                    $btn_appointment='<button type="button" onclick="_formAppointment(0,'.$patient->id.')" class="btn btn-sm btn-outline-primary">'.Helper::getSvgIconeByAction('NEW').' '.__('locale.book_appointment').'</button>';
+
+                $tb=$DbHelperTools->getAppointmentsPatient($patient->id);
+                $info='<p class="text-info"><strong>- '.$tb['nb_appointment'].'</strong> appointment(s)</p>';
+                $lastAppt=($tb['from'])?'<p class="text-primary">- Last appointment from: <strong>'.$tb['from'].'</strong> to : <strong>'.$tb['to'].'</strong></p>':'';
+                $row[]=$info.$lastAppt.$btn_appointment;
+                // <th>Actions</th>
+                $btn_view='<a class="btn btn-icon btn-sm btn-outline-primary" href="/profile/patient/'.$patient->id.'">'.Helper::getSvgIconeByAction('VIEW').'</a>';
+                $btn_edit='<button type="button" onclick="_formPatient('.$patient->id.')" class="btn btn-icon btn-sm btn-outline-primary">'.Helper::getSvgIconeByAction('EDIT').'</button>';
+                $btn_delete='<button class="btn btn-icon btn-sm btn-outline-primary" onclick="_deletePatient('.$patient->id.')" title="Delete">'.Helper::getSvgIconeByAction('DELETE').'</button>';
+                
+                
+                $row[]='<div class="btn-group">'.$btn_edit.$btn_view.$btn_delete.'</div>';
+            $data[]=$row;
+        }    
+        $result = [
+            'data' => $data,
+        ];
+        return response()->json($result);
+    }
+
+    public function formPatient($patient_id){
+        $patient=null;
+        $medicalconditionsList=Medicalcondition::all();
+        if ($patient_id > 0) {
+                $patient = Patient::find ( $patient_id );
+        }
+        return view('patient.form',compact('patient','medicalconditionsList'));
+    }
+
+    public function storeFormPatient(Request $request) {
+		$success = false;
+        $msg = 'Oops, something went wrong !';
+        if ($request->isMethod('post')) {
+            //dd($request->all());
+            //$DbHelperTools=new DbHelperTools();
+            $birthday_date =null;
+            if ($request->has('birthday') && isset($request->birthday)) {
+                $birthday_date = Carbon::createFromFormat('Y-m-d',$request->birthday);
+            }
+
+            $medical_conditions_list =null;
+            if ($request->has('medical_conditions') && isset($request->medical_conditions)) {
+                $medical_conditions_list = implode(";",$request->medical_conditions);
+            }
+            //dd($medical_conditions_list);
+            Patient::updateOrCreate(
+                [
+                    'id' => $request->id
+                ],
+                [
+                'name' => $request->name,
+                'ar_name' => $request->ar_name,
+                'email' => $request->email,
+                'birthday' => $birthday_date,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'state' => $request->state,
+                'nationality_type' => $request->nationality_type,
+                'nationality' => $request->nationality,
+                'iqama_id' => $request->iqama_id,
+                'medical_conditions' => $medical_conditions_list,
+            ]);
+            $success = true;
+            $msg = 'Your patient has been saved successfully';
+        }         
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg
+        ] );
+    }
+    public function deletePatient($id){
+        $success = false;
+        if($id>0){
+            //pr_procedure_service_items
+            Procedureserviceitem::where('patient_id', $id)->forceDelete();
+            //inv_invoice_payments
+            $idsInvoices=Invoice::select('id')->where('patient_id', $id)->pluck('id');
+            //dd($idsInvoices);
+            if(count($idsInvoices)>0){
+                Invoicepayment::whereIn('invoice_id', $idsInvoices)->forceDelete();
+                Invoicerefund::whereIn('invoice_id', $idsInvoices)->forceDelete();
+            }
+            Invoice::select('id')->where('patient_id', $id)->forceDelete();
+            //appointments
+            Appointment::where('patient_id', $id)->forceDelete();
+            Patient::where('id', $id)->forceDelete();
+            $success = true;
+        }
+        return response()->json(['success'=>$success]);
+    }
 }

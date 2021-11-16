@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Reception;
 
+use Auth;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Patient;
 use App\Models\Schedule;
 use App\Models\Appointment;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+
 use App\Library\Services\DbHelperTools;
+use Illuminate\Support\Facades\Storage;
 
 
 class HomeController extends Controller
@@ -72,7 +76,23 @@ class HomeController extends Controller
                                                 FROM appointments
                                         LEFT JOIN users ON appointments.doctor_id = users.id
                                         LEFT JOIN patients ON patients.id = appointments.patient_id'))->unique('d_id');
-        return view('reception', compact('events'));
+        // $this->calculateMyRate();
+        $doc_notifications = Notification::where(function ($query) {
+                           $query->where('message_type',10)
+                                 ->orWhere('message_type',12);
+                       })->where(function ($query) {
+                           $query->whereNull('read_users')
+                                 ->orWhere('read_users', 'not like', '%'.Auth::user()->username.'%');
+                       })
+                       ->get();
+
+        $pat_notifications = DB::table('reception_answers')
+            ->select('reception_answers.id', 'patients.name')
+            ->join('patients','reception_answers.patient_id','=','patients.id')
+            ->where('reception_answers.reception_id',Auth::user()->id)
+            ->where('reception_answers.answer',0)
+            ->get();
+        return view('reception', compact('events', 'doc_notifications','pat_notifications'));
     }
 
     public function getProfile($id) 
@@ -101,7 +121,9 @@ class HomeController extends Controller
 
     public function getDoctorappointmentCalender(Request $request){
         $events     = collect(DB::select('SELECT appointments.id, 
-                                                CONCAT(" ", patients.name) AS title, 
+                                                CONCAT(" ", patients.name, " ", patients.ar_name) AS title, 
+                                                CONCAT("", patients.ar_name) AS ar_name, 
+                                                CONCAT("", patients.name) AS name, 
                                                 appointments.start_time AS start, 
                                                 (appointments.start_time + INTERVAL appointments.duration MINUTE) AS end, 
                                                 (CASE WHEN users.id % 9 = 1 THEN "new_color_1"
@@ -123,9 +145,19 @@ class HomeController extends Controller
                                     $newData=[];
                                     if(count($events)>0){
                                         foreach($events as $e){
-                                            $newData[]=$e;
+                                            $e->title=($e->ar_name)?$e->ar_name:$e->name;
+                                            //$e->title=$e->name;
+                                            //dd($e->title);
+                                            if(isset($e->title) && !empty($e->title)){
+                                                $newData[]=$e;
+                                            }
                                         }
                                     }
+                                    /* $newData[]=array(
+                                        'title'=>'Event Title1',
+                                        'start'=>'2021-06-13T13:13:55.008',
+                                        'end'=>'2021-06-13T13:15:55.008'
+                                    ); */
                                     return response()->json($newData);
 
     }
@@ -137,15 +169,35 @@ class HomeController extends Controller
     public function getDoctorTimeSlots($doctor_id,$start_date){
         //Carbon::createFromFormat('Y-m-d H:i:s',$start_date)->dayOfWeek;
         //$number_day_of_week = $users = DB::table('doctor_schedules')->select('id','start_hour')->whereRaw(DB::raw('WEEKDAY(start_hour) = '.$number_day_of_week))->get();
-        $today=Carbon::now();  
+        /* $today=Carbon::now(); 
+        $tdnow=$today->format('Y-m-d'); 
         $bookedSlots = [];
-        $rsBookedSlots=Appointment::where('doctor_id',$doctor_id)->where('start_time','LIKE','%'.$start_date.'%')->pluck('start_time')->toArray();
+        $rsBookedSlots=Appointment::select('start_time','duration')->where('doctor_id',$doctor_id)->where('start_time','LIKE','%'.$start_date.'%')->get();
+        $DbHelperTools=new DbHelperTools();
         if(count($rsBookedSlots)>0){
-            foreach($rsBookedSlots as $date){
-                $dt=Carbon::createFromFormat('Y-m-d H:i:s',$date);
-                $bookedSlots[]=$dt->format('H:i');
+            foreach($rsBookedSlots as $rsB){
+                $dt=Carbon::createFromFormat('Y-m-d H:i:s',$rsB->start_time);
+                $start_time=Carbon::createFromFormat('Y-m-d H:i:s',$rsB->start_time);
+                $end_date=$start_time->addMinutes($rsB->duration);
+                //dump($dt->format('Y-m-d H:i'));
+                //dump($end_date->format('Y-m-d H:i'));
+                $newdates=$DbHelperTools->generateDateRange($dt->format('Y-m-d H:i'),$end_date->format('Y-m-d H:i'),1);
+                //dd($newdates);
+                if(count($newdates)>0){
+                    foreach($newdates as $data){
+                        foreach($data as $hm){
+                            $str=$tdnow.$hm;
+                            //dd($hm);
+                            $booked_dt=Carbon::createFromFormat('Y-m-d H:i:s',$str);
+                            $bookedSlots[]=$booked_dt->format('H:i');
+                        }
+                    }
+                }
+                
             }
-        }
+        } */
+        $DbHelperTools=new DbHelperTools();
+        $bookedSlots=$DbHelperTools->getBookedSlots($doctor_id,$start_date);
         //dd($bookedSlots);
         $day = strtoupper(Carbon::createFromFormat('Y-m-d',$start_date)->format('l'));
         //dd($day);
@@ -174,8 +226,8 @@ class HomeController extends Controller
         $current_time = date('Y-m-d H:i:s');
         $appointment = null;
         $patients = Patient::all();
-        $doctors = DB::select("SELECT officetimes.*, users.name, users.email FROM officetimes LEFT JOIN users ON users.id = officetimes.user_id GROUP BY user_id");
-
+        //$doctors = DB::select("SELECT officetimes.*, users.name, users.email FROM officetimes JOIN users ON users.id = officetimes.user_id GROUP BY user_id");
+        $doctors =User::where('user_type','doctor')->get();
         if ($appointment_id > 0) {
                 $appointment = Appointment::find ( $appointment_id );
         }
@@ -190,6 +242,7 @@ class HomeController extends Controller
             $start_time = Carbon::createFromFormat('Y-m-d H:i',$request->start_time.' '.$request->SLOT);
             $data = array(
                 'id'=>$request->id,
+                'appuser_id' => Auth::user()->id,
                 'patient_id'=>$request->patient_id,
                 'doctor_id'=>$request->doctor_id,
                 'start_time'=>$start_time,
@@ -198,6 +251,15 @@ class HomeController extends Controller
                 'status'=>$request->status,
             );
             $appointment_id=$DbHelperTools->manageAppointment($data);
+            $id_dp=$DbHelperTools->getDoctorPatientId($request->patient_id,$request->doctor_id);
+            if($appointment_id>0 && $id_dp==0){
+                $data_dp = array(
+                    'id'=>$id_dp,
+                    'patient_id'=>$request->patient_id,
+                    'doctor_user_id'=>$request->doctor_id,
+                );
+                $dp_id=$DbHelperTools->manageDoctorPatient($data_dp);
+            }
             $success = true;
             $msg = 'Your note have been saved successfully';
         }         
@@ -233,5 +295,18 @@ class HomeController extends Controller
         return response ()->json ( [ 
             'success' => true
         ] );
+    }
+
+    public function viewNotification($id) {
+        $notification = Notification::find($id);
+        $old_users = $notification->read_users;
+        $notification->read_users = $old_users . Auth::user()->username.",";
+        $notification->save();
+
+        return redirect('reception/appointment');
+    }
+
+    public function confirmAnswer(Request $request) {
+        $query = DB::table('reception_answers')->where('id',$request->id)->update(['answer'=>$request->flag]);
     }
 }

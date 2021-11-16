@@ -76,19 +76,20 @@ class RegisterController extends Controller
             'user_type' => 'none',
             'state' => 0,
         ]);
-       
+
     }
 
     public function customRegisterUser(Request $request)
     {
-        $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
+        // $responseRecaptcha=GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'),$request->getClientIp())->toArray();
         //dd($responseRecaptcha);
-        if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
+        // if($responseRecaptcha['success']==true && $responseRecaptcha['score']>= 0.6){
             $validate = \Validator::make($request->all(), [
                 'name' 		=> 'required',
                 'username'	 	=> 'required|max:255',
                 'password' 	=> 'required|confirmed|max:255'
             ]);
+
             if( $validate->fails()){
                 return redirect()
                 ->back()
@@ -102,8 +103,8 @@ class RegisterController extends Controller
                 'state' => 0,
             ]);
             return redirect('/register')->with('success', 'Successfully registered');
-        }else{
-            return redirect()->route('register')->with('error','ReCaptcha Error');
-        }
+        // }else{
+        //     return redirect()->route('register')->with('error','ReCaptcha Error');
+        // }
     }
 }

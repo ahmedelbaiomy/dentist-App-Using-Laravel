@@ -53,7 +53,7 @@ $app_title=config('global.app_title');
             <tr class="gray">
                 <td colspan="4">Doctor name : <strong>{{$doctor->name}}</strong></td>
                 <td>Assistant name : </td>
-                <td colspan="3">Date : </td>
+                <td colspan="3">Date : {{$today->format('Y-m-d')}}</td>
             </tr>
             @else
             <tr class="gray">

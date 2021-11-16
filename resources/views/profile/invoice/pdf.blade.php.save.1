@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice {{$invoice->number}} - Dentinizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
+
+    <style type="text/css">
+    body {
+        color: #6e6b7b !important;
+        font-size: 12px !important;
+        font-family: 'Montserrat' !important;
+    }
+
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #5e5873;
+    }
+
+    .mb-2 {
+        margin-bottom: 20px !important;
+    }
+
+
+    table {
+        /* font-size: x-small; */
+        font-size: 12px !important;
+    }
+
+    thead tr th {
+        background-color:/* #edf9fd */ !important;
+        font-weight: bold;
+        /* font-size: x-small; */
+        font-size: 12px !important;
+        border: 1px solid white;
+    }
+
+    tbody tr td {
+        /* font-size: x-small; */
+        font-size: 12px !important;
+        border: 1px solid white;
+    }
+
+    tfoot tr td {
+        font-weight: bold;
+        /* font-size: x-small; */
+        font-size: 12px !important;
+        border: 1px solid white;
+        background-color:/* #edf9fd */ !important;
+    }
+
+    .gray {
+        background-color:/* #F3F2F7 */;
+    }
+
+    .bg {
+        background-color: #3f596a;
+    }
+
+    .box-bill {
+        font-size: 30px !important;
+        background-color:/* #3f596a */;
+        color: #fff !important;
+        text-align: center;
+    }
+
+    .input {
+        background-color:/* #edf9fd */;
+        width: 280px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        direction: rtl;
+        height: 20px !important;
+	font-size: 15px !important;
+	font-weight: bold;
+    }
+   .output{
+	font-size: 12px; !important;
+	font-weight: bold;
+    }
+
+    hr {
+        border-top: 1px solid white /* #ebe9f1 */ !important;
+        overflow: visible !important;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0cm;
+        left: 1cm;
+        right: 1cm;
+        height: 1.5cm;
+    }
+    </style>
+
+</head>
+
+<body>
+    @php
+    $dtBillDate = Carbon\Carbon::createFromFormat('Y-m-d',$invoice->bill_date);
+    $dtIssueDate = Carbon\Carbon::createFromFormat('Y-m-d',$invoice->due_date);
+    $percent = '';
+    if($invoice->discount_amount_type=='percentage'){
+    $percent = '('.$invoice->discount_amount.'%)';
+    }
+    @endphp
+
+
+    <table width="100%">
+        <tr>
+            <td align="center">
+                <strong style="background-color:/* #3f596a; */ color:#fff;width:20px;border-radius: 30px;">س.ت
+                    1134101887</strong>
+            </td>
+            <td height="100px" valign="top" align="center">
+               </td>
+            <td align="center">
+                <p style="width:100%" class="box-bill" style="direction:ltr;text-align:center;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bill فاتورة
+                </p>
+            </td>
+        </tr>
+    </table>
+	<table style="border: 1px solid white; font-size:12px; font-weight: bold;" width="100%">
+		<tr>
+		 <td height="50px" align="center" style="margin-top: 1px;">
+			<p align="center">الرقم الضريبي 301008778100003</p>
+		 </td>
+		<td height="60px">
+		</td>
+		</tr>
+	</table>
+    <table width="100%">
+        <tr>
+            <td>
+                <p color="white"><strong>NAME : </strong></p>
+            </td>
+            <td class="input" align="center">#{{$invoice->number}}</td>
+            <td align="right">
+                <p color="white"> : <strong style="direction: rtl;">الإسم</strong></p>
+            </td>
+            <td>
+                <p color="white"><strong>BILL NO :</strong></p>
+            </td>
+            <td class="input" align="center">
+		{{($invoice->patient->ar_name)?$invoice->patient->ar_name:$invoice->patient->name}}
+		</td>
+            <td align="right">
+                <p color="white"> : <strong style="direction: rtl;">رقم الفاتورة</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p color="white"><strong>FILE NO. : </strong></p>
+            </td>
+            <td class="input">{{$dtBillDate->format('Y-m-d')}}
+            </td>
+            <td align="right">
+                <p color="white"> : <strong style="direction: rtl;">رقم الملف</strong></p>
+            </td>
+            <td>
+                <p color="white"><strong>TIME & DATE :</strong></p>
+            </td>
+            <td class="input" align="center">
+            </td>
+            <td align="right">
+                <p color="white"> : <strong style="direction: rtl;">التاريخ و الوقت</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p color="white"><strong>CLINIC : </strong></p>
+            </td>
+            <td class="input">
+            </td>
+            <td align="right">
+                <p color="white"> : <strong>العيادة</strong></p>
+            </td>
+            <td>
+                <p color="white"><strong>DOCTOR :</strong></p>
+            </td>
+            <td style="padding-top:2px;" class="input" align="center">
+               {{$invoice->user->name}
+            </td>
+            <td class="input" align="right">
+                <p color="white"> : <strong>الطبيب</strong></p>
+            </td>
+        </tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td style="padding-top:0px;" class="input">{{$invoice->user->name}} </td>
+		<td></td>
+	</tr>
+    </table>
+
+    <br>
+
+    <table style="border: 1px solid white;border-collapse: collapse;" width="100%">
+        <thead style="background-color: #edf9fd;">
+            <tr>
+                <td height="40px"></td>
+            </tr>
+            <tr>
+                <th width="120px" height="30px" align="center">
+                    <p color="white">تسلسل</p>
+                    <p color="white">SR. NO.</p>
+                </th>
+                <th width="100px" align="center">
+                    <p color="white">رقم الخدمة</p>
+                    <p color="white">ITEM NO.</p>
+                </th>
+                <th width="120" align="center">
+                    <p color="white">الوصف</p>
+                    <p color="white">DESCRIPTION</p>
+                </th>
+                <th align="center" width="100px">
+                    <p color="white">الكمية</p>
+                    <p color="white">QTY.</p>
+                </th>
+                <th width="55px" align="center">
+                    <p color="white">الإجمالي</p>
+                    <p color="white">TOT. AMOUNT</p>
+                </th>
+                <th width="" align="center">
+                    <p color="white">نسبة الخصم</p>
+                    <p color="white">DISC. %</p>
+                </th>
+                <th width="70px" align="center">
+                    <p color="white">قيمة الخصم</p>
+                    <p color="white">DISC. AMT</p>
+                </th>
+                <th width="55px" align="center">
+                    <p color="white">الصافي</p>
+                    <p color="white">NET AMTOUNT</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(count($items)>0)
+            @foreach($items as $k=>$item)
+            @php
+            $k++;
+            @endphp
+ 	    	    <tr>
+                <td height="25px" class="output" align="left">{{number_format($item->total,2)}} {{env('CURRENCY_SYMBOL')}}</td>
+                <td class="output" align="center">
+		<p>@if($calcul['discount_amount']>0){{$calcul['discount_amount']}} {{env('CURRENCY_SYMBOL')}}@endif</p>
+		</td>
+                <td class="output" align="right">{{number_format($item->rate,2)}} {{env('CURRENCY_SYMBOL')}}</td>
+                <td class="output" align="left"> <p>@if($calcul['discount_amount']>0){{$percent}}@endif</p></td>
+                <td class="output" align="right">{{$item->quantity}}</td>
+		<td class="output" align="right">
+	       	    <p>{{$item->service->service_name}}</p>
+                    <p>{{$item->note}}</p>
+	        </td>
+                <td class="output" align="center">{{$item->teeth_id}}{{$k}}</td>
+		<td align="right">{{$k}}</td>
+        	 </tr>
+            @endforeach
+            @endif
+
+	   @if(count($items)<5)
+           @for ($i = 0; $i < 5-count($items); $i++)
+            <tr>
+               <td height="20px" align="left"></td>
+               <td align="center"></td>
+               <td align="left"></td>
+	       <td align="left"></td>
+               <td align="left"></td>
+               <td align="center"></td>
+	       <td align="right"></td>
+               <td align="right"></td>
+            </tr>
+           @endfor
+           @endif
+       </tbody>
+	</table>
+<br>
+      <table style="border: 1px solid white;border-collapse: collapse; font-weight:bold;" width="100%">
+	    <tr>
+	    <td height="30px"></td>
+	    </tr>
+            <tr>
+                <td colspan="" align="left" height="30px">
+			 {{$calcul['total']}} {{env('CURRENCY_SYMBOL')}}
+          		@if($calcul['tax_amount']>0)<p>Tax ({{$invoice->tax_percentage}}%) : {{$calcul['tax_amount']}}
+                        {{env('CURRENCY_SYMBOL')}}</p>@endif
+		 </td>
+                <td></td>
+                <td></td>
+                <td colspan="2" align="center">
+                    <p color="white">المجموع</p>
+                    <p color="white">TOTAL</P>
+                </td>
+                <td colspan="2" align="right">
+               </td>
+            </tr>
+            <tr>
+                <td colspan="" align="left" height="50px">
+
+		</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		</tr>
+		<tr>
+		<td>
+		     @php
+                        $arrayPm=array(
+                            "Cash"=>"نقدي",
+                            "Credit card"=>"بطاقة الائتمان",
+                            "Mada"=>"مادا",
+			);
+                    @endphp
+                   <p>{{$calcul['total_paid']}} {{env('CURRENCY_SYMBOL')}} : {{$last_payment_method}} / {{ $arrayPm[$last_payment_method] }}</p>
+                </td>
+                 <td align="right" style="padding-bottom:0px;">
+                </td>
+                <td align="right">
+                    <p color="white">: شبكة</p>
+                    <p color="white">: SPAN</p>
+
+                </td>
+                <td colspan="2" align="center">
+                    <p color="white">المبلغ المتبقي</p>
+                    <p color="white">DUE AMOUNT</p>
+                </td>
+                <td colspan="2" align="right">
+                 </td>
+            </tr>
+	<tr>
+		<td align="left">
+		 @php
+                    $due_amount=$calcul['nnf_total']-$calcul['nnf_total_paid'];
+                    //dd($due_amount);
+                    @endphp
+                    <p>{{number_format($due_amount,2)}} {{env('CURRENCY_SYMBOL')}}</p>
+		</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+    </table>
+    <br>
+    @if(count($refunds)>0)
+    <table width="100%" style="border: 1px solid black;border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th colspan="3">Refunds</th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Raison</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($refunds as $refund)
+            @php
+            $refund_date =
+            Carbon\Carbon::createFromFormat('Y-m-d',$refund->refund_date);
+            @endphp
+            <tr>
+                <td>{{$refund_date->format('Y-m-d')}}</td>
+                <td align="center">{{number_format($refund->amount,2)}} {{env('CURRENCY_SYMBOL')}}</td>
+                <td>{{$refund->reason}}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    @endif
+    <br>
+    <table width="100%">
+        <tbody>
+            <tr>
+                <td style="border:0;">
+                    <p color="white">Note: <br>{{$invoice->note}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <footer>
+
+    </footer>
+
+</body>
+
+</html>

@@ -7,6 +7,7 @@
 <!-- <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
   <link rel="stylesheet" href="{{ asset('new-assets/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css') }}"> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="{{ asset('new-assets/js/select2/select2.min.css') }}" rel="stylesheet" />
 
 @endsection
 
@@ -21,11 +22,11 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Doctor Schedule Timings</h4>
+                <h4 class="card-title">{{ __('locale.schedule_timings') }}</h4>
 
                 <div class="form-group">
-                    <label for="select-doctos">Choose doctor</label>
-                    <select class="form-control" id="select-doctos">
+                    <label for="select-doctos">{{ __('locale.choose_doctor') }}</label>
+                    <select class="form-control js-select2" id="select-doctos">
                     </select>
                 </div>
 
@@ -42,7 +43,7 @@
                                     <li class="nav-item">
                                         <a onclick="_loadSchedules('MONDAY')" class="nav-link active" id="monday"
                                             data-toggle="pill" href="#CONTENT-MONDAY" aria-expanded="true" role="tab">
-                                            <span class="font-weight-bold">MONDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.MONDAY') }}</span>
                                         </a>
                                     </li>
 
@@ -50,7 +51,7 @@
                                     <li class="nav-item">
                                         <a onclick="_loadSchedules('TUESDAY')" class="nav-link" id="TUESDAY"
                                             data-toggle="pill" href="#CONTENT-TUESDAY" aria-expanded="false" role="tab">
-                                            <span class="font-weight-bold">TUESDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.TUESDAY') }}</span>
                                         </a>
                                     </li>
 
@@ -59,7 +60,7 @@
                                         <a onclick="_loadSchedules('WEDNESDAY')" class="nav-link" id="WEDNESDAY"
                                             data-toggle="pill" href="#CONTENT-WEDNESDAY" aria-expanded="false"
                                             role="tab">
-                                            <span class="font-weight-bold">WEDNESDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.WEDNESDAY') }}</span>
                                         </a>
                                     </li>
 
@@ -68,7 +69,7 @@
                                         <a onclick="_loadSchedules('THURSDAY')" class="nav-link" id="THURSDAY"
                                             data-toggle="pill" href="#CONTENT-THURSDAY" aria-expanded="false"
                                             role="tab">
-                                            <span class="font-weight-bold">THURSDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.THURSDAY') }}</span>
                                         </a>
                                     </li>
 
@@ -76,21 +77,21 @@
                                     <li class="nav-item">
                                         <a onclick="_loadSchedules('FRIDAY')" class="nav-link" id="FRIDAY"
                                             data-toggle="pill" href="#CONTENT-FRIDAY" aria-expanded="false" role="tab">
-                                            <span class="font-weight-bold">FRIDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.FRIDAY') }}</span>
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
                                         <a onclick="_loadSchedules('SATURDAY')" class="nav-link" id="SATURDAY"
                                             data-toggle="pill" href="#CONTENT-SATURDAY" aria-expanded="false" role="tab">
-                                            <span class="font-weight-bold">SATURDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.SATURDAY') }}</span>
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
                                         <a onclick="_loadSchedules('SUNDAY')" class="nav-link" id="SUNDAY"
                                             data-toggle="pill" href="#CONTENT-SUNDAY" aria-expanded="false" role="tab">
-                                            <span class="font-weight-bold">SUNDAY</span>
+                                            <span class="font-weight-bold">{{ __('locale.SUNDAY') }}</span>
                                         </a>
                                     </li>
 
@@ -167,11 +168,16 @@
 <script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <!-- <script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{{ asset('new-assets/js/select2/select2.min.js') }}"></script>
 @endsection
 @section('page-script')
 <script src="{{ asset('new-assets/js/main.js') }}"></script>
 <!-- Page js files -->
 <script>
+$(document).ready(function(){
+    $('.js-select2').select2();
+}); 
+
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),

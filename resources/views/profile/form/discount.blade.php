@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Type</label>
+                        <label>{{ __('locale.type') }}</label>
                         <select id="discount_type" name="discount_type" class="form-control form-control-sm" required>
                             @php
                             $selectedBeforeTax = ($row && $row->discount_type ==='before_tax')?'selected':'';
@@ -18,14 +18,14 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label for="discount_amount">Discount : <span class="text-danger">*</span></label>
+                        <label for="discount_amount">{{ __('locale.discount') }} : <span class="text-danger">*</span></label>
                         <input class="form-control form-control-sm" type="number" name="discount_amount"
                             value="{{ ($row)?$row->discount_amount:0 }}" id="discount_amount" required />
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group">
-                        <label>Mode</label>
+                        <label>{{ __('locale.mode') }}</label>
                         <select id="taxeOneSelect" name="discount_amount_type" class="form-control form-control-sm"
                             required>
                             @php
@@ -40,9 +40,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <button type="button" onclick="annulateDiscount();" class="btn btn-sm btn-outline-danger">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CANCEL')!!} Annuler</button>
+                    <button type="button" onclick="annulateDiscount();" class="btn btn-sm btn-outline-danger">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CANCEL')!!} {{ __('locale.cancel') }}</button>
                     <button type="button" onclick="$('#formDiscount').submit();"
-                        class="btn btn-sm btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('SAVE')!!} Save discount<span
+                        class="btn btn-sm btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('SAVE')!!} {{ __('locale.save') }}<span
                             id="BTN_SAVE_DISCOUNT"></span></button>
                 </div>
             </div>
@@ -68,7 +68,17 @@ $("#formDiscount").validate({
                     _showResponseMessage('success', result.msg);
                     $('#BLOCK_DISCOUNT').html('');
                 } else {
-                    _showResponseMessage('error', result.msg);
+                    //_showResponseMessage('error', result.msg);
+                    swal.fire({
+                        html: result.msg,
+                        icon: "error",
+                        customClass: {
+                            confirmButton: 'btn btn-primary',
+                            cancelButton: 'btn btn-outline-danger ml-1'
+                        },
+                        buttonsStyling: false,
+                        //timer: 1500
+                    }).then(function() {});
                 }
             },
             error: function(error) {

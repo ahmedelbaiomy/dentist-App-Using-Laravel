@@ -10,7 +10,9 @@ use App\Models\Doctor;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Appointment;
+use App\Models\Notification;
 use DateTime;
+use Auth;
 
 class AppointmentController extends Controller
 {
@@ -35,18 +37,27 @@ class AppointmentController extends Controller
         $c_hour = date("H");
         $current_time = date('Y-m-d H:i:s');
 
-        $patients = Patient::all();
-        $services = Service::all();
-        $doctors = DB::select("SELECT officetimes.*, users.name, users.email FROM officetimes
-                                    LEFT JOIN users ON users.id = officetimes.user_id
-                                    GROUP BY user_id");
+        /* $appointments = DB::table('appointments')
+            ->join('users', 'users.id', '=', 'appointments.doctor_id')
+            ->join('patients', 'patients.id', '=', 'appointments.patient_id')
+            ->select('appointments.*', 'users.name as doctor_name','users.email as doctor_email','patients.ar_name','patients.name')
+            ->get(); */
+        $doc_notifications = Notification::where('message_type',10)
+                        ->where(function ($query) {
+                           $query->whereNull('read_users')
+                                 ->orWhere('read_users', 'not like', '%'.Auth::user()->username.'%');
+                       })
+                       ->get();
 
-        $appointments = json_encode(DB::select("SELECT appointments.*, users.email as d_email, patients.email as p_email 
-                                                    FROM appointments
-                                                    LEFT JOIN users ON users.id = appointments.doctor_id
-                                                    LEFT JOIN patients ON patients.id = appointments.patient_id ORDER by appointments.id desc"));
-        
-        return view('reception.appointment',compact('appointments', 'patients', 'doctors', 'current_time' ));
+        $pat_notifications = DB::table('reception_answers')
+            ->select('reception_answers.id', 'patients.name')
+            ->join('patients','reception_answers.patient_id','=','patients.id')
+            ->where('reception_answers.reception_id',Auth::user()->id)
+            ->where('reception_answers.answer',0)
+            ->get();
+          //dd($appointments);  
+        //return view('reception.appointment',compact('appointments', 'doc_notifications', 'pat_notifications'));
+        return view('reception.appointment',compact('doc_notifications', 'pat_notifications'));
     }
 
 
@@ -58,6 +69,7 @@ class AppointmentController extends Controller
                 'id' => $data['id']
             ],
             [
+            'appuser_id' => Auth::user()->id,
             'patient_id' => $data['patient_id'],
             'doctor_id' => $data['doctor_id'],
             'start_time' => $data['start_time'],
@@ -155,8 +167,19 @@ class AppointmentController extends Controller
        // return response()->json(['state'=>true, 'start_time'=> $current_time ]);
     }
 
- 
-
+    public function change_appointment(Request $req) 
+    {
+        $success = false;
+        $msg = 'Oops, something went wrong !';
+        $appointment = Appointment::find($req->id);
+        $appointment->status = $req->value;
+        $appointment->save();
+        return response ()->json ( [ 
+            'success' => true,
+            'msg' => 'Saved successfully!'
+        ] );
+    } 
+    
     public function destroy($id)
     {
             $appointment = Appointment::findOrFail($id);

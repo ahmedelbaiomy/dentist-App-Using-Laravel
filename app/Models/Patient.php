@@ -11,9 +11,8 @@ class Patient extends Model
     use HasFactory,LogsActivity;
     public $table = 'patients';
 
-    protected static $logName = 'Patient';
+    protected static $logName       = 'Patient';
     protected static $logAttributes = ['*'];
 
-    protected $fillable = ['name','ar_name', 'email', 'birthday', 'address', 'phone', 'state'];
-    
+    protected $fillable = ['name','ar_name', 'email', 'birthday', 'address', 'phone', 'state','nationality_type','nationality','iqama_id','medical_conditions'];    
 }

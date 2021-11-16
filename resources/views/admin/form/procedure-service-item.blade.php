@@ -4,6 +4,7 @@
 <input type="hidden" name="teeth_id" value="{{ ($item)?$item->teeth_id:$teeth_id }}" />
 <!-- <input type="hidden" name="doctor_id" value="{{ ($item)?$item->doctor_id:$doctor_id }}" /> -->
 
+
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
@@ -13,6 +14,8 @@
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
@@ -61,7 +64,7 @@
         <div class="form-group">
             <label for="select_types">Type</label>
             <select class="form-control form-control-sm" id="select_types" name="type">
-                <option value="existing" {{ ($item)?(($item->type=='existing')?'selected':''):'' }}>Existing</option>
+                <!-- <option value="existing" {{ ($item)?(($item->type=='existing')?'selected':''):'' }}>Existing</option> -->
                 <option value="planned" {{ ($item)?(($item->type=='planned')?'selected':''):'' }}>Planned</option>
                 <option value="completed" {{ ($item)?(($item->type=='completed')?'selected':''):'' }}>Completed</option>
             </select>

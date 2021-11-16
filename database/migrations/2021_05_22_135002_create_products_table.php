@@ -19,6 +19,8 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->double('price',8,2);
             $table->boolean('is_active')->default(true);
+            $table->integer('odoo_id')->nullable();
+            $table->string('category')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

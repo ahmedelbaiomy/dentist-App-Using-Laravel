@@ -7,10 +7,15 @@ use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Schedule;
 use App\Models\Appointment;
+use App\Models\DoctorQuestion;
+use App\Models\DoctorProfile;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Library\Services\DbHelperTools;
+
+use Auth;
 
 
 class DoctorController extends Controller
@@ -36,12 +41,17 @@ class DoctorController extends Controller
         // $doctors = User::all()->where('user_type', 'doctor');
         // return view('admin.users',compact('users'));
 
-        $doctors = DB::table('users')
+        /* $doctors = DB::table('users')
             ->leftJoin('doctors', 'users.id', '=', 'doctors.user_id')
             ->select('users.id', 'users.name', 'users.email', 'users.state', 'doctors.id AS d_id', 'doctors.birthday', 'doctors.address', 'doctors.phone', 'doctors.birthday','doctors.target')
             ->where('users.user_type', '=', 'doctor')
             ->groupBy('users.id')
-            ->get();
+            ->get(); */
+
+            $doctors = DB::table('doctors')
+            ->join('users', 'users.id', '=', 'doctors.user_id')
+            ->select('doctors.*', 'users.name','users.email as doctor_email','users.state')->get();    
+        
         return view('admin.doctor', compact('doctors'));
     }
 
@@ -91,9 +101,11 @@ class DoctorController extends Controller
             ->where('users.user_type', '=', 'doctor')
             ->groupBy('users.id')
             ->get();
+        //$rows =Doctor::select('id','user_id')->get();
+
         if(count($rows)>0){
             foreach($rows as $doctor){
-                $result[]=['id'=>$doctor->id,'name'=>$doctor->email];
+                $result[]=['id'=>$doctor->id,'name'=>$doctor->name];
             }
         }
         return response()->json($result);
@@ -174,4 +186,110 @@ class DoctorController extends Controller
         }
         return response()->json(['success'=>$success]);
       }
+
+    public function profile() {
+        $doctors = DB::select("SELECT q.rate_date, q.rate, u.id, u.name FROM doctor_profiles q INNER JOIN ( SELECT max( id ) AS id FROM doctor_profiles GROUP BY user_id ) m ON q.id = m.id RIGHT JOIN users u ON q.user_id = u.id WHERE u.user_type = 'doctor'");
+        
+        return view('admin.doctor_profile', compact('doctors'));
+    }    
+    public function questions() {
+        $questions = DoctorQuestion::all();    
+        
+        return view('admin.doctor_questions', compact('questions'));
+    }
+    public function question_save(Request $req) {
+        if(empty($req->sel_id)){
+            $question = new DoctorQuestion();
+        }else{
+            $question = DoctorQuestion::find($req->sel_id);
+        }
+        $question->question = $req->question;
+        $question->save();
+        return response ()->json ( [ 
+                'success' => true,
+                'msg' => 'Question have been saved successfully.' 
+        ] );
+    }
+    public function question_delete(Request $req){
+        DoctorQuestion::destroy($req->id);
+
+        return response ()->json ( [ 
+                'success' => true,
+                'msg' => 'Question have been deleted successfully.' 
+        ] );
+    }
+    // [{"quetion_id":1, "answer":1}, {"quetion_id":2, "answer":0}]
+    public function get_rate($id) {
+        $rate = DoctorProfile::where('user_id', $id)->orderBy('created_at', 'desc')->first();
+        if($rate && $rate->count()>0){
+            $return_data = '';
+            $rate_data = json_decode($rate->rate_data);
+            foreach($rate_data as $row) {
+                $return_data .= '<tr>';
+                $question_string = DoctorQuestion::find($row->question_id)->question;
+                $return_data .= "<td>$question_string</td>";
+                $return_data .= '<td><div class="d-flex justify-content-start"><div class="custom-control custom-radio mr-1"><input type="radio" name="answer_'.$row->question_id.'" id="answer_'.$row->question_id.'_yes" class="custom-control-input" value="YES"'.($row->answer=="YES"?"checked":"").'><label class="custom-control-label" for="answer_'.$row->question_id.'_yes"> YES </label></div><div class="custom-control custom-radio"><input type="radio" name="answer_'.$row->question_id.'" id="answer_'.$row->question_id.'_no" class="custom-control-input" value="NO"'.($row->answer=="NO"?"checked":"").'><label class="custom-control-label" for="answer_'.$row->question_id.'_no"> NO </label></div></div></td></tr>';
+            }
+            return $return_data;
+        }else{
+            $questions = DoctorQuestion::limit(10)->get();
+            $return_data = '';
+            foreach($questions as $question) {
+                $return_data .= '<tr>';
+                $question_string = $question->question;
+                $return_data .= "<td>$question_string</td>";
+                $return_data .= '<td><div class="d-flex justify-content-start"><div class="custom-control custom-radio mr-1"><input type="radio" name="answer_'.$question->id.'" id="answer_'.$question->id.'_yes" class="custom-control-input" value="YES" checked><label class="custom-control-label" for="answer_'.$question->id.'_yes"> YES </label></div><div class="custom-control custom-radio"><input type="radio" name="answer_'.$question->id.'" id="answer_'.$question->id.'_no" class="custom-control-input" value="NO"><label class="custom-control-label" for="answer_'.$question->id.'_no"> NO </label></div></div></td></tr>';
+            }
+            return $return_data;
+        }
+    }
+
+    public function profile_save(Request $req) {
+        $doctor_id = $req->sel_id;
+        $rate_fetch = DoctorProfile::where('user_id', $doctor_id)->where('rate_date', now()->toDateString());
+        $success = false;
+        $msg = 'Oops, something went wrong !';
+        $answers = array_filter($req->input(), function($k){
+            return str_starts_with($k, 'answer');
+        },ARRAY_FILTER_USE_KEY);
+        $rate_data = array();
+        $rate = 0;
+        foreach($answers as $key=>$val) {
+            $question_id = explode("_", $key);
+            $rate_data[] = ['question_id'=>$question_id[1], "answer"=>$val];
+            if($val=="YES") $rate += 10;
+        }
+        $profile = null;
+        if($rate_fetch->count()>0) {
+            $data = $rate_fetch->first();
+            $current_id = $data->id;
+            $profile = DoctorProfile::find($current_id);
+        }else{
+            $profile = new DoctorProfile();
+        }
+        $profile->user_id = $doctor_id;
+        $profile->rate_date = now()->toDateString();
+        $profile->rate_data = json_encode($rate_data);
+        $profile->rate = $rate;
+        $profile->save();            
+        $success = true;
+        $msg = 'Rated Successfully!';
+        if($rate<80) {
+            $prev_notif = Notification::where('to_id',$doctor_id)->where('message_type', 11)->where('is_read',0)->where('created_at', 'like', date('Y-m-d').'%')->count();
+            if($prev_notif==0){
+                $notif = new Notification();
+                $notif->owner_id = Auth::user()->id;
+                $notif->owner_type = 'App\Models\DoctorProfile';
+                $notif->notification = 'Your rate is less than '.$rate.'%';
+                $notif->to_id = $doctor_id;
+                $notif->message_type = 11;
+                $notif->save();
+            }
+        }
+
+        return response ()->json ( [ 
+                'success' => $success,
+                'msg' => $msg 
+        ] );
+    }
 }

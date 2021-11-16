@@ -15,6 +15,7 @@ class Invoice extends Model
     protected static $logName = 'Invoice';
     protected static $logAttributes = ['*'];
 
+
     public function user()
     {
         return $this->belongsTo(User::class,'doctor_id');
@@ -22,5 +23,9 @@ class Invoice extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class,'patient_id');
+    }
+    public function method()
+    {
+        return $this->hasMany(Invoiceitem::class,'invoice_id');
     }
 }

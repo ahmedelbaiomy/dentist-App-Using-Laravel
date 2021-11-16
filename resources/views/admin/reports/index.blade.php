@@ -25,7 +25,7 @@ $dtNow = Carbon\Carbon::now();
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Reports</h4>
+                <h4 class="card-title">{{ __('locale.reports') }}</h4>
                 <!-- begin custom range -->
                 <div class="row">
                     <div class="col-md-4">
@@ -36,7 +36,7 @@ $dtNow = Carbon\Carbon::now();
                                     name="filter_range" placeholder="" aria-describedby="button-filter" />
                                 <div class="input-group-append" id="button-filter">
                                     <button class="btn btn-outline-primary " type="button" onclick="range_filters()"><i
-                                            data-feather="search"></i> Search</button>
+                                            data-feather="search"></i> {{ __('locale.search') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -49,13 +49,13 @@ $dtNow = Carbon\Carbon::now();
                             <select class="form-control form-control-sm js-select2" id="select_doctors"
                                 name="doctor_id">
                             </select>
-                            <small>Select doctor</small>
+                            <small>{{ __('locale.select_doctor') }}</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="btn-group float-right" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-outline-primary "
-                                onclick="quick_filters('reset')">Reset</button>
+                                onclick="quick_filters('reset')">{{ __('locale.reset') }}</button>
                             <button class="btn btn-outline-primary  dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -63,17 +63,17 @@ $dtNow = Carbon\Carbon::now();
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('today')">Today</a>
+                                    onclick="quick_filters('today')">{{ __('locale.today') }}</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('yesterday')">Yesterday</a>
+                                    onclick="quick_filters('yesterday')">{{ __('locale.yesterday') }}</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('last_7_days')">Last 7 Days</a>
+                                    onclick="quick_filters('last_7_days')">{{ __('locale.last_7_days') }}</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('last_30_days')">Last 30 Days</a>
+                                    onclick="quick_filters('last_30_days')">{{ __('locale.last_30_days') }}</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('this_month')">This month</a>
+                                    onclick="quick_filters('this_month')">{{ __('locale.this_month') }}</a>
                                 <a class="dropdown-item" href="javascript:void(0);"
-                                    onclick="quick_filters('last_month')">Last Month</a>
+                                    onclick="quick_filters('last_month')">{{ __('locale.last_month') }}</a>
                                 <!-- <a class="dropdown-item" href="javascript:void(0);"
                                     onclick="quick_filters('this_year')">This year</a> -->
                             </div>
@@ -85,15 +85,23 @@ $dtNow = Carbon\Carbon::now();
                 <!-- endcustom range -->
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <p class="font-weight-bolder">Selected filter date : <span class="badge badge-light-primary" id="current_filter_date"></span></p>
+                    <div class="col-md-6">
+                        <p class="font-weight-bolder">{{ __('locale.selected_filter_date') }} : <span class="badge badge-light-primary" id="current_filter_date"></span></p>
+                    </div>
+
+                    <div class="col-md-8">
+{{-- Download report pdf --}}
+                        <a style="float:left;" target="_blank" href="{{route('admin.report.doctor',['doctor_id'=>0,'mode'=>1])}}"  id="report_service" title="daily report all doctors" class="btn btn-icon btn-outline-warning ml-1"><i data-feather="download"></i> {{ __('locale.Download_Report_PDF') }}</a>
                     </div>
                 </div>
+
+
+
 
             </div>
         </div>
     </div>
-    
+
 </div>
 <!-- FILTER FORM -->
 
@@ -104,7 +112,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="payments">0</h4>
-                <p class="card-text">Payments</p>
+                <p class="card-text">{{ __('locale.payments') }}</p>
             </div>
         </div>
     </div>
@@ -112,7 +120,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="appointments">0</h4>
-                <p class="card-text">Appointments</p>
+                <p class="card-text">{{ __('locale.appointments') }}</p>
             </div>
         </div>
     </div>
@@ -120,7 +128,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="procedures">0</h4>
-                <p class="card-text">Procedures</p>
+                <p class="card-text">{{ __('locale.procedures') }}</p>
             </div>
         </div>
     </div>
@@ -128,7 +136,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="invoices">0</h4>
-                <p class="card-text">Invoices</p>
+                <p class="card-text">{{ __('locale.invoices') }}</p>
             </div>
         </div>
     </div>
@@ -136,7 +144,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="bookings">0</h4>
-                <p class="card-text">Bookings</p>
+                <p class="card-text">{{ __('locale.bookings') }}</p>
             </div>
         </div>
     </div>
@@ -144,7 +152,7 @@ $dtNow = Carbon\Carbon::now();
         <div class="card text-center">
             <div class="card-body">
                 <h4 class="font-weight-bolder" id="patients">0</h4>
-                <p class="card-text">Patients</p>
+                <p class="card-text">{{ __('locale.patients') }}</p>
             </div>
         </div>
     </div>
@@ -159,20 +167,20 @@ $dtNow = Carbon\Carbon::now();
             <div
                 class="card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start">
                 <div>
-                    <h4 class="card-title mb-1">Finances</h4>
+                    <h4 class="card-title mb-1">{{ __('locale.finances') }}</h4>
                     <span class="cursor-pointer mr-1">
                         <!-- <span class="bullet bullet-primary align-middle bullet-sm">&nbsp;</span> -->
-                        <span class="align-middle cursor-pointer" onclick="_loadFinancialsDataChart(0);">All</span>
+                        <span class="align-middle cursor-pointer" onclick="_loadFinancialsDataChart(0);">{{ __('locale.all') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet bullet-primary align-middle bullet-sm">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadFinancialsDataChart(1);">Production</span>
+                            onclick="_loadFinancialsDataChart(1);">{{ __('locale.production') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet bullet-sm align-middle" style="background-color: #28c76f">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadFinancialsDataChart(2);">Collection</span>
+                            onclick="_loadFinancialsDataChart(2);">{{ __('locale.collection') }}</span>
                     </span>
                 </div>
             </div>
@@ -180,38 +188,79 @@ $dtNow = Carbon\Carbon::now();
                 <div id="finances-column-chart"></div>
                 <!-- finance stats -->
                 <div class="row">
-                    <div class="col-md-3">
+
+                    <div class="col-md-2">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_production">0</h4>
-                                <p class="card-text">Production</p>
+                                <p class="card-text">{{ __('locale.production') }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+
+                    <div class="col-md-2">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_collection">0</h4>
-                                <p class="card-text">Collection</p>
+                                <p class="card-text">{{ __('locale.collection') }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+
+                    <div class="col-md-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_remaining">0</h4>
+                                <p class="card-text">{{ __('locale.remaining') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_cash">0</h4>
+                                <p class="card-text">{{ __('locale.cash') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_mada">0</h4>
+                                <p class="card-text">{{ __('locale.mada') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h4 class="font-weight-bolder" id="chart_stats_credit">0</h4>
+                                <p class="card-text">{{ __('locale.credit') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_discounts">0</h4>
-                                <p class="card-text">Discounts</p>
+                                <p class="card-text">{{ __('locale.discounts') }}</p>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_taxes">0</h4>
-                                <p class="card-text">Taxes</p>
+                                <p class="card-text">{{ __('locale.taxes') }}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
                 </div>
 
             </div>
@@ -220,6 +269,101 @@ $dtNow = Carbon\Carbon::now();
 </div>
 <!-- Row finances Chart Starts -->
 
+{{-- #####################################################################################################################3 --}}
+<div class="table-responsive">
+    <table class="datatable table table-bordered">
+        <thead>
+            <tr>
+                <th>{{ __('locale.name') }}</th>
+                <th>{{ __('locale.birthday') }}</th>
+                <th>{{ __('locale.address') }}</th>
+                <th>{{ __('locale.phone') }}</th>
+                <th>{{ __('locale.status') }}</th>
+                <th>{{ __('locale.target') }} ({{__('locale.'.env('CURRENCY_SYMBOL')) }})</th>
+                <th>
+                {{ __('locale.actions') }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{-- @foreach($doctors as $doctor)
+            <tr>
+                <td><span>{{ $doctor->name }}</span></td>
+                <td><span>{{ $doctor->birthday }}</span></td>
+                <td><span>{{ $doctor->address }}</span></td>
+                <td><span>{{ $doctor->phone }}</span></td>
+                <td>
+                    @if($doctor->state == 1)
+                    <span class="tb-status text-success">Verified</span>
+                    @elseif($doctor->state == 0)
+                    <span class="tb-status text-warning">Pending</span>
+                    @elseif($doctor->state == 2)
+                    <span class="tb-status text-danger">Suspend</span>
+                    @endif
+                </td>
+                <td><span>{{ $doctor->target }}</span></td>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+                        <a href="" data-toggle="modal" data-target="#set_target_modal" data-id="{{ json_encode($doctor) }}" title="Set Target" class="btn btn-icon btn-sm btn-outline-primary">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('CREDIT-CARD')!!}</a>
+                        <a href="/report/pdf/doctor/daily/{{ $doctor->id }}/1" target="_blank" title="Download daily report" class="btn btn-icon btn-sm btn-outline-warning">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('DOWNLOAD')!!}</a>
+                        <button class="btn btn-icon btn-sm btn-outline-primary" onclick="_formDoctor({{ $doctor->id }})" title="Edit">{!!\App\Library\Helpers\Helper::getSvgIconeByAction('EDIT')!!}</button>
+                    </div>
+                </td>
+            </tr>
+            @endforeach --}}
+        </tbody>
+    </table>
+</div>
+
+
+
+{{--
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="set_target_modal">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="basicModalLabel">Set Target</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="s_doctor_id" name="s_doctor_id">
+                <input type="hidden" id="s_user_id" name="s_user_id">
+                <div class="row gy-4">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="display-name">Email*</label>
+                            <input type="text" id="s_email" name="s_email" class="form-control form-control-lg"
+                                placeholder="Enter Email" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label" for="default-05">Target({{env('CURRENCY_SYMBOL')}})</label>
+                            <div class="form-control-wrap">
+                                <input type="number" min="1" max="9999999999" id="s_target" name="s_target"
+                                    class="form-control form-control-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .modal-body -->
+            <div class="modal-footer">
+                <button href="#" class="btn btn-primary" id="target_set_btn"><i data-feather="save"></i>&nbsp;Set</button>
+                <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+            </div>
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div><!-- .modal -->
+
+
+<x-modal-form id="modal_form_doctor" formName="DOCTOR" content="modal_form_doctor_content" /> --}}
+
+{{-- ##################################################################################################################### --}}
 <!-- Row appointments Chart Starts -->
 <div class="row">
     <div class="col-md-12">
@@ -227,30 +371,30 @@ $dtNow = Carbon\Carbon::now();
             <div
                 class="card-header d-flex flex-md-row flex-column justify-content-md-between justify-content-start align-items-md-center align-items-start">
                 <div>
-                    <h4 class="card-title mb-1">Appointments</h4>
+                    <h4 class="card-title mb-1">{{ __('locale.appointments') }}</h4>
                     <span class="cursor-pointer mr-1">
                         <!-- <span class="bullet bullet-primary align-middle bullet-sm">&nbsp;</span> -->
-                        <span class="align-middle cursor-pointer" onclick="_loadAppointmentsDataChart(0);">All</span>
+                        <span class="align-middle cursor-pointer" onclick="_loadAppointmentsDataChart(0);">{{ __('locale.all') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet align-middle bullet-sm" style="background-color: #7367f0">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadAppointmentsDataChart(1);">Booked</span>
+                            onclick="_loadAppointmentsDataChart(1);">{{ __('locale.booked') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet bullet-sm align-middle" style="background-color: #00cfe8">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadAppointmentsDataChart(2);">Confirmed</span>
+                            onclick="_loadAppointmentsDataChart(2);">{{ __('locale.confirmed') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet bullet-sm align-middle" style="background-color: #ea5455">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadAppointmentsDataChart(3);">Canceled</span>
+                            onclick="_loadAppointmentsDataChart(3);">{{ __('locale.canceled') }}</span>
                     </span>
                     <span class="cursor-pointer mr-1">
                         <span class="bullet bullet-sm align-middle" style="background-color: #ff9f43">&nbsp;</span>
                         <span class="align-middle cursor-pointer"
-                            onclick="_loadAppointmentsDataChart(4);">Attended</span>
+                            onclick="_loadAppointmentsDataChart(4);">{{ __('locale.attended') }}</span>
                     </span>
                 </div>
             </div>
@@ -262,7 +406,7 @@ $dtNow = Carbon\Carbon::now();
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_booked">0</h4>
-                                <p class="card-text">Booked</p>
+                                <p class="card-text">{{ __('locale.booked') }}</p>
                             </div>
                         </div>
                     </div>
@@ -270,7 +414,7 @@ $dtNow = Carbon\Carbon::now();
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_confirmed">0</h4>
-                                <p class="card-text">Confirmed</p>
+                                <p class="card-text">{{ __('locale.confirmed') }}</p>
                             </div>
                         </div>
                     </div>
@@ -278,7 +422,7 @@ $dtNow = Carbon\Carbon::now();
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" style="color:#ea5455;" id="chart_stats_canceled">0</h4>
-                                <p class="card-text" style="color:#ea5455;">Canceled</p>
+                                <p class="card-text" style="color:#ea5455;">{{ __('locale.canceled') }}</p>
                             </div>
                         </div>
                     </div>
@@ -286,7 +430,7 @@ $dtNow = Carbon\Carbon::now();
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="font-weight-bolder" id="chart_stats_attended">0</h4>
-                                <p class="card-text">Attended</p>
+                                <p class="card-text">{{ __('locale.attended') }}</p>
                             </div>
                         </div>
                     </div>
@@ -304,6 +448,29 @@ $dtNow = Carbon\Carbon::now();
 <script src="{{ asset('new-assets/app-assets/vendors/js/charts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
 <script src="{{ asset('new-assets/js/select2/select2.min.js') }}"></script>
+
+
+{{-- ############################################## --}}
+<script src="{{ asset('new-assets/app-assets/vendors/js/forms/validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.buttons.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js') }}"></script>
+<!-- responsive -->
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/tables/datatable/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
+
+
+<script src="{{ asset('assets/plugins/datepicker/js/picker.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/picker.date.js') }}"></script>
+<script src="{{ asset('assets/plugins/datepicker/js/custom-picker.js') }}"></script>
+<script src="{{ asset('new-assets/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+
+
+{{-- ############################################## --}}
 @endsection
 @section('page-script')
 @php
@@ -324,7 +491,58 @@ $(document).ready(function() {
         mode: 'range',
         defaultDate: ['{{$start_custom_range}}', '{{$end_custom_range}}']
     });
+
+
 });
+
+
+
+
+function quick_filters(type) {
+    $('#INPUT_QUICK').val(type);
+    var selected_filter=type;
+    if (type != 'reset') {
+        $('#custom-range').val('');
+    } else {
+        $('#INPUT_QUICK').val('');
+        var filter_range = '{{$start_custom_range}} to {{$end_custom_range}}';
+        $('#custom-range').val(filter_range);
+    }
+    _update_current_selected_filter_date();
+    $("#formFilterStats").submit();
+}
+
+
+
+$("#report_service").submit(function(event) {
+    event.preventDefault();
+    $("#select_doctors").removeClass('d-none');
+    var doctor_id = $('#select_doctors').val();
+    var url = '{{route('admin.report.doctor',['doctor_id'=>0,'mode'=>1])}}';
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        data: {
+            url : url,
+            doctor_id : doctor_id
+        },
+        success: function(response) {
+
+            $('#payments').html(response.payments);
+            $('#appointments').html(response.appointments);
+            $('#procedures').html(response.procedures);
+            $('#invoices').html(response.invoices);
+            $('#bookings').html(response.bookings);
+            $('#patients').html(response.patients);
+        },
+    })
+    return false;
+});
+
+
+
+
+
 
 $('#select_doctors').on('change', function() {
     _update_current_selected_filter_date();
@@ -333,7 +551,7 @@ $('#select_doctors').on('change', function() {
 
 function quick_filters(type) {
     $('#INPUT_QUICK').val(type);
-    var selected_filter=type; 
+    var selected_filter=type;
     if (type != 'reset') {
         $('#custom-range').val('');
     } else {
@@ -529,7 +747,7 @@ function _loadDatasDoctorsForSelectOptions(select_id, doctor_id, selected_value 
 }
 
 function _loadFinancialsDataChart(type_data) {
-    
+
     $('#chart_stats_production, #chart_stats_collection, #chart_stats_discounts, #chart_stats_taxes').html('<span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>');
     var doctor_id = $('#select_doctors').val();
     var filter_range = $('#custom-range').val();
@@ -558,10 +776,15 @@ function _loadFinancialsDataChart(type_data) {
                 }
             ]);
             //chart stats
+
             $('#chart_stats_production').html(response.stats.production);
             $('#chart_stats_collection').html(response.stats.collection);
-            $('#chart_stats_discounts').html(response.stats.discounts);
-            $('#chart_stats_taxes').html(response.stats.taxes);
+            $('#chart_stats_remaining').html(response.stats.remaining)
+            $('#chart_stats_cash').html(response.stats.cash);
+            $('#chart_stats_mada').html(response.stats.mada);
+            $('#chart_stats_credit').html(response.stats.credit);
+            // $('#chart_stats_discounts').html(response.stats.discounts);
+            // $('#chart_stats_taxes').html(response.stats.taxes);
         },
     });
 }

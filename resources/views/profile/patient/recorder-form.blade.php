@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h5>Record audio : </h5>
+        <h5>{{ __('locale.record_audio') }} : </h5>
         <!-- recoder -->
         <div class="mb-2" id="controls">
             <button id="recordButton" type="button" data-toggle="tooltip" data-placement="top" title="Recorde"

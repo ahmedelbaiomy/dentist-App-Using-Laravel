@@ -21,7 +21,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Administer Database Backups</h4>
+                <h4 class="card-title">{{ __('locale.backup') }}</h4>
                 <div class="row">
                     <!-- <div class="col-md-12 clearfix">
                         <a id="create-new-backup-button" href="{{ url('/admin/backup/create') }}"
@@ -32,11 +32,8 @@
                     </div> -->
 
                     <div class="col-md-12">
-                        <p>Download a zipped copy of your entire site or a part of your site that you can save to your
-                            computer. When you backup your website, you have an extra copy of your information in case
-                            something happens to your host.</p>
-                        <p>You have an automatically generated backups that are currently available. This feature is
-                            enabled in your server.</p>
+                        <p>{{ __('locale.text_backup_1') }}</p>
+                        <p>{{ __('locale.text_backup_2') }}</p>
                     </div>
 
                     <div class="col-md-12">
@@ -117,7 +114,7 @@
 
                         @else
                         <div class="well">
-                            <h4>There are no backups</h4>
+                            <h4>{{ __('locale.there_are_no_backup') }}</h4>
                         </div>
                         @endif
                     </div>

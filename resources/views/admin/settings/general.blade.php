@@ -18,20 +18,20 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">General Settings</h4>
+                <h4 class="card-title">{{ __('locale.general') }}</h4>
                 <form id="FORM_GENERAL_SETTINGS">
                     {{ csrf_field() }}
 
                     <div class="form-group row">
-                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Site logo</label>
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.site_logo') }}</label>
                         <div class="col-sm-4">
                             <div class="custom-file b-form-file">
                                 <input type="file" class="custom-file-input" id="site_logo" name="site_logo"
-                                    style="z-index: -5;"><label data-browse="Browse" class="custom-file-label"
+                                    style="z-index: -5;"><label data-browse="{{ __('locale.browse') }}" class="custom-file-label"
                                     for="site_logo">
                                     <span class="d-block form-file-text"
-                                        style="pointer-events: none;">Choose a file or drop it here...</span></label>
-                                        <small class="text-info">size : 148 x 99 px</small>
+                                        style="pointer-events: none;">{{ __('locale.choose_file_or_drop_it_here') }}...</span></label>
+                                        <small class="text-info">{{ __('locale.size') }} : 148 x 99 px</small>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -49,15 +49,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Sidebar logo</label>
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.sidebar_logo') }}</label>
                         <div class="col-sm-4">
                             <div class="custom-file b-form-file">
                                 <input type="file" class="custom-file-input" id="sidebar_logo" name="sidebar_logo"
                                     style="z-index: -5;">
-                                    <label data-browse="Browse" class="custom-file-label"
+                                    <label data-browse="{{ __('locale.browse') }}" class="custom-file-label"
                                     for="sidebar_logo"><span class="d-block form-file-text"
-                                        style="pointer-events: none;">Choose a file or drop it here...</span></label>
-                                        <small class="text-info">size : 122 x 26 px</small>
+                                        style="pointer-events: none;">{{ __('locale.choose_file_or_drop_it_here') }}...</span></label>
+                                        <small class="text-info">{{ __('locale.size') }} : 122 x 26 px</small>
                             </div>
                             
                         </div>
@@ -72,13 +72,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Favicon</label>
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.favicon') }}</label>
                         <div class="col-sm-4">
                             <div class="custom-file b-form-file">
                                 <input type="file" class="custom-file-input" id="favicon" name="favicon"
-                                    style="z-index: -5;"><label data-browse="Browse" class="custom-file-label"
+                                    style="z-index: -5;"><label data-browse="{{ __('locale.browse') }}" class="custom-file-label"
                                     for="favicon"><span class="d-block form-file-text"
-                                        style="pointer-events: none;">Choose a file or drop it here...</span></label>
+                                        style="pointer-events: none;">{{ __('locale.choose_file_or_drop_it_here') }}...</span></label>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -86,29 +86,25 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Show logo in
-                            signin
-                            page (login)</label>
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.show_logo_in_signup_page') }}</label>
                         <div class="col-sm-4">
                             <select class="form-control form-control-sm" name="show_logo_in_signin_page">
-                                <option {{($show_logo_in_signin_page=='yes')?'selected':''}} value="yes">yes</option>
-                                <option {{($show_logo_in_signin_page=='no')?'selected':''}} value="no">no</option>
+                                <option {{($show_logo_in_signin_page=='yes')?'selected':''}} value="yes">{{ __('locale.yes') }}</option>
+                                <option {{($show_logo_in_signin_page=='no')?'selected':''}} value="no">{{ __('locale.no') }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Show logo in
-                            signup
-                            page (register)</label>
+                        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.show_logo_in_signup_page') }}</label>
                         <div class="col-sm-4">
                             <select class="form-control form-control-sm" name="show_logo_in_signup_page">
-                                <option {{($show_logo_in_signup_page=='yes')?'selected':''}} value="yes">yes</option>
-                                <option {{($show_logo_in_signup_page=='no')?'selected':''}} value="no">no</option>
+                                <option {{($show_logo_in_signup_page=='yes')?'selected':''}} value="yes">{{ __('locale.yes') }}</option>
+                                <option {{($show_logo_in_signup_page=='no')?'selected':''}} value="no">{{ __('locale.no') }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="app_title" class="col-sm-2 col-form-label col-form-label-sm">App title</label>
+                        <label for="app_title" class="col-sm-2 col-form-label col-form-label-sm">{{ __('locale.app_title') }}</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control form-control-sm" value="{{$app_title}}"
                                 id="app_title" name="app_title" placeholder="" />
@@ -116,7 +112,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-4 offset-sm-2">
-                            <button type="submit" class="btn btn-primary btn-sm mr-1"><i data-feather="save"></i> Save <span
+                            <button type="submit" class="btn btn-primary btn-sm mr-1"><i data-feather="save"></i> {{ __('locale.save') }} <span
                                     id="SPAN_SAVE_SETTINGS"></span></button>
                         </div>
                     </div>

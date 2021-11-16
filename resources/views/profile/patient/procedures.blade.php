@@ -5,10 +5,24 @@
 #jcarousel-procedure2 ul li:hover {
     background-color: rgba(115, 103, 240, .12);
 }
+
+@media screen and (min-width: 900px) {
+    .procedure-jcarousel-prev, .procedure-jcarousel-next
+    {
+        visibility:hidden;
+    }
+}
+
 </style>
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
 <!-- begin::carousel line 1-->
 <div class="jcarousel-wrapper p-1">
-    <div id="jcarousel-procedure1" class="jcarousel">
+    <div id="jcarousel-procedure1" class="jcarousel" dir="{{($lang=='ar')?'ltr':''}}">
         <ul>
             <!-- row one -->
             @if(count($procedures_row_one)>0)
@@ -23,15 +37,15 @@
             @endif
         </ul>
     </div>
-    <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-    <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+    <a href="#" class="jcarousel-control-prev procedure-jcarousel-prev">&lsaquo;</a>
+    <a href="#" class="jcarousel-control-next procedure-jcarousel-next">&rsaquo;</a>
     <p class="jcarousel-pagination d-none"></p>
 </div>
 <!-- end::carousel line 1 -->
 
 <!-- begin::carousel line 2-->
 <div class="jcarousel-wrapper p-1">
-    <div id="jcarousel-procedure2" class="jcarousel">
+    <div id="jcarousel-procedure2" class="jcarousel" dir="{{($lang=='ar')?'ltr':''}}">
         <ul>
             @if(count($procedures_row_two)>0)
             @foreach($procedures_row_two as $p)
@@ -45,8 +59,8 @@
             @endif
         </ul>
     </div>
-    <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-    <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+    <a href="#" class="jcarousel-control-prev procedure-jcarousel-prev">&lsaquo;</a>
+    <a href="#" class="jcarousel-control-next procedure-jcarousel-next">&rsaquo;</a>
     <p class="jcarousel-pagination d-none"></p>
 </div>
 <!-- end::carousel line 2 -->
@@ -61,7 +75,7 @@
                 var carousel = $(this),
                     width = carousel.innerWidth();
                 if (width >= 900) {
-                    width = width / 10;
+                    width = width / 16;
                 }else if (width >= 600) {
                     width = width / 8;
                 } else if (width >= 350) {
@@ -71,7 +85,7 @@
                 carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
             })
             .jcarousel({
-                wrap: 'circular'
+                wrap: 'both',
             });
 
         $('.jcarousel-control-prev')

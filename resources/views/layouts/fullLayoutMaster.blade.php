@@ -6,10 +6,15 @@ $favicon=$defaultLogos['favicon'];
 if(isset($site_favicon) && !empty($site_favicon)){
 $favicon=$site_favicon;
 }
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+$direction=($lang=='ar')?'rtl':'ltr';
 @endphp
 <!DOCTYPE html>
 
-<html class="loading" lang="en" data-textdirection="ltr">
+<html class="loading" lang="@if(session()->has('locale')){{session()->get('locale')}}@else 'en' @endif" data-textdirection="{{ $direction }}">
 
 <head>
     <meta charset="utf-8">
@@ -30,6 +35,9 @@ $favicon=$site_favicon;
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click"
     data-menu="vertical-menu-modern" data-col="blank-page">
+
+    {{-- Include Navbar --}}
+    @include('panels.lang-navbar')
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -56,6 +64,22 @@ $favicon=$site_favicon;
             });
         }
     })
+
+    $(window).on('load', function () {
+        var language = $('html')[0].lang;
+        if (language !== null) {
+        // get the selected flag class
+        var selectedLang = $('.dropdown-language')
+            .find('a[data-language=' + language + ']')
+            .text();
+        var selectedFlag = $('.dropdown-language')
+            .find('a[data-language=' + language + '] .flag-icon')
+            .attr('class');
+        // set the class in button
+        $('#dropdown-flag .selected-language').text(selectedLang);
+        $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
+        }
+    });
     </script>
 </body>
 

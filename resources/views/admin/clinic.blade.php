@@ -17,11 +17,18 @@
 
 @section('content')
 
+@php
+$lang='en';
+if(session()->has('locale')){
+    $lang=session()->get('locale');
+}
+@endphp
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Clinic Target</h4>
+                <h4 class="card-title">{{ __('locale.clinic_target') }}</h4>
                 <div class="row">
                     <div class="offset-md-9 col-md-2">
                         <div class="form-control-wrap">
@@ -42,21 +49,21 @@
                             <table class="datatable table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>YEAR</th>
-                                        <th>Jan</th>
-                                        <th>Feb</th>
-                                        <th>Mar</th>
-                                        <th>Apr</th>
-                                        <th>May</th>
-                                        <th>Jun</th>
-                                        <th>Jul</th>
-                                        <th>Aug</th>
-                                        <th>Sep</th>
-                                        <th>Oct</th>
-                                        <th>Nov</th>
-                                        <th>Dec</th>
+                                        <th>{{ __('locale.year') }}</th>
+                                        <th>{{ __('locale.jan') }}</th>
+                                        <th>{{ __('locale.feb') }}</th>
+                                        <th>{{ __('locale.mar') }}</th>
+                                        <th>{{ __('locale.apr') }}</th>
+                                        <th>{{ __('locale.may') }}</th>
+                                        <th>{{ __('locale.jun') }}</th>
+                                        <th>{{ __('locale.jul') }}</th>
+                                        <th>{{ __('locale.aug') }}</th>
+                                        <th>{{ __('locale.sep') }}</th>
+                                        <th>{{ __('locale.oct') }}</th>
+                                        <th>{{ __('locale.nov') }}</th>
+                                        <th>{{ __('locale.dec') }}</th>
                                         <th>
-                                            Action
+                                        {{ __('locale.actions') }}
                                         </th>
                                     </tr>
                                 </thead>
@@ -115,7 +122,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="basicModalLabel">Add Target</h5>
+                <h5 class="modal-title" id="basicModalLabel">{{ __('locale.new') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -134,7 +141,7 @@
                                 <div class="form-control-wrap">
                                     <input class="form-control form-control-lg form-control-outlined" type="text"
                                         placeholder="Year" name="a_year" id="a_year">
-                                    <label class="form-label-outlined" for="outlined">Year*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.year') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +151,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_jan" name="a_jan" placeholder="Jan">
-                                    <label class="form-label-outlined" for="outlined">Jan*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.jan') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +161,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_feb" name="a_feb" placeholder="Feb">
-                                    <label class="form-label-outlined" for="outlined">Feb*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.feb') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +171,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_mar" name="a_mar" placeholder="Mar">
-                                    <label class="form-label-outlined" for="outlined">Mar*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.mar') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +181,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_apr" name="a_apr" placeholder="Apr">
-                                    <label class="form-label-outlined" for="outlined">Apr*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.apr') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +191,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_may" name="a_may" placeholder="May">
-                                    <label class="form-label-outlined" for="outlined">May*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.may') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +201,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_jun" name="a_jun" placeholder="Jun">
-                                    <label class="form-label-outlined" for="outlined">Jun*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.jun') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +211,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_jul" name="a_jul" placeholder="Jul">
-                                    <label class="form-label-outlined" for="outlined">Jul*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.jul') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +221,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_aug" name="a_aug" placeholder="Aug">
-                                    <label class="form-label-outlined" for="outlined">Aug*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.aug') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +231,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_sep" name="a_sep" placeholder="Sep">
-                                    <label class="form-label-outlined" for="outlined">Sep*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.sep') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -244,7 +251,7 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_nov" name="a_nov" placeholder="Nov">
-                                    <label class="form-label-outlined" for="outlined">Nov*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.nov') }}*</label>
                                 </div>
                             </div>
                         </div>
@@ -254,15 +261,15 @@
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control form-control-lg form-control-outlined"
                                         id="a_dec" name="a_dec" placeholder="Dec">
-                                    <label class="form-label-outlined" for="outlined">Dec*</label>
+                                    <label class="form-label-outlined" for="outlined">{{ __('locale.dec') }}*</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div><!-- .modal-body -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="target_save_btn"><i data-feather="save"></i>&nbsp;Save</button>
-                    <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="target_save_btn"><i data-feather="save"></i> {{ __('locale.save') }}</button>
+                    <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i> {{ __('locale.cancel') }}</button>
                 </div>
             </form>
         </div><!-- .modal-content -->
@@ -273,7 +280,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="basicModalLabel">Edit Target</h5>
+                <h5 class="modal-title" id="basicModalLabel">{{ __('locale.edit') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -291,7 +298,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Year*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.year') }}*</label>
                                 <div class="form-control-wrap">
                                     <input class="form-control form_datetime" type="text" placeholder="Year" id="e_year"
                                         name="e_year">
@@ -301,7 +308,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Jan*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.jan') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_jan" name="e_jan" placeholder="Jan">
                                 </div>
@@ -310,7 +317,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Feb*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.feb') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_feb" name="e_feb" placeholder="Feb">
                                 </div>
@@ -319,7 +326,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Mar*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.mar') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_mar" name="e_mar" placeholder="Mar">
                                 </div>
@@ -328,7 +335,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Apr*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.apr') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_apr" name="e_apr" placeholder="Apr">
                                 </div>
@@ -337,7 +344,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">May*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.may') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_may" name="e_may" placeholder="May">
                                 </div>
@@ -346,7 +353,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Jun*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.jun') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_jun" name="e_jun" placeholder="Jun">
                                 </div>
@@ -355,7 +362,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Jul*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.jul') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_jul" name="e_jul" placeholder="Jul">
                                 </div>
@@ -364,7 +371,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Aug*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.aug') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_aug" name="e_aug" placeholder="Aug">
                                 </div>
@@ -373,7 +380,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Sep*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.sep') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_sep" name="e_sep" placeholder="Sep">
                                 </div>
@@ -382,7 +389,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Oct*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.oct') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_oct" name="e_oct" placeholder="Oct">
                                 </div>
@@ -391,7 +398,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Nov*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.nov') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_nov" name="e_nov" placeholder="Nov">
                                 </div>
@@ -400,7 +407,7 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="form-label" for="default-01">Dec*</label>
+                                <label class="form-label" for="default-01">{{ __('locale.dec') }}*</label>
                                 <div class="form-control-wrap">
                                     <input type="text" class="form-control" id="e_dec" name="e_dec" placeholder="Dec">
                                 </div>
@@ -409,8 +416,8 @@
                     </div>
                 </div><!-- .modal-body -->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="target_update_btn"><i data-feather="save"></i>&nbsp;Update</button>
-                    <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i>&nbsp;Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="target_update_btn"><i data-feather="save"></i> {{ __('locale.save') }}</button>
+                    <button href="#" data-dismiss="modal" class="btn btn-danger"><i data-feather="x"></i> {{ __('locale.cancel') }}</button>
                 </div>
             </form>
         </div><!-- .modal-content -->
@@ -433,6 +440,11 @@
 $(document).ready(function() {
     var table = $('.datatable').DataTable({
         responsive: true,
+        @if($lang=='ar')
+        language: {
+                url: '/json/datatable/ar.json'
+        },
+        @endif
     });
 
     $('#search_year').datepicker({
